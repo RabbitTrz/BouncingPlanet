@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0eee2a59dad2ac42b6269655fc25819, type: 3}
+  m_Name: GameConfig
+  m_EditorClassIdentifier: 
+  profile: 0
+  moveLeftKey: 97
+  moveLeftAltKey: 276
+  moveRightKey: 100
+  moveRightAltKey: 275
+  respawnKey: 114
+  holdRadiusKey: 104
+  simulationHz: 120
+  maxStepsPerFrame: 8
+  cameraPixelsPerUnit: 360
+  cameraOrthographicSize: 1
+  backgroundColor: {r: 0.02, g: 0.024, b: 0.04, a: 1}
+  playerCollisionRadius: 0.085
+  sizeScale: 0.5
+  startRadius: 1.5
+  startRadialVelocity: 0.6
+  deathRadius: 0.1
+  maxAngularSpeed: 2.6
+  tangentialSpeed: 1.1
+  turnAcceleration: 2.4
+  glideDeceleration: 1.35
+  brakeDeceleration: 2
+  ascendBlockFactor: 1
+  gravity: 2.4
+  bounceGain: 1.75
+  baseImpulse: 1
+  jumpSpeed: 1.6
+  launchMinFactor: 0.82
+  launchMaxFactor: 1.28
+  useLaunchMax: 0
+  laneSpacing: 0.5
+  ringCountMultiplier: 5.5
+  minPlanetsPerRing: 6
+  maxPlanetsPerRing: 64
+  gapCountMultiplier: 0.6
+  gapRadialOffset: 0.25
+  gapRadiusJitter: 0.05
+  sizeJitter: 0.15
+  swayMax: 0.11
+  swaySlotRatio: 0.22
+  swaySpeedMin: 0.25
+  swaySpeedMax: 0.7
+  initialBelow: 1.2
+  initialAbove: 3
+  initialLowRadius: 0.3
+  spawnAhead: 8
+  backfillBehind: 4
+  minGenerationRadius: 0.18
+  recycleAbove: 40
+  generationSeed: 20261101
+  planetHitCooldown: 0.28
+  cloudHitCooldown: 0.8
+  normalPlanetScore: 10
+  musouScoreThreshold: 100
+  showScoreHud: 1
+  audioMasterVolume: 0.65
