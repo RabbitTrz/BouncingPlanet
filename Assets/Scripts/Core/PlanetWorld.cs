@@ -7,6 +7,7 @@ namespace BouncingPlanet
     /// 正式星环世界：初始铺场、上下流式生成、远上方回收、视图池。
     /// 仿真行星与视图分离：远处行星只存在数据，不为它们保留 GameObject。
     /// </summary>
+    [DefaultExecutionOrder(1500)]
     [DisallowMultipleComponent]
     public sealed class PlanetWorld : MonoBehaviour
     {
@@ -19,7 +20,7 @@ namespace BouncingPlanet
 
         private const float PlanetViewRadius = 4.0f;
         private const float RingVisibleRadius = 3.8f;
-        private const int MaxViewObjects = 320;
+        private const int MaxViewObjects = 512;
 
         public GameBootstrap bootstrap;
 
@@ -131,6 +132,8 @@ namespace BouncingPlanet
                     planet.cooldown -= dt;
                 if (planet.flash > 0f)
                     planet.flash = Mathf.Max(0f, planet.flash - dt * 2.5f);
+                if (planet.deathViewTimer > 0f)
+                    planet.deathViewTimer = Mathf.Max(0f, planet.deathViewTimer - dt);
                 if (!planet.alive || planet.swayAmplitude <= 0f)
                     continue;
                 planet.swayPhase += planet.swaySpeed * dt;
@@ -287,6 +290,52 @@ namespace BouncingPlanet
             });
         }
 
+        /// <summary>炸弹技能生成的特殊炸弹星，持久存在直到被碰撞。</summary>
+        public PlanetRuntime SpawnSkillBomb(float radius, float worldAngle)
+        {
+            if (bootstrap == null || config == null)
+                return null;
+
+            PlanetTypeDef def = bootstrap.GetPlanetType(PlanetTypeId.Bomb);
+            if (def == null)
+                return null;
+
+            float r = Mathf.Max(config.minGenerationRadius, radius);
+            PlanetRuntime planet = new PlanetRuntime
+            {
+                def = def,
+                radius = r,
+                baseAngle = worldAngle,
+                angle = worldAngle,
+                worldRadius = Mathf.Max(0.005f, def.baseSize * config.sizeScale),
+                swayAmplitude = 0f,
+                fromBombSkill = true
+            };
+            planets.Add(planet);
+            return planet;
+        }
+
+        /// <summary>炸弹技能清场：除云朵/果冻外，范围内行星标记死亡；不连锁、不计分。</summary>
+        public void ExplodeArea(Vector2 center, float radius, PlanetRuntime ignore = null)
+        {
+            for (int i = 0; i < planets.Count; i++)
+            {
+                PlanetRuntime planet = planets[i];
+                if (!planet.alive || planet == ignore || planet.def == null)
+                    continue;
+                if (planet.def.behavior == PlanetBehavior.Cloud)
+                    continue;
+                float distance = Vector2.Distance(center, planet.WorldPosition);
+                if (distance > radius + planet.worldRadius)
+                    continue;
+
+                planet.alive = false;
+                planet.deathViewTimer = 0.28f;
+                if (planet.viewComponent != null)
+                    planet.viewComponent.PlayShatter();
+            }
+        }
+
         private bool InSpawnClearZone(float radius, float angle)
         {
             float radialDelta = radius - config.startRadius;
@@ -345,13 +394,28 @@ namespace BouncingPlanet
                 return;
 
             float playerRadius = player.State.radius;
+            Camera camera = Camera.main;
             for (int i = 0; i < planets.Count; i++)
             {
                 PlanetRuntime planet = planets[i];
-                bool visible = planet.alive
-                    && Mathf.Abs(planet.radius - playerRadius) <= PlanetViewRadius;
+                bool inRange = Mathf.Abs(planet.radius - playerRadius) <= PlanetViewRadius;
 
-                if (!visible)
+                Vector2 position = planet.WorldPosition;
+                bool inView = true;
+                if (camera != null)
+                {
+                    Vector3 viewport = camera.WorldToViewportPoint(
+                        new Vector3(position.x, position.y, 0f));
+                    inView = viewport.z > 0f &&
+                             viewport.x >= -0.15f && viewport.x <= 1.15f &&
+                             viewport.y >= -0.15f && viewport.y <= 1.15f;
+                }
+
+                bool visible = inRange && inView &&
+                    (planet.alive || planet.deathViewTimer > 0f);
+
+                // 死亡且本来没有视图的远处行星不需要补一个碎裂动画。
+                if (!visible || (!planet.alive && planet.view == null))
                 {
                     ReleasePlanetView(planet);
                     continue;
@@ -360,19 +424,26 @@ namespace BouncingPlanet
                 if (planet.view == null)
                 {
                     GameObject viewObject = AcquireView();
-                    planet.view = viewObject != null ? viewObject.transform : null;
+                    if (viewObject != null)
+                    {
+                        planet.view = viewObject.transform;
+                        planet.viewComponent = viewObject.GetComponent<PlanetView>();
+                        planet.viewComponent.Bind(planet.def);
+                        if (!planet.alive)
+                            planet.viewComponent.PlayShatter();
+                    }
                 }
                 if (planet.view == null)
                     continue;
 
-                Vector2 position = planet.WorldPosition;
                 planet.view.position = new Vector3(position.x, position.y, 0f);
-                planet.view.localScale = new Vector3(
-                    planet.worldRadius * 2f, planet.worldRadius * 2f, 1f);
-
-                SpriteRenderer renderer = planet.view.GetComponent<SpriteRenderer>();
-                if (renderer != null)
-                    renderer.color = Color.Lerp(planet.def.color, Color.white, planet.flash * 0.7f);
+                // 行星贴图保持屏幕正立；状态机只在 Visual 子节点上做相对运动。
+                planet.view.rotation = Camera.main != null
+                    ? Camera.main.transform.rotation
+                    : Quaternion.identity;
+                planet.viewComponent.SetWorldDiameter(planet.worldRadius * 2f);
+                planet.viewComponent.SetTint(
+                    Color.Lerp(planet.def.color, Color.white, planet.flash * 0.7f));
             }
 
             if (!Mathf.Approximately(lastBandPixelsPerUnit, config.cameraPixelsPerUnit))
@@ -411,9 +482,7 @@ namespace BouncingPlanet
 
             GameObject go = new GameObject("PlanetView");
             go.transform.SetParent(viewRoot, false);
-            SpriteRenderer renderer = go.AddComponent<SpriteRenderer>();
-            renderer.sprite = ProceduralSprites.Circle;
-            renderer.sortingOrder = 5;
+            go.AddComponent<PlanetView>();
             allViews.Add(go);
             return go;
         }
@@ -428,6 +497,7 @@ namespace BouncingPlanet
             view.transform.SetParent(poolRoot, false);
             freeViews.Push(view);
             planet.view = null;
+            planet.viewComponent = null;
         }
 
         private void DestroyBand(BandView band)

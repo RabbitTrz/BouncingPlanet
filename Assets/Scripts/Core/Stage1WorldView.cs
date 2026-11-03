@@ -19,12 +19,23 @@ namespace BouncingPlanet
         }
 
         public GameBootstrap bootstrap;
+        [Tooltip("可选的玩家静态 Sprite 状态配置；留空使用运行时默认状态机。")]
+        public SpriteStateProfile playerProfile;
 
         private GameConfig config;
         private PlayerController player;
+        private PlayerSkills skills;
         private Camera targetCamera;
         private Transform worldRoot;
         private Transform playerRoot;
+        private Transform playerMotionPivot;
+        private Transform playerVisual;
+        private TrailRenderer playerTrail;
+        private Material playerTrailMaterial;
+        private float smoothedPlayerTurn;
+        private float playerTurnVelocity;
+        private SpriteRenderer playerRenderer;
+        private SpriteStateMachine playerStateMachine;
         private Transform holeBody;
         private Transform holeGlow;
 
@@ -49,6 +60,7 @@ namespace BouncingPlanet
 
             config = bootstrap.gameConfig;
             player = bootstrap.player;
+            skills = bootstrap.skills;
             feedback = bootstrap.feedbackDirector;
             score = bootstrap.score;
             targetCamera = bootstrap.cameraRig != null ? bootstrap.cameraRig.ActiveCamera : Camera.main;
@@ -65,8 +77,25 @@ namespace BouncingPlanet
             CreatePlayer();
             CreateStarfield();
 
+            if (player != null)
+            {
+                player.CollisionReaction += OnPlayerCollisionReaction;
+                player.Respawned += OnPlayerRespawned;
+            }
+
             initialized = true;
             UpdateVisuals();
+        }
+
+        private void OnDestroy()
+        {
+            if (player != null)
+            {
+                player.CollisionReaction -= OnPlayerCollisionReaction;
+                player.Respawned -= OnPlayerRespawned;
+            }
+            if (playerTrailMaterial != null)
+                Destroy(playerTrailMaterial);
         }
 
         private void Start()
@@ -91,14 +120,78 @@ namespace BouncingPlanet
 
         private void CreatePlayer()
         {
-            playerRoot = CreateSprite("PlayerView", ProceduralSprites.Circle,
-                new Color(1f, 0.82f, 0.40f, 1f), 20, worldRoot);
+            GameObject rootObject = new GameObject("PlayerRoot");
+            rootObject.transform.SetParent(worldRoot, false);
+            playerRoot = rootObject.transform;
+
+            GameObject pivotObject = new GameObject("PlayerMotionPivot");
+            pivotObject.transform.SetParent(playerRoot, false);
+            playerMotionPivot = pivotObject.transform;
+
+            GameObject visualObject = new GameObject("PlayerVisual");
+            visualObject.transform.SetParent(playerMotionPivot, false);
+            playerVisual = visualObject.transform;
+            playerRenderer = visualObject.AddComponent<SpriteRenderer>();
+            playerRenderer.sprite = ProceduralSprites.Circle;
+            playerRenderer.color = Color.white;
+            playerRenderer.sortingOrder = 20;
+
+            playerStateMachine = visualObject.AddComponent<SpriteStateMachine>();
+            SpriteStateProfile profile = playerProfile != null
+                ? playerProfile
+                : SpriteStateDefaults.GetPlayerProfile();
+            playerStateMachine.Initialize(profile, playerRenderer, playerVisual);
+            playerStateMachine.SetState("happy");
+
+            // 让 Sprite 的 native size 归一化为 1 世界单位，兼容不同导入 PPU；
+            // 同一状态的帧请保持相同像素尺寸。
+            Sprite initialSprite = playerRenderer.sprite;
+            float nativeSize = initialSprite != null
+                ? Mathf.Max(0.0001f, initialSprite.bounds.size.x)
+                : 1f;
+            playerVisual.localScale = Vector3.one / nativeSize;
+            playerStateMachine.CaptureBase();
 
             // 一个屏幕正上方的小点，用来验证“径向朝上”和左右手性。
             Transform marker = CreateSprite("PlayerUpMarker", ProceduralSprites.Circle,
                 new Color(1f, 0.97f, 0.82f, 0.95f), 21, playerRoot);
             marker.localPosition = new Vector3(0f, 0.62f, 0f);
             marker.localScale = new Vector3(0.22f, 0.22f, 1f);
+
+            CreatePlayerTrail();
+        }
+
+        private void CreatePlayerTrail()
+        {
+            GameObject trailObject = new GameObject("PlayerAscendTrail");
+            trailObject.transform.SetParent(worldRoot, false);
+
+            playerTrail = trailObject.AddComponent<TrailRenderer>();
+            playerTrail.autodestruct = false;
+            playerTrail.emitting = false;
+            playerTrail.time = config.playerTrailTime;
+            playerTrail.minVertexDistance = 0.01f;
+            playerTrail.numCapVertices = 2;
+            playerTrail.numCornerVertices = 2;
+            playerTrail.alignment = LineAlignment.View;
+            playerTrail.textureMode = LineTextureMode.Stretch;
+            playerTrail.sortingOrder = 19;
+            playerTrail.startWidth = config.playerTrailWidth;
+            playerTrail.endWidth = 0f;
+            playerTrail.startColor = config.playerTrailColor;
+            Color endColor = config.playerTrailColor;
+            endColor.a = 0f;
+            playerTrail.endColor = endColor;
+
+            Shader shader = Shader.Find("Sprites/Default");
+            if (shader != null)
+            {
+                playerTrailMaterial = new Material(shader)
+                {
+                    name = "PlayerTrailMaterial"
+                };
+                playerTrail.material = playerTrailMaterial;
+            }
         }
 
         private void CreateStarfield()
@@ -173,6 +266,81 @@ namespace BouncingPlanet
                 playerRoot.localScale = new Vector3(scaleX, scaleY, 1f);
                 playerRoot.rotation = Quaternion.Euler(
                     0f, 0f, state.WorldAngle * Mathf.Rad2Deg - 90f);
+
+                // 纯视觉转向：完全由实际角速度驱动，并按当前半径的最大角速度归一化。
+                bool playing = bootstrap == null || bootstrap.gameFlow == null ||
+                    bootstrap.gameFlow.State == GameFlow.FlowState.Playing;
+                float maxOmega = Mathf.Min(
+                    config.maxAngularSpeed,
+                    config.tangentialSpeed / Mathf.Max(0.3f, state.radius));
+                float targetTurn = (!playing || state.dead || maxOmega <= 0.0001f)
+                    ? 0f
+                    : Mathf.Clamp(state.angularVelocity / maxOmega, -1f, 1f);
+                smoothedPlayerTurn = Mathf.SmoothDamp(
+                    smoothedPlayerTurn, targetTurn, ref playerTurnVelocity,
+                    Mathf.Max(0.01f, config.playerMotionSmoothing),
+                    Mathf.Infinity, Time.unscaledDeltaTime);
+
+                if (playerMotionPivot != null)
+                {
+                    float rootScaleX = Mathf.Max(0.0001f, playerRoot.localScale.x);
+                    playerMotionPivot.localPosition = new Vector3(
+                        smoothedPlayerTurn * config.playerLateralOffset / rootScaleX,
+                        playerMotionPivot.localPosition.y,
+                        0f);
+                    playerMotionPivot.localRotation = Quaternion.Euler(
+                        0f, 0f, -smoothedPlayerTurn * config.playerBankAngle);
+                }
+
+                if (playerStateMachine != null)
+                {
+                    string current = playerStateMachine.CurrentStateName;
+                    if (state.dead)
+                    {
+                        if (current != "dead")
+                            playerStateMachine.SetState("dead");
+                    }
+                    else if (skills != null && skills.IsMusouActive)
+                    {
+                        if (current != "override")
+                            playerStateMachine.SetState("override");
+                    }
+                    else if (current == "override" || current == "dead" ||
+                             string.IsNullOrEmpty(current))
+                    {
+                        playerStateMachine.SetState("happy");
+                    }
+                }
+
+                if (playerTrail != null)
+                {
+                    playerTrail.transform.position = playerMotionPivot != null
+                        ? playerMotionPivot.position
+                        : playerRoot.position;
+                    bool musou = skills != null && skills.IsMusouActive;
+                    bool ascending = state.radialVelocity > config.playerTrailMinAscendSpeed;
+                    bool emit = config.playerTrailEnabled && playing && !state.dead &&
+                                (musou || ascending);
+                    playerTrail.emitting = emit;
+
+                    if (emit)
+                    {
+                        float width = Mathf.Max(0.001f, config.playerTrailWidth) *
+                                      (musou ? 1.6f : 1f);
+                        playerTrail.startWidth = width;
+                        playerTrail.endWidth = 0f;
+                        playerTrail.time = Mathf.Max(0.05f, config.playerTrailTime) *
+                                           (musou ? 1.4f : 1f);
+
+                        Color color = musou
+                            ? config.musouTrailColor
+                            : config.playerTrailColor;
+                        playerTrail.startColor = color;
+                        Color endColor = color;
+                        endColor.a = 0f;
+                        playerTrail.endColor = endColor;
+                    }
+                }
             }
 
             // 星空以相机为父级，但按世界角度的 0.10 / 0.26 倍旋转，
@@ -199,6 +367,30 @@ namespace BouncingPlanet
                 holeGlow.localScale = new Vector3(glowDiameter, glowDiameter, 1f);
             }
 
+        }
+
+        private void OnPlayerCollisionReaction(bool ascending)
+        {
+            if (playerStateMachine == null || player == null || player.IsDead)
+                return;
+            if (skills != null && skills.IsMusouActive)
+                return;
+
+            string current = playerStateMachine.CurrentStateName;
+            if (current == "override" || current == "dead")
+                return;
+
+            // 先回到 happy，保证 up/down 播完后返回 happy，而不是上一段表情。
+            playerStateMachine.SetState("happy", true);
+            playerStateMachine.PlayOneShot(ascending ? "up" : "down");
+        }
+
+        private void OnPlayerRespawned()
+        {
+            if (playerStateMachine != null)
+                playerStateMachine.SetState("happy", true);
+            if (playerTrail != null)
+                playerTrail.Clear();
         }
 
         private void OnGUI()

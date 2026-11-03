@@ -20,6 +20,17 @@ namespace BouncingPlanet
             Changed?.Invoke(Score, amount);
         }
 
+        public bool TryConsume(int amount)
+        {
+            if (amount <= 0)
+                return true;
+            if (Score < amount)
+                return false;
+            Score -= amount;
+            Changed?.Invoke(Score, -amount);
+            return true;
+        }
+
         public void ResetScore()
         {
             if (Score == 0)

@@ -71,6 +71,35 @@ namespace BouncingPlanet
         [Tunable("Cloud", 0f, 1f, 0.01f, "云朵屏闪")]
         public float cloudScreenFlash = 0.10f;
 
+        [Header("钩锁 Hook")]
+        [Tunable("Hook", 0f, 0.3f, 0.005f, "钩锁重击顿帧")]
+        public float hookHeavyHitstop = 0.12f;
+
+        [Tunable("Hook", 0f, 3f, 0.05f, "钩锁重击震屏")]
+        public float hookHeavyShake = 1.20f;
+
+        [Header("音频 Audio")]
+        [Tunable("Audio", 0f, 1f, 0.01f, "音效总音量")]
+        public float sfxMasterVolume = 0.65f;
+
+        [Tunable("Audio", 0f, 1f, 0.01f, "弹跳音效音量")]
+        public float sfxBounceVolume = 0.35f;
+
+        [Tunable("Audio", 0f, 1f, 0.01f, "冰星音效音量")]
+        public float sfxIceVolume = 0.35f;
+
+        [Tunable("Audio", 0f, 1f, 0.01f, "云朵音效音量")]
+        public float sfxCloudVolume = 0.28f;
+
+        [Tunable("Audio", 0f, 1f, 0.01f, "炸弹音效音量")]
+        public float sfxBombVolume = 0.60f;
+
+        [Tunable("Audio", 0f, 1f, 0.01f, "死亡音效音量")]
+        public float sfxDeathVolume = 0.50f;
+
+        [Tunable("Audio", 0f, 1f, 0.01f, "钩锁重击音效音量")]
+        public float sfxHookVolume = 0.28f;
+
         [Header("其他 Other")]
         [Tunable("Other", 0f, 2f, 0.01f, "上升挡回震屏")]
         public float ascendBlockShake = 0.35f;
@@ -137,6 +166,17 @@ namespace BouncingPlanet
             cloudShake = 0.40f;
             cloudScreenFlash = 0.10f;
 
+            hookHeavyHitstop = 0.12f;
+            hookHeavyShake = 1.20f;
+
+            sfxMasterVolume = 0.65f;
+            sfxBounceVolume = 0.35f;
+            sfxIceVolume = 0.35f;
+            sfxCloudVolume = 0.28f;
+            sfxBombVolume = 0.60f;
+            sfxDeathVolume = 0.50f;
+            sfxHookVolume = 0.28f;
+
             ascendBlockShake = 0.35f;
             screenFlashDecay = 2.20f;
             squashDecay = 6f;
@@ -168,6 +208,17 @@ namespace BouncingPlanet
             iceScreenFlash = Mathf.Clamp01(iceScreenFlash);
             cloudShake = Mathf.Max(0f, cloudShake);
             cloudScreenFlash = Mathf.Clamp01(cloudScreenFlash);
+
+            hookHeavyHitstop = Mathf.Max(0f, hookHeavyHitstop);
+            hookHeavyShake = Mathf.Max(0f, hookHeavyShake);
+
+            sfxMasterVolume = Mathf.Clamp01(sfxMasterVolume);
+            sfxBounceVolume = Mathf.Clamp01(sfxBounceVolume);
+            sfxIceVolume = Mathf.Clamp01(sfxIceVolume);
+            sfxCloudVolume = Mathf.Clamp01(sfxCloudVolume);
+            sfxBombVolume = Mathf.Clamp01(sfxBombVolume);
+            sfxDeathVolume = Mathf.Clamp01(sfxDeathVolume);
+            sfxHookVolume = Mathf.Clamp01(sfxHookVolume);
 
             ascendBlockShake = Mathf.Max(0f, ascendBlockShake);
             screenFlashDecay = Mathf.Max(0f, screenFlashDecay);

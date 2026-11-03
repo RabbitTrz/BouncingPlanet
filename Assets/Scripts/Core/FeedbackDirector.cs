@@ -70,17 +70,40 @@ namespace BouncingPlanet
             {
                 case GameEventType.Bounce:
                     float speed = gameEvent.speed;
-                    clock?.RequestHitstop(feedback.ComputeLandingHitstop(speed));
-                    Shake = Mathf.Max(Shake, feedback.ComputeLandingShake(speed));
-                    Punch = Mathf.Max(Punch, feedback.ComputeLandingPunch(speed));
-                    Squash = Mathf.Max(Squash, feedback.ComputeLandingSquash(speed));
-                    Flash(GetPlanetColor(gameEvent.planetType), 0.05f);
-                    vfx?.PlayBounce(gameEvent.position, gameEvent.planetType, speed);
-                    audioService?.PlayBounce(speed, gameEvent.planetType);
+                    if (gameEvent.heavy)
+                    {
+                        clock?.RequestHitstop(feedback.hookHeavyHitstop);
+                        Shake = Mathf.Max(Shake, feedback.hookHeavyShake);
+                        Punch = Mathf.Max(Punch, feedback.ComputeLandingPunch(speed));
+                        Squash = Mathf.Max(Squash, feedback.ComputeLandingSquash(speed));
+                        Flash(GetPlanetColor(gameEvent.planetType), 0.08f);
+                        vfx?.PlayHookHeavy(gameEvent.position, gameEvent.planetType);
+                        audioService?.PlayHookHeavy();
+                    }
+                    else
+                    {
+                        clock?.RequestHitstop(feedback.ComputeLandingHitstop(speed));
+                        Shake = Mathf.Max(Shake, feedback.ComputeLandingShake(speed));
+                        Punch = Mathf.Max(Punch, feedback.ComputeLandingPunch(speed));
+                        Squash = Mathf.Max(Squash, feedback.ComputeLandingSquash(speed));
+                        Flash(GetPlanetColor(gameEvent.planetType), 0.05f);
+                        vfx?.PlayBounce(gameEvent.position, gameEvent.planetType, speed);
+                        audioService?.PlayBounce(speed, gameEvent.planetType);
+                    }
                     break;
 
                 case GameEventType.Wall:
-                    Shake = Mathf.Max(Shake, feedback.ascendBlockShake);
+                    if (gameEvent.heavy)
+                    {
+                        clock?.RequestHitstop(feedback.hookHeavyHitstop);
+                        Shake = Mathf.Max(Shake, feedback.hookHeavyShake);
+                        vfx?.PlayHookHeavy(gameEvent.position, gameEvent.planetType);
+                        audioService?.PlayHookHeavy();
+                    }
+                    else
+                    {
+                        Shake = Mathf.Max(Shake, feedback.ascendBlockShake);
+                    }
                     break;
 
                 case GameEventType.CloudPass:
@@ -107,6 +130,20 @@ namespace BouncingPlanet
                     Flash(GetPlanetColor(gameEvent.planetType), feedback.bombScreenFlash);
                     vfx?.PlayBomb(gameEvent.position, gameEvent.planetType);
                     audioService?.PlayBomb();
+                    break;
+
+                case GameEventType.Smash:
+                    clock?.RequestHitstop(0.03f);
+                    Shake = Mathf.Max(Shake, 0.55f);
+                    Squash = Mathf.Max(Squash, 0.7f);
+                    Flash(GetPlanetColor(gameEvent.planetType), 0.06f);
+                    vfx?.PlayBounce(gameEvent.position, gameEvent.planetType, gameEvent.speed);
+                    audioService?.PlayBounce(gameEvent.speed, gameEvent.planetType);
+                    break;
+
+                case GameEventType.MusouStart:
+                    Shake = Mathf.Max(Shake, 0.6f);
+                    Flash(new Color(1f, 0.55f, 0.2f, 1f), 0.15f);
                     break;
 
                 case GameEventType.PlayerDeath:

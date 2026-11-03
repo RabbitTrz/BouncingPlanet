@@ -13,6 +13,8 @@ namespace BouncingPlanet
         public float Horizontal { get; private set; }
         public bool RespawnPressed { get; private set; }
         public bool ToggleHoldPressed { get; private set; }
+        public bool BombPressed { get; private set; }
+        public bool HookPressed { get; private set; }
 
         private GameConfig config;
 
@@ -41,6 +43,8 @@ namespace BouncingPlanet
             Horizontal = Mathf.Clamp(horizontal, -1f, 1f);
             RespawnPressed = WasPressed(config.respawnKey);
             ToggleHoldPressed = WasPressed(config.holdRadiusKey);
+            BombPressed = WasPressed(config.bombSkillKey);
+            HookPressed = Input.GetMouseButtonDown(0);
         }
 
         private static bool IsHeld(KeyCode key)

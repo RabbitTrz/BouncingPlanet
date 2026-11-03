@@ -19,12 +19,13 @@ MonoBehaviour:
   moveRightAltKey: 275
   respawnKey: 114
   holdRadiusKey: 104
+  bombSkillKey: 115
   simulationHz: 120
   maxStepsPerFrame: 8
   cameraPixelsPerUnit: 360
   cameraOrthographicSize: 1
   backgroundColor: {r: 0.02, g: 0.024, b: 0.04, a: 1}
-  playerCollisionRadius: 0.085
+  playerCollisionRadius: 0.2
   sizeScale: 0.5
   startRadius: 1.5
   startRadialVelocity: 0.6
@@ -36,7 +37,10 @@ MonoBehaviour:
   brakeDeceleration: 2
   ascendBlockFactor: 1
   gravity: 2.4
-  bounceGain: 1.75
+  playerLateralOffset: 0.015
+  playerBankAngle: 8
+  playerMotionSmoothing: 0.06
+  bounceGain: 0.5
   baseImpulse: 1
   jumpSpeed: 1.6
   launchMinFactor: 0.82
@@ -65,6 +69,37 @@ MonoBehaviour:
   planetHitCooldown: 0.28
   cloudHitCooldown: 0.8
   normalPlanetScore: 10
-  musouScoreThreshold: 100
+  musouScoreThreshold: 150
+  smashScore: 15
   showScoreHud: 1
-  audioMasterVolume: 0.65
+  musouDuration: 2
+  musouExtension: 0.2
+  musouSpeed: 2
+  showMusouRing: 1
+  musouRingRadius: 0.2
+  musouRingWidth: 0.007
+  musouRingBaseAlpha: 0.15
+  musouRingChargeColor: {r: 0.35, g: 0.82, b: 1, a: 1}
+  musouRingActiveColor: {r: 1, g: 0.82, b: 0.32, a: 1}
+  bombSkillCooldown: 0
+  bombSkillSpawnBelow: 0.3
+  bombSkillExplosionRadius: 0.9
+  bombSkillPushSpeed: 3.5
+  hookCooldown: 0
+  hookRange: 0.75
+  hookAcceleration: 40
+  hookMaxSpeed: 5
+  hookBreakDistance: 3
+  hookLooseDistance: 0.08
+  hookHeavySpeed: 1.7
+  collisionLateralEnabled: 1
+  collisionLateralFactor: 1.2
+  collisionLateralMaxSpeed: 1.2
+  normalSmashEnabled: 1
+  normalSmashSpeedThreshold: 2
+  playerTrailEnabled: 1
+  playerTrailMinAscendSpeed: 0.3
+  playerTrailTime: 0.28
+  playerTrailWidth: 0.014
+  playerTrailColor: {r: 0.65, g: 0.85, b: 1, a: 0.85}
+  musouTrailColor: {r: 1, g: 0.85, b: 0.25, a: 0.95}

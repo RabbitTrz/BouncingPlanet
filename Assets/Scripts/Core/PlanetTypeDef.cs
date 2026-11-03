@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace BouncingPlanet
@@ -18,6 +19,96 @@ namespace BouncingPlanet
         Cloud = 2,
         Ice = 3,
         Shiny = 4
+    }
+
+    /// <summary>
+    /// 行星直接配置的三套动画状态。美术不需要再跳去单独的 Profile 资产，
+    /// 但要高级覆盖时仍可在 PlanetTypeDef.visualProfile 指定。
+    /// </summary>
+    [Serializable]
+    public sealed class PlanetAnimationSet
+    {
+        [LabelText("待机 Idle")]
+        public SpriteStateDefinition idle;
+
+        [LabelText("受击 Hit")]
+        public SpriteStateDefinition hit;
+
+        [LabelText("碎裂 Shattered")]
+        public SpriteStateDefinition shattered;
+
+        public bool HasIdleFrames =>
+            idle != null && idle.frames != null && idle.frames.Length > 0;
+
+        public bool HasAnyFrames
+        {
+            get
+            {
+                if (idle != null && idle.frames != null && idle.frames.Length > 0)
+                    return true;
+                if (hit != null && hit.frames != null && hit.frames.Length > 0)
+                    return true;
+                if (shattered != null && shattered.frames != null && shattered.frames.Length > 0)
+                    return true;
+                return false;
+            }
+        }
+
+        public void EnsureDefaults()
+        {
+            if (idle == null)
+            {
+                idle = CreateState("Idle", true, false, 1.5f);
+            }
+            else
+            {
+                idle.stateName = "Idle";
+                NormalizeScale(idle);
+            }
+
+            if (hit == null)
+            {
+                hit = CreateState("Hit", false, true, 0.18f);
+            }
+            else
+            {
+                hit.stateName = "Hit";
+                NormalizeScale(hit);
+            }
+
+            if (shattered == null)
+            {
+                shattered = CreateState("Shattered", false, false, 0.28f);
+            }
+            else
+            {
+                shattered.stateName = "Shattered";
+                NormalizeScale(shattered);
+            }
+        }
+
+        private static SpriteStateDefinition CreateState(string stateName, bool loop,
+            bool autoReturn, float duration)
+        {
+            SpriteStateDefinition state = new SpriteStateDefinition
+            {
+                stateName = stateName,
+                loop = loop,
+                autoReturn = autoReturn,
+                durationOverride = duration,
+                baseScale = Vector2.one
+            };
+            return state;
+        }
+
+        private static void NormalizeScale(SpriteStateDefinition state)
+        {
+            if (Mathf.Approximately(state.baseScale.x, 0f) &&
+                Mathf.Approximately(state.baseScale.y, 0f))
+            {
+                state.baseScale = Vector2.one;
+            }
+        }
     }
 
     /// <summary>
@@ -50,6 +141,18 @@ namespace BouncingPlanet
         [LabelText("脸部贴图")]
         public Sprite faceSprite;
 
+        [LabelText("碎裂贴图")]
+        public Sprite crashSprite;
+
+        [Header("动画状态 Animation States")]
+        [LabelText("Idle / Hit / Shattered")]
+        [Tooltip("直接在这个行星资产里配置三套动画状态；有 Idle 帧时会优先使用这里的配置。")]
+        public PlanetAnimationSet animationStates = new PlanetAnimationSet();
+
+        [LabelText("高级覆盖 Profile（可选）")]
+        [Tooltip("可选的高级覆盖：当上面 Idle 没有帧时使用该 Profile；两者都为空则使用运行时默认。")]
+        public SpriteStateProfile visualProfile;
+
         [Header("尺寸 / 权重 Size / Weight")]
         [Tunable("Planet", 0.02f, 0.35f, 0.005f, "基础半径")]
         public float baseSize = 0.120f;
@@ -59,13 +162,15 @@ namespace BouncingPlanet
 
         [Header("弹跳 / 分数 Bounce / Score")]
         [Tunable("Planet", 0f, 3f, 0.01f, "弹力倍率")]
+        [Tooltip("通用弹力倍率；冰冰星使用下面的冰星弹力加成。")]
         public float bounceMultiplier = 1f;
 
         [Tunable("Planet", 0f, 10f, 0.1f, "分数倍率")]
         public float scoreMultiplier = 1f;
 
         [Header("冰 Ice")]
-        [Tunable("Ice", 1f, 2f, 0.01f, "冰星弹力加成")]
+        [Tunable("Ice", 1f, 5f, 0.01f, "冰星弹力加成")]
+        [Tooltip("冰冰星下落弹起的专用倍率，与通用 bounceMultiplier 独立。")]
         public float iceBounceBonus = 1.15f;
 
         [Tunable("Ice", 0f, 1f, 1f, "首次碰撞即碎")]
@@ -73,10 +178,12 @@ namespace BouncingPlanet
         public bool iceBreaksOnFirstHit = true;
 
         [Header("云 Cloud")]
-        [Tunable("Cloud", 1f, 5f, 0.05f, "穿过加速倍率")]
+        [Tunable("Cloud", 0f, 10f, 0.1f, "穿过速度加值")]
+        [Tooltip("加算值：穿过云朵后径向速度 = 原速度 + 该值，不设上限。字段名沿用旧名。")]
         public float cloudSpeedMultiplier = 2.2f;
 
-        [Tunable("Cloud", 0.5f, 10f, 0.1f, "穿过速度上限")]
+        [LabelText("穿过速度上限（已停用）")]
+        [Tooltip("已停用：云朵星现在按加算处理，没有速度上限。")]
         public float cloudSpeedCap = 3.2f;
 
         [Header("炸弹 Bomb")]
@@ -98,6 +205,10 @@ namespace BouncingPlanet
             bodySprite = null;
             detailSprite = null;
             faceSprite = null;
+            crashSprite = null;
+            visualProfile = null;
+            animationStates = new PlanetAnimationSet();
+            animationStates.EnsureDefaults();
 
             switch (type)
             {
@@ -108,7 +219,7 @@ namespace BouncingPlanet
                     baseSize = 0.115f;
                     spawnWeight = 2f;
                     bounceMultiplier = 1f;
-                    scoreMultiplier = 0f;
+                    scoreMultiplier = 1f;
                     break;
 
                 case PlanetTypeId.Cloud:
@@ -118,7 +229,7 @@ namespace BouncingPlanet
                     baseSize = 0.150f;
                     spawnWeight = 1f;
                     bounceMultiplier = 1f;
-                    scoreMultiplier = 0f;
+                    scoreMultiplier = 1f;
                     cloudSpeedMultiplier = 2.2f;
                     cloudSpeedCap = 3.2f;
                     break;
@@ -130,7 +241,7 @@ namespace BouncingPlanet
                     baseSize = 0.110f;
                     spawnWeight = 3f;
                     bounceMultiplier = 1.15f;
-                    scoreMultiplier = 0f;
+                    scoreMultiplier = 1f;
                     iceBounceBonus = 1.15f;
                     iceBreaksOnFirstHit = true;
                     break;
@@ -155,6 +266,13 @@ namespace BouncingPlanet
                     scoreMultiplier = 1f;
                     break;
             }
+        }
+
+        private void OnValidate()
+        {
+            if (animationStates == null)
+                animationStates = new PlanetAnimationSet();
+            animationStates.EnsureDefaults();
         }
     }
 }

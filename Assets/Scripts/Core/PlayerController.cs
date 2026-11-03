@@ -12,6 +12,7 @@ namespace BouncingPlanet
     {
         public GameBootstrap bootstrap;
         public PlayerInputReader input;
+        public PlayerSkills skills;
         [Tooltip("调试用：锁定在初始半径，方便长时间测试左右环绕。")]
         public bool holdRadiusForTesting = false;
 
@@ -30,6 +31,13 @@ namespace BouncingPlanet
         public Vector2 PreviousWorldPosition => previousWorldPosition;
         public event Action<PlayerState> Died;
         public event Action Respawned;
+        public event Action<bool> CollisionReaction;
+
+        /// <summary>由碰撞系统调用；ascending = 碰撞前的径向速度是否向上。</summary>
+        public void NotifyCollisionReaction(bool ascending)
+        {
+            CollisionReaction?.Invoke(ascending);
+        }
 
         public void Initialize(GameBootstrap gameBootstrap, PlayerInputReader inputReader)
         {
@@ -78,6 +86,8 @@ namespace BouncingPlanet
                 return;
 
             CapturePreviousPosition();
+            skills?.TickSkills(state, dt);
+
             float inputAxis = input != null ? input.Horizontal : 0f;
             float radiusForTurn = Mathf.Max(0.3f, state.radius);
             float maxAngularSpeed = Mathf.Min(config.maxAngularSpeed, config.tangentialSpeed / radiusForTurn);
@@ -96,8 +106,17 @@ namespace BouncingPlanet
                 state.angularVelocity = Mathf.MoveTowards(state.angularVelocity, target, rate * dt);
             }
 
+            bool musou = skills != null && skills.IsMusouActive;
+            if (musou)
+                state.radialVelocity = config.musouSpeed;
+            else
+                state.radialVelocity -= config.gravity * dt;
+
+            skills?.ApplyHookForce(state, dt);
+            if (musou)
+                state.radialVelocity = config.musouSpeed;
+
             state.theta += state.angularVelocity * dt;
-            state.radialVelocity -= config.gravity * dt;
             state.radius += state.radialVelocity * dt;
 
             if (holdRadiusForTesting)
@@ -109,7 +128,7 @@ namespace BouncingPlanet
             if (state.radius > state.maxRadius)
                 state.maxRadius = state.radius;
 
-            if (!holdRadiusForTesting && state.radius < config.deathRadius)
+            if (!holdRadiusForTesting && !musou && state.radius < config.deathRadius)
                 Die();
         }
 

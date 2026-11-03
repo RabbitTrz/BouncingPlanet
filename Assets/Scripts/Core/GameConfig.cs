@@ -34,6 +34,9 @@ namespace BouncingPlanet
         [LabelText("锁定半径键")]
         public KeyCode holdRadiusKey = KeyCode.H;
 
+        [LabelText("炸弹技能键")]
+        public KeyCode bombSkillKey = KeyCode.S;
+
         [Header("仿真 Simulation")]
         [Tunable("Simulation", 30f, 240f, 1f, "仿真频率 (Hz)")]
         [Tooltip("固定仿真频率。默认 120 Hz；只影响逻辑步进，不影响渲染。")]
@@ -94,6 +97,37 @@ namespace BouncingPlanet
 
         [Tunable("Player", 0f, 10f, 0.05f, "引力 G")]
         public float gravity = 2.40f;
+
+        [Header("玩家表现 Player Visual")]
+        [Tunable("Player", 0f, 0.05f, 0.001f, "左右偏移（世界单位）")]
+        [Tooltip("纯视觉左右偏移；0.015 在 360 PPU 下约 5.4 像素。")]
+        public float playerLateralOffset = 0.015f;
+
+        [Tunable("Player", 0f, 30f, 0.5f, "转向倾斜角度")]
+        public float playerBankAngle = 8f;
+
+        [Tunable("Player", 0.01f, 0.5f, 0.01f, "转向平滑时间")]
+        [Tooltip("越小越紧跟角速度；越大回正越软。")]
+        public float playerMotionSmoothing = 0.06f;
+
+        [Header("上升拖尾 Ascend Trail")]
+        [Tunable("Player", 0f, 1f, 1f, "启用上升拖尾")]
+        public bool playerTrailEnabled = true;
+
+        [Tunable("Player", 0f, 5f, 0.05f, "拖尾最低上升速度")]
+        public float playerTrailMinAscendSpeed = 0.3f;
+
+        [Tunable("Player", 0.05f, 1f, 0.01f, "拖尾持续时间")]
+        public float playerTrailTime = 0.28f;
+
+        [Tunable("Player", 0.001f, 0.1f, 0.001f, "拖尾宽度")]
+        public float playerTrailWidth = 0.014f;
+
+        [LabelText("普通拖尾颜色")]
+        public Color playerTrailColor = new Color(0.65f, 0.85f, 1f, 0.85f);
+
+        [LabelText("无双拖尾颜色")]
+        public Color musouTrailColor = new Color(1f, 0.85f, 0.25f, 0.95f);
 
         [Header("弹跳 Bounce")]
         [Tunable("Bounce", 1f, 3f, 0.01f, "撞击增幅 E")]
@@ -184,21 +218,105 @@ namespace BouncingPlanet
         [Tunable("Collision", 0.1f, 2f, 0.05f, "云朵受击冷却")]
         public float cloudHitCooldown = 0.8f;
 
+        [Header("碰撞横向冲量 Collision Lateral")]
+        [Tunable("Collision", 0f, 1f, 1f, "启用横向冲量")]
+        [Tooltip("只对普通星（含闪亮星）和冰冰星生效；云朵、炸弹、无双不生效。")]
+        public bool collisionLateralEnabled = true;
+
+        [Tunable("Collision", 0f, 2f, 0.05f, "横向冲量系数")]
+        [Tooltip("按碰撞法线的切向分量和总速度计算横向冲量。")]
+        public float collisionLateralFactor = 1.2f;
+
+        [Tunable("Collision", 0f, 3f, 0.05f, "横向冲量最大速度")]
+        [Tooltip("单次碰撞最多增加的切向速度；最终仍受玩家正常切向上限约束。")]
+        public float collisionLateralMaxSpeed = 1.2f;
+
+        [Header("普通撞碎 Normal Smash")]
+        [Tunable("Smash", 0f, 1f, 1f, "启用普通撞碎")]
+        [Tooltip("上升径向速度达到阈值时，撞碎碰到的任何星球（含云朵/炸弹）。")]
+        public bool normalSmashEnabled = true;
+
+        [Tunable("Smash", 0.5f, 10f, 0.1f, "撞碎速度阈值")]
+        public float normalSmashSpeedThreshold = 2.0f;
+
         [Header("分数 Score")]
-        [Tunable("Score", 0f, 100f, 1f, "普通星基础分")]
-        [Tooltip("普通星每次碰撞的基础分；不同类型再乘 scoreMultiplier。")]
+        [Tunable("Score", 0f, 100f, 1f, "碰撞得分")]
+        [Tooltip("每次成功碰撞的基础分；不同类型再乘 scoreMultiplier。")]
         public int normalPlanetScore = 10;
 
         [Tunable("Score", 0f, 10000f, 10f, "无双积分阈值")]
-        [Tooltip("未来无双入口阈值。v1.0 只保存，不触发无双。")]
-        public int musouScoreThreshold = 100;
+        [Tooltip("积分达到该值消耗并进入无双。")]
+        public int musouScoreThreshold = 150;
+
+        [Tunable("Score", 0f, 100f, 1f, "撞碎得分")]
+        [Tooltip("普通上升撞碎的得分；无双撞碎不加分。")]
+        public int smashScore = 15;
 
         [Tunable("Score", 0f, 1f, 1f, "显示分数 HUD")]
         public bool showScoreHud = true;
 
-        [Header("音频 Audio")]
-        [Tunable("Audio", 0f, 1f, 0.01f, "主音量")]
-        public float audioMasterVolume = 0.65f;
+        [Header("技能 Skills")]
+        [Tunable("Musou", 0.5f, 10f, 0.1f, "无双持续秒")]
+        public float musouDuration = 4f;
+
+        [Tunable("Musou", 0f, 5f, 0.05f, "每次撞碎延长")]
+        public float musouExtension = 0.75f;
+
+        [Tunable("Musou", 0.1f, 10f, 0.1f, "无双上升速度")]
+        [Tooltip("占位值；最终由测试决定。")]
+        public float musouSpeed = 2.4f;
+
+        [Tunable("Musou", 0f, 1f, 1f, "显示无双环")]
+        public bool showMusouRing = true;
+
+        [Tunable("Musou", 0.02f, 0.3f, 0.005f, "无双环半径")]
+        public float musouRingRadius = 0.085f;
+
+        [Tunable("Musou", 0.001f, 0.03f, 0.001f, "无双环线宽")]
+        public float musouRingWidth = 0.007f;
+
+        [Tunable("Musou", 0f, 1f, 0.01f, "无双环底色透明度")]
+        public float musouRingBaseAlpha = 0.15f;
+
+        [LabelText("无双环充能色")]
+        public Color musouRingChargeColor = new Color(0.35f, 0.82f, 1f, 1f);
+
+        [LabelText("无双环激活色")]
+        public Color musouRingActiveColor = new Color(1f, 0.82f, 0.32f, 1f);
+
+        [Tunable("BombSkill", 0.5f, 20f, 0.1f, "炸弹技能冷却")]
+        public float bombSkillCooldown = 6f;
+
+        [Tunable("BombSkill", 0f, 1f, 0.01f, "炸弹生成下移")]
+        public float bombSkillSpawnBelow = 0.2f;
+
+        [Tunable("BombSkill", 0.1f, 5f, 0.05f, "炸弹爆炸半径")]
+        public float bombSkillExplosionRadius = 0.9f;
+
+        [Tunable("BombSkill", 0f, 10f, 0.05f, "炸弹推力")]
+        public float bombSkillPushSpeed = 3.3f;
+
+        [Tunable("Hook", 0.5f, 20f, 0.1f, "钩锁冷却")]
+        public float hookCooldown = 4f;
+
+        [Tunable("Hook", 0.1f, 3f, 0.05f, "钩锁范围")]
+        [Tooltip("占位值；需求表待定。")]
+        public float hookRange = 0.75f;
+
+        [Tunable("Hook", 0f, 40f, 0.5f, "钩锁加速度")]
+        public float hookAcceleration = 9f;
+
+        [Tunable("Hook", 0.1f, 30f, 0.05f, "钩锁限速")]
+        public float hookMaxSpeed = 1.9f;
+
+        [Tunable("Hook", 1f, 10f, 0.1f, "钩锁断开距离")]
+        public float hookBreakDistance = 3f;
+
+        [Tunable("Hook", 0f, 0.5f, 0.01f, "钩锁松脱距离")]
+        public float hookLooseDistance = 0.08f;
+
+        [Tunable("Hook", 0.1f, 5f, 0.1f, "钩锁重击速度阈值")]
+        public float hookHeavySpeed = 1.7f;
 
         // ------------------------------------------------------------------
         // Derived values
@@ -270,6 +388,7 @@ namespace BouncingPlanet
             moveRightAltKey = KeyCode.RightArrow;
             respawnKey = KeyCode.R;
             holdRadiusKey = KeyCode.H;
+            bombSkillKey = KeyCode.S;
 
             simulationHz = 120;
             maxStepsPerFrame = 8;
@@ -290,6 +409,16 @@ namespace BouncingPlanet
             brakeDeceleration = 2.00f;
             ascendBlockFactor = 1.0f;
             gravity = 2.40f;
+
+            playerLateralOffset = 0.015f;
+            playerBankAngle = 8f;
+            playerMotionSmoothing = 0.06f;
+            playerTrailEnabled = true;
+            playerTrailMinAscendSpeed = 0.3f;
+            playerTrailTime = 0.28f;
+            playerTrailWidth = 0.014f;
+            playerTrailColor = new Color(0.65f, 0.85f, 1f, 0.85f);
+            musouTrailColor = new Color(1f, 0.85f, 0.25f, 0.95f);
 
             bounceGain = 1.75f;
             baseImpulse = 1.00f;
@@ -320,11 +449,39 @@ namespace BouncingPlanet
             generationSeed = 20261101;
             planetHitCooldown = 0.28f;
             cloudHitCooldown = 0.8f;
+            collisionLateralEnabled = true;
+            collisionLateralFactor = 1.2f;
+            collisionLateralMaxSpeed = 1.2f;
+            normalSmashEnabled = true;
+            normalSmashSpeedThreshold = 2.0f;
 
             normalPlanetScore = 10;
-            musouScoreThreshold = 100;
+            musouScoreThreshold = 150;
+            smashScore = 15;
             showScoreHud = true;
-            audioMasterVolume = 0.65f;
+
+            musouDuration = 4f;
+            musouExtension = 0.75f;
+            musouSpeed = 2.4f;
+            showMusouRing = true;
+            musouRingRadius = 0.085f;
+            musouRingWidth = 0.007f;
+            musouRingBaseAlpha = 0.15f;
+            musouRingChargeColor = new Color(0.35f, 0.82f, 1f, 1f);
+            musouRingActiveColor = new Color(1f, 0.82f, 0.32f, 1f);
+
+            bombSkillCooldown = 6f;
+            bombSkillSpawnBelow = 0.2f;
+            bombSkillExplosionRadius = 0.9f;
+            bombSkillPushSpeed = 3.3f;
+
+            hookCooldown = 4f;
+            hookRange = 0.75f;
+            hookAcceleration = 9f;
+            hookMaxSpeed = 1.9f;
+            hookBreakDistance = 3f;
+            hookLooseDistance = 0.08f;
+            hookHeavySpeed = 1.7f;
         }
 
         private void OnValidate()
@@ -346,6 +503,17 @@ namespace BouncingPlanet
             brakeDeceleration = Mathf.Max(0.01f, brakeDeceleration);
             gravity = Mathf.Max(0f, gravity);
 
+            playerLateralOffset = Mathf.Max(0f, playerLateralOffset);
+            playerBankAngle = Mathf.Max(0f, playerBankAngle);
+            playerMotionSmoothing = Mathf.Max(0.01f, playerMotionSmoothing);
+            playerTrailMinAscendSpeed = Mathf.Max(0f, playerTrailMinAscendSpeed);
+            playerTrailTime = Mathf.Max(0.01f, playerTrailTime);
+            playerTrailWidth = Mathf.Max(0.0001f, playerTrailWidth);
+
+            collisionLateralFactor = Mathf.Max(0f, collisionLateralFactor);
+            collisionLateralMaxSpeed = Mathf.Max(0f, collisionLateralMaxSpeed);
+            normalSmashSpeedThreshold = Mathf.Max(0f, normalSmashSpeedThreshold);
+
             if (maxPlanetsPerRing < minPlanetsPerRing)
                 maxPlanetsPerRing = minPlanetsPerRing;
             ringCountMultiplier = Mathf.Max(0.01f, ringCountMultiplier);
@@ -359,6 +527,11 @@ namespace BouncingPlanet
 
             normalPlanetScore = Mathf.Max(0, normalPlanetScore);
             musouScoreThreshold = Mathf.Max(0, musouScoreThreshold);
+            smashScore = Mathf.Max(0, smashScore);
+
+            musouRingRadius = Mathf.Max(0.001f, musouRingRadius);
+            musouRingWidth = Mathf.Max(0.0001f, musouRingWidth);
+            musouRingBaseAlpha = Mathf.Clamp01(musouRingBaseAlpha);
         }
     }
 }

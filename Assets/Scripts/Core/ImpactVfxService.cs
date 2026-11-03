@@ -101,6 +101,15 @@ namespace BouncingPlanet
             SpawnRing(position, new Color(0.7f, 0.35f, 1f, 1f), 1.0f, 0.5f);
         }
 
+        public void PlayHookHeavy(Vector2 position, PlanetTypeId type)
+        {
+            Color color = GetColor(type);
+            SpawnParticles(position, color, 14, 1.6f,
+                0.006f, 0.018f, 0.25f, 0.5f);
+            SpawnRing(position, color, 0.45f, 0.3f);
+            SpawnRing(position, new Color(1f, 0.95f, 0.8f, 1f), 0.8f, 0.38f);
+        }
+
         private void SpawnParticles(Vector2 position, Color color, int count,
             float speed, float minSize, float maxSize, float minLife, float maxLife)
         {

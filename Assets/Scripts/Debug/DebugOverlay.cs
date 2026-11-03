@@ -152,7 +152,8 @@ namespace BouncingPlanet
             }
 
             GUILayout.FlexibleSpace();
-            GUILayout.Label("Click Game view first. F1 hide  T tuning  P pause  O step  R respawn  H hold", hintStyle);
+            GUILayout.Label("Click Game view first. F1 hide  T tuning  P pause  O step  R retry  H hold  S bomb  LMB hook",
+                hintStyle);
             GUILayout.EndArea();
         }
 

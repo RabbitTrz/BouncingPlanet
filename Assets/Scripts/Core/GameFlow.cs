@@ -23,6 +23,7 @@ namespace BouncingPlanet
         private PlayerController player;
         private ScoreSystem score;
         private PlanetWorld planetWorld;
+        private PlayerSkills skills;
         private PlayerInputReader input;
         private GUIStyle titleStyle;
         private GUIStyle bodyStyle;
@@ -41,6 +42,7 @@ namespace BouncingPlanet
             player = bootstrap.player;
             score = bootstrap.score;
             planetWorld = bootstrap.planetWorld;
+            skills = bootstrap.skills;
             input = bootstrap.inputReader;
 
             if (player != null)
@@ -116,6 +118,7 @@ namespace BouncingPlanet
                 return;
 
             score?.ResetScore();
+            skills?.ResetSkills();
             player.SetHoldRadius(false);
             player.Respawn();
             planetWorld?.Rebuild();
@@ -159,7 +162,7 @@ namespace BouncingPlanet
             {
                 case FlowState.Start:
                     title = "跃动星球";
-                    body = "初期 Demo v1.1 · 单关演示\n\nA/D 环绕黑洞 · H 锁定半径 · F1 调试 · T 调参";
+                    body = "初期 Demo v1.1 · 单关演示\n\nA/D 环绕黑洞 · S 炸弹 · 左键 钩锁 · H 锁定半径 · F1 调试 · T 调参";
                     break;
                 case FlowState.Paused:
                     title = "暂停";

@@ -32,6 +32,15 @@ MonoBehaviour:
   iceScreenFlash: 0.1
   cloudShake: 0.4
   cloudScreenFlash: 0.1
+  hookHeavyHitstop: 0.12
+  hookHeavyShake: 1.2
+  sfxMasterVolume: 1
+  sfxBounceVolume: 0.35
+  sfxIceVolume: 0.35
+  sfxCloudVolume: 0.28
+  sfxBombVolume: 0.6
+  sfxDeathVolume: 0.5
+  sfxHookVolume: 0.28
   ascendBlockShake: 0.35
   screenFlashDecay: 2.2
   squashDecay: 6

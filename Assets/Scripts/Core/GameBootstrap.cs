@@ -18,6 +18,10 @@ namespace BouncingPlanet
         public FeedbackConfig feedbackConfig;
         public PlanetTypeDef[] planetTypes;
 
+        [Header("Animation")]
+        [Tooltip("可选的玩家 Sprite 状态配置；留空使用运行时默认状态。")]
+        public SpriteStateProfile playerAnimationProfile;
+
         [Header("Services")]
         public SimulationClock clock;
         public ObjectPoolService pool;
@@ -28,8 +32,12 @@ namespace BouncingPlanet
         public ProceduralAudioService audioService;
         public FeedbackDirector feedbackDirector;
         public PlanetWorld planetWorld;
+        public PlayerSkills skills;
         public CollisionSystem collisionSystem;
         public GameFlow gameFlow;
+        public HookView hookView;
+        public SkillHud skillHud;
+        public MusouRingView musouRingView;
         public CameraRig cameraRig;
         public Stage1WorldView worldView;
         public Stage0Preview preview;
@@ -83,6 +91,10 @@ namespace BouncingPlanet
             planetWorld = EnsureComponent(planetWorld);
             planetWorld.Initialize(this);
 
+            skills = EnsureComponent(skills);
+            skills.Initialize(this);
+            player.skills = skills;
+
             // CollisionSystem 必须在 PlayerController 之后初始化，保证 Tick 顺序：
             // 玩家先移动并记录 previousPosition，再扫掠碰撞。
             collisionSystem = EnsureComponent(collisionSystem);
@@ -92,10 +104,21 @@ namespace BouncingPlanet
             cameraRig.Initialize(this);
 
             worldView = EnsureComponent(worldView);
+            if (playerAnimationProfile != null)
+                worldView.playerProfile = playerAnimationProfile;
             worldView.Initialize(this);
 
             gameFlow = EnsureComponent(gameFlow);
             gameFlow.Initialize(this);
+
+            hookView = EnsureComponent(hookView);
+            hookView.Initialize(this);
+
+            skillHud = EnsureComponent(skillHud);
+            skillHud.bootstrap = this;
+
+            musouRingView = EnsureComponent(musouRingView);
+            musouRingView.Initialize(this);
 
             debugOverlay = EnsureComponent(debugOverlay);
             debugOverlay.Initialize(this);
@@ -104,7 +127,7 @@ namespace BouncingPlanet
             tuningPanel.Initialize(this);
 
             Application.targetFrameRate = 60;
-            Debug.Log("[BouncingPlanet] Initial Demo v1.1 / Stage 3+4 bootstrapped.");
+            Debug.Log("[BouncingPlanet] Initial Demo v1.1 / Stage 3+4 + Skills bootstrapped.");
         }
 
         private void OnDestroy()
@@ -169,6 +192,12 @@ namespace BouncingPlanet
             }
 
             planetTypes = types.ToArray();
+
+            if (playerAnimationProfile == null)
+            {
+                playerAnimationProfile = Resources.Load<SpriteStateProfile>(
+                    "Animation/PlayerAnimationProfile");
+            }
         }
 
         public PlanetTypeDef GetPlanetType(PlanetTypeId id)

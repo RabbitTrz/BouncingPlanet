@@ -172,7 +172,7 @@ namespace BouncingPlanet
 
             GUILayout.EndScrollView();
 
-            GUILayout.Label("数值均为占位基线；运行时改动只在本次 Play 生效，编辑器下可点“保存资产”。",
+            GUILayout.Label("打开面板不会改数值；只有拖动滑条/切换开关才会写入。运行时改动只在本次 Play 生效，编辑器下可点“保存资产”。",
                 noteStyle);
             GUILayout.EndVertical();
 
@@ -253,19 +253,29 @@ namespace BouncingPlanet
 
                 GUILayout.BeginHorizontal();
                 GUILayout.Label(spec.attr.Label ?? spec.field.Name, labelStyle, GUILayout.Width(330f));
-                float updated = GUILayout.HorizontalSlider(current, min, max, sliderStyle, thumbStyle,
-                    GUILayout.ExpandWidth(true));
-                if (step > 0f)
-                    updated = Mathf.Round(updated / step) * step;
-                updated = Mathf.Clamp(updated, min, max);
-                GUILayout.Label(updated.ToString("0.###"), valueStyle, GUILayout.Width(92f));
-                GUILayout.EndHorizontal();
 
-                if (!Mathf.Approximately(current, updated))
+                bool previousChanged = GUI.changed;
+                GUI.changed = false;
+                float sliderValue = GUILayout.HorizontalSlider(current, min, max, sliderStyle, thumbStyle,
+                    GUILayout.ExpandWidth(true));
+                bool sliderChanged = GUI.changed;
+                GUI.changed = previousChanged || sliderChanged;
+
+                // 只看 GUI.changed：控件处理完鼠标事件后 Event.current.type 会变成 Used，
+                // 再按事件类型判断会把真实拖动误判成非用户输入。
+                float displayed = current;
+                if (sliderChanged)
                 {
-                    spec.field.SetValue(target, updated);
+                    displayed = sliderValue;
+                    if (step > 0f)
+                        displayed = Mathf.Round(displayed / step) * step;
+                    displayed = Mathf.Clamp(displayed, min, max);
+                    spec.field.SetValue(target, displayed);
                     MarkDirty(target);
                 }
+
+                GUILayout.Label(displayed.ToString("0.###"), valueStyle, GUILayout.Width(92f));
+                GUILayout.EndHorizontal();
             }
             else if (spec.field.FieldType == typeof(int))
             {
@@ -276,27 +286,41 @@ namespace BouncingPlanet
 
                 GUILayout.BeginHorizontal();
                 GUILayout.Label(spec.attr.Label ?? spec.field.Name, labelStyle, GUILayout.Width(330f));
-                int updated = Mathf.RoundToInt(GUILayout.HorizontalSlider(current, min, max, sliderStyle, thumbStyle,
-                    GUILayout.ExpandWidth(true)));
-                updated = min + Mathf.RoundToInt((updated - min) / (float)step) * step;
-                updated = Mathf.Clamp(updated, min, max);
-                GUILayout.Label(updated.ToString(), valueStyle, GUILayout.Width(92f));
-                GUILayout.EndHorizontal();
 
-                if (current != updated)
+                bool previousChanged = GUI.changed;
+                GUI.changed = false;
+                int sliderValue = Mathf.RoundToInt(
+                    GUILayout.HorizontalSlider(current, min, max, sliderStyle, thumbStyle,
+                        GUILayout.ExpandWidth(true)));
+                bool sliderChanged = GUI.changed;
+                GUI.changed = previousChanged || sliderChanged;
+
+                int displayed = current;
+                if (sliderChanged)
                 {
-                    spec.field.SetValue(target, updated);
+                    displayed = min + Mathf.RoundToInt((sliderValue - min) / (float)step) * step;
+                    displayed = Mathf.Clamp(displayed, min, max);
+                    spec.field.SetValue(target, displayed);
                     MarkDirty(target);
                 }
+
+                GUILayout.Label(displayed.ToString(), valueStyle, GUILayout.Width(92f));
+                GUILayout.EndHorizontal();
             }
             else if (spec.field.FieldType == typeof(bool))
             {
                 bool current = (bool)spec.field.GetValue(target);
-                bool updated = GUILayout.Toggle(current, "  " + (spec.attr.Label ?? spec.field.Name), labelStyle,
+
+                bool previousChanged = GUI.changed;
+                GUI.changed = false;
+                bool toggled = GUILayout.Toggle(current, "  " + (spec.attr.Label ?? spec.field.Name), labelStyle,
                     GUILayout.Height(32f));
-                if (current != updated)
+                bool toggleChanged = GUI.changed;
+                GUI.changed = previousChanged || toggleChanged;
+
+                if (toggleChanged && toggled != current)
                 {
-                    spec.field.SetValue(target, updated);
+                    spec.field.SetValue(target, toggled);
                     MarkDirty(target);
                 }
             }
@@ -443,7 +467,11 @@ namespace BouncingPlanet
                 case "World": return "星环与生成";
                 case "Collision": return "碰撞";
                 case "Score": return "分数";
+                case "Smash": return "撞碎";
                 case "Audio": return "音频";
+                case "Musou": return "无双";
+                case "BombSkill": return "炸弹技能";
+                case "Hook": return "钩锁";
                 case "Landing": return "落地反馈";
                 case "Bomb": return "炸弹";
                 case "Other": return "其他反馈";

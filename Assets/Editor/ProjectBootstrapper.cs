@@ -160,16 +160,20 @@ namespace BouncingPlanet.EditorTools
             ProceduralAudioService audio = root.AddComponent<ProceduralAudioService>();
             FeedbackDirector feedbackDirector = root.AddComponent<FeedbackDirector>();
             PlanetWorld planetWorld = root.AddComponent<PlanetWorld>();
+            PlayerSkills skills = root.AddComponent<PlayerSkills>();
             CollisionSystem collisionSystem = root.AddComponent<CollisionSystem>();
             CameraRig cameraRig = root.AddComponent<CameraRig>();
             Stage1WorldView worldView = root.AddComponent<Stage1WorldView>();
             GameFlow gameFlow = root.AddComponent<GameFlow>();
+            HookView hookView = root.AddComponent<HookView>();
+            SkillHud skillHud = root.AddComponent<SkillHud>();
             DebugOverlay debugOverlay = root.AddComponent<DebugOverlay>();
             TuningPanel tuningPanel = root.AddComponent<TuningPanel>();
 
             bootstrap.gameConfig = gameConfig;
             bootstrap.feedbackConfig = feedbackConfig;
             bootstrap.planetTypes = planetTypes;
+            bootstrap.playerAnimationProfile = null;
             bootstrap.clock = clock;
             bootstrap.pool = pool;
             bootstrap.inputReader = inputReader;
@@ -179,24 +183,31 @@ namespace BouncingPlanet.EditorTools
             bootstrap.audioService = audio;
             bootstrap.feedbackDirector = feedbackDirector;
             bootstrap.planetWorld = planetWorld;
+            bootstrap.skills = skills;
             bootstrap.collisionSystem = collisionSystem;
             bootstrap.cameraRig = cameraRig;
             bootstrap.worldView = worldView;
             bootstrap.gameFlow = gameFlow;
+            bootstrap.hookView = hookView;
+            bootstrap.skillHud = skillHud;
             bootstrap.debugOverlay = debugOverlay;
             bootstrap.tuningPanel = tuningPanel;
 
             player.bootstrap = bootstrap;
             player.input = inputReader;
+            player.skills = skills;
             vfx.bootstrap = bootstrap;
             audio.bootstrap = bootstrap;
             feedbackDirector.bootstrap = bootstrap;
             planetWorld.bootstrap = bootstrap;
+            skills.bootstrap = bootstrap;
             collisionSystem.bootstrap = bootstrap;
             cameraRig.bootstrap = bootstrap;
             cameraRig.targetCamera = camera;
             worldView.bootstrap = bootstrap;
             gameFlow.bootstrap = bootstrap;
+            hookView.bootstrap = bootstrap;
+            skillHud.bootstrap = bootstrap;
             debugOverlay.bootstrap = bootstrap;
             tuningPanel.bootstrap = bootstrap;
 

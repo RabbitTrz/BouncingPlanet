@@ -12,7 +12,13 @@ namespace BouncingPlanet
         ScoreChanged = 5,
         PlayerDeath = 6,
         Debug = 7,
-        Wall = 8
+        Wall = 8,
+        Smash = 9,
+        BombPlaced = 10,
+        MusouStart = 11,
+        MusouEnd = 12,
+        HookAttach = 13,
+        HookRelease = 14
     }
 
     /// <summary>

@@ -20,6 +20,9 @@ namespace BouncingPlanet
         public float swaySpeed;
         public float swayAmplitude;
         public Transform view;
+        public PlanetView viewComponent;
+        public float deathViewTimer;
+        public bool fromBombSkill;
 
         public PlanetTypeId Id => def != null ? def.id : PlanetTypeId.Rock;
         public Vector2 WorldPosition => PolarMath.Polar(radius, angle);
