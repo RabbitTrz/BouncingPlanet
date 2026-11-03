@@ -32,6 +32,8 @@ namespace BouncingPlanet
         private Transform playerVisual;
         private TrailRenderer playerTrail;
         private Material playerTrailMaterial;
+        private LineRenderer goalRing;
+        private Material goalRingMaterial;
         private float smoothedPlayerTurn;
         private float playerTurnVelocity;
         private SpriteRenderer playerRenderer;
@@ -76,6 +78,7 @@ namespace BouncingPlanet
             CreateBlackHole();
             CreatePlayer();
             CreateStarfield();
+            CreateGoalRing();
 
             if (player != null)
             {
@@ -96,6 +99,36 @@ namespace BouncingPlanet
             }
             if (playerTrailMaterial != null)
                 Destroy(playerTrailMaterial);
+            if (goalRingMaterial != null)
+                Destroy(goalRingMaterial);
+        }
+
+        private void CreateGoalRing()
+        {
+            GameObject ringObject = new GameObject("GoalRing");
+            ringObject.transform.SetParent(worldRoot, false);
+
+            goalRing = ringObject.AddComponent<LineRenderer>();
+            goalRing.useWorldSpace = true;
+            goalRing.loop = true;
+            goalRing.positionCount = 128;
+            goalRing.numCornerVertices = 2;
+            goalRing.numCapVertices = 2;
+            goalRing.alignment = LineAlignment.View;
+            goalRing.sortingOrder = 1;
+            goalRing.startColor = new Color(0.35f, 1f, 0.55f, 0.55f);
+            goalRing.endColor = goalRing.startColor;
+
+            Shader shader = Shader.Find("Sprites/Default");
+            if (shader != null)
+            {
+                goalRingMaterial = new Material(shader)
+                {
+                    name = "GoalRingMaterial"
+                };
+                goalRing.material = goalRingMaterial;
+            }
+            goalRing.enabled = false;
         }
 
         private void Start()
@@ -367,6 +400,34 @@ namespace BouncingPlanet
                 holeGlow.localScale = new Vector3(glowDiameter, glowDiameter, 1f);
             }
 
+            GameFlow flow = bootstrap != null ? bootstrap.gameFlow : null;
+            LevelConfig level = flow != null ? flow.CurrentLevel : null;
+            bool showGoal = level != null && !level.IsEndless && flow != null &&
+                (flow.State == GameFlow.FlowState.Playing ||
+                 flow.State == GameFlow.FlowState.Paused ||
+                 flow.State == GameFlow.FlowState.Win);
+            if (goalRing != null)
+            {
+                goalRing.enabled = showGoal;
+                if (showGoal)
+                {
+                    float width = 3f / Mathf.Max(1f, config.cameraPixelsPerUnit);
+                    goalRing.startWidth = width;
+                    goalRing.endWidth = width;
+                    Color color = new Color(0.35f, 1f, 0.55f, 0.55f);
+                    goalRing.startColor = color;
+                    goalRing.endColor = color;
+                    for (int i = 0; i < goalRing.positionCount; i++)
+                    {
+                        float angle = i / (float)goalRing.positionCount *
+                                      Mathf.PI * 2f;
+                        goalRing.SetPosition(i, new Vector3(
+                            Mathf.Cos(angle) * level.goalRadius,
+                            Mathf.Sin(angle) * level.goalRadius,
+                            0f));
+                    }
+                }
+            }
         }
 
         private void OnPlayerCollisionReaction(bool ascending)

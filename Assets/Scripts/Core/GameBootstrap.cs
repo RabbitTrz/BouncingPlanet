@@ -18,6 +18,10 @@ namespace BouncingPlanet
         public FeedbackConfig feedbackConfig;
         public PlanetTypeDef[] planetTypes;
 
+        [Header("Levels")]
+        [Tooltip("留空时自动从 Resources/Levels/LevelDatabase 加载。")]
+        public LevelDatabase levelDatabase;
+
         [Header("Animation")]
         [Tooltip("可选的玩家 Sprite 状态配置；留空使用运行时默认状态。")]
         public SpriteStateProfile playerAnimationProfile;
@@ -197,6 +201,12 @@ namespace BouncingPlanet
             {
                 playerAnimationProfile = Resources.Load<SpriteStateProfile>(
                     "Animation/PlayerAnimationProfile");
+            }
+
+            if (levelDatabase == null)
+            {
+                levelDatabase = Resources.Load<LevelDatabase>(
+                    "Levels/LevelDatabase");
             }
         }
 

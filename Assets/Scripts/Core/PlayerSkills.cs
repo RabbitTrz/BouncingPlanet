@@ -26,6 +26,9 @@ namespace BouncingPlanet
         private float hookCooldown;
         private float musouRemaining;
         private bool musouActive;
+        private bool musouEnabled = true;
+        private bool bombEnabled = true;
+        private bool hookEnabled = true;
 
         public bool IsMusouActive => musouActive;
         public float MusouRemaining => musouRemaining;
@@ -34,6 +37,26 @@ namespace BouncingPlanet
         public float BombCooldownRemaining => bombCooldown;
         public float HookCooldownRemaining => hookCooldown;
         public int MusouScore => score != null ? score.Score : 0;
+        public bool MusouEnabled => musouEnabled;
+        public bool BombEnabled => bombEnabled;
+        public bool HookEnabled => hookEnabled;
+
+        public void SetSkillFlags(bool musou, bool bomb, bool hook)
+        {
+            musouEnabled = musou;
+            bombEnabled = bomb;
+            hookEnabled = hook;
+
+            if (!musouEnabled && musouActive)
+            {
+                musouActive = false;
+                musouRemaining = 0f;
+                events?.Emit(new GameEvent(GameEventType.MusouEnd,
+                    player != null ? player.State.WorldPosition : Vector2.zero));
+            }
+            if (!hookEnabled)
+                ReleaseHook();
+        }
 
         public void Initialize(GameBootstrap gameBootstrap)
         {
@@ -92,19 +115,20 @@ namespace BouncingPlanet
                     musouRemaining = config.musouDuration;
                 }
             }
-            else if (config.musouScoreThreshold > 0 &&
+            else if (musouEnabled &&
+                     config.musouScoreThreshold > 0 &&
                      score != null && score.Score >= config.musouScoreThreshold)
             {
                 if (score.TryConsume(config.musouScoreThreshold))
                     ActivateMusou();
             }
 
-            // 无双期间禁用其他技能。
+            // 无双期间禁用其他技能；关卡未开放的技能也不响应输入。
             if (!musouActive && input != null)
             {
-                if (input.BombPressed)
+                if (bombEnabled && input.BombPressed)
                     TryPlaceBomb();
-                if (input.HookPressed)
+                if (hookEnabled && input.HookPressed)
                     TryHook();
             }
 
@@ -115,7 +139,7 @@ namespace BouncingPlanet
         /// <summary>由 PlayerController 在径向积分前调用。</summary>
         public void ApplyHookForce(PlayerState state, float dt)
         {
-            if (hookTarget == null || player == null || config == null)
+            if (!hookEnabled || hookTarget == null || player == null || config == null)
                 return;
             if (!hookTarget.alive)
             {
@@ -209,6 +233,8 @@ namespace BouncingPlanet
 
         private void ActivateMusou()
         {
+            if (!musouEnabled)
+                return;
             musouActive = true;
             musouRemaining = config.musouDuration;
 
@@ -221,7 +247,8 @@ namespace BouncingPlanet
 
         private void TryPlaceBomb()
         {
-            if (musouActive || bombCooldown > 0f || world == null || player == null)
+            if (!bombEnabled || musouActive || bombCooldown > 0f ||
+                world == null || player == null)
                 return;
 
             float radius = player.State.radius - config.bombSkillSpawnBelow;
@@ -242,8 +269,11 @@ namespace BouncingPlanet
         /// </summary>
         public PlanetRuntime FindHookCandidateAtScreen(Vector2 screenPosition)
         {
-            if (!initialized || world == null || player == null || config == null)
+            if (!initialized || !hookEnabled || world == null ||
+                player == null || config == null)
+            {
                 return null;
+            }
 
             PlayerState state = player.State;
             if (state.dead)
@@ -312,7 +342,8 @@ namespace BouncingPlanet
 
         private void TryHook()
         {
-            if (musouActive || hookCooldown > 0f || world == null || player == null)
+            if (!hookEnabled || musouActive || hookCooldown > 0f ||
+                world == null || player == null)
                 return;
 
             PlanetRuntime target = FindHookCandidateAtScreen(new Vector2(

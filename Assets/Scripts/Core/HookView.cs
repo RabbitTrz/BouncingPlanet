@@ -169,7 +169,8 @@ namespace BouncingPlanet
                 flow.State == GameFlow.FlowState.Playing ||
                 flow.State == GameFlow.FlowState.Paused;
             bool musou = skills != null && skills.IsMusouActive;
-            bool showRange = gameActive && !state.dead && !musou;
+            bool hookEnabled = skills != null && skills.HookEnabled;
+            bool showRange = gameActive && !state.dead && !musou && hookEnabled;
 
             rangeRoot.gameObject.SetActive(showRange);
             if (showRange)
@@ -180,8 +181,8 @@ namespace BouncingPlanet
                 rangeRoot.rotation = Quaternion.identity;
             }
 
-            bool showRope = gameActive && !state.dead && !musou &&
-                            skills != null && skills.IsHookActive &&
+            bool showRope = gameActive && !state.dead && !musou && hookEnabled &&
+                            skills.IsHookActive &&
                             skills.HookTarget != null && skills.HookTarget.alive;
             ropeLine.enabled = showRope;
             if (showRope)
@@ -205,7 +206,8 @@ namespace BouncingPlanet
             PlanetRuntime focus = null;
             bool showAim = false;
 
-            if (gameActive && !state.dead && skills != null && !skills.IsMusouActive)
+            if (gameActive && !state.dead && skills != null &&
+                skills.HookEnabled && !skills.IsMusouActive)
             {
                 if (skills.IsHookActive)
                 {

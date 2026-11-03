@@ -82,7 +82,8 @@ namespace BouncingPlanet
             bool gameVisible = flow == null ||
                 flow.State == GameFlow.FlowState.Playing ||
                 flow.State == GameFlow.FlowState.Paused;
-            bool visible = config.showMusouRing && gameVisible && !state.dead;
+            bool visible = config.showMusouRing && gameVisible && !state.dead &&
+                           skills.MusouEnabled;
             if (!visible)
             {
                 SetVisible(false);

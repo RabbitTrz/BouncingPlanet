@@ -40,6 +40,12 @@ MonoBehaviour:
   playerLateralOffset: 0.015
   playerBankAngle: 8
   playerMotionSmoothing: 0.06
+  playerTrailEnabled: 1
+  playerTrailMinAscendSpeed: 0.3
+  playerTrailTime: 0.28
+  playerTrailWidth: 0.014
+  playerTrailColor: {r: 0.65, g: 0.85, b: 1, a: 0.85}
+  musouTrailColor: {r: 1, g: 0.85, b: 0.25, a: 0.95}
   bounceGain: 0.5
   baseImpulse: 1
   jumpSpeed: 1.6
@@ -68,6 +74,11 @@ MonoBehaviour:
   generationSeed: 20261101
   planetHitCooldown: 0.28
   cloudHitCooldown: 0.8
+  collisionLateralEnabled: 1
+  collisionLateralFactor: 1.2
+  collisionLateralMaxSpeed: 1.2
+  normalSmashEnabled: 1
+  normalSmashSpeedThreshold: 3
   normalPlanetScore: 10
   musouScoreThreshold: 150
   smashScore: 15
@@ -92,14 +103,3 @@ MonoBehaviour:
   hookBreakDistance: 3
   hookLooseDistance: 0.08
   hookHeavySpeed: 1.7
-  collisionLateralEnabled: 1
-  collisionLateralFactor: 1.2
-  collisionLateralMaxSpeed: 1.2
-  normalSmashEnabled: 1
-  normalSmashSpeedThreshold: 2
-  playerTrailEnabled: 1
-  playerTrailMinAscendSpeed: 0.3
-  playerTrailTime: 0.28
-  playerTrailWidth: 0.014
-  playerTrailColor: {r: 0.65, g: 0.85, b: 1, a: 0.85}
-  musouTrailColor: {r: 1, g: 0.85, b: 0.25, a: 0.95}

@@ -37,17 +37,23 @@ namespace BouncingPlanet
                 {
                     GUILayout.Label($"无双 {skills.MusouRemaining:F1}s", hotStyle);
                 }
-                else
+                else if (skills.MusouEnabled)
                 {
                     int threshold = Mathf.Max(1, config.musouScoreThreshold);
                     GUILayout.Label($"积分 {skills.MusouScore}/{threshold}", labelStyle);
+                }
+                else
+                {
+                    GUILayout.Label($"积分 {skills.MusouScore}", labelStyle);
                 }
                 GUILayout.EndArea();
             }
 
             GUILayout.BeginArea(new Rect(Screen.width - 360f, Screen.height - 128f, 340f, 110f));
-            DrawCooldown("S", "炸弹", skills.BombCooldownRemaining, config.bombSkillCooldown);
-            DrawCooldown("左键", "钩锁", skills.HookCooldownRemaining, config.hookCooldown);
+            if (skills.BombEnabled)
+                DrawCooldown("S", "炸弹", skills.BombCooldownRemaining, config.bombSkillCooldown);
+            if (skills.HookEnabled)
+                DrawCooldown("左键", "钩锁", skills.HookCooldownRemaining, config.hookCooldown);
             GUILayout.EndArea();
         }
 

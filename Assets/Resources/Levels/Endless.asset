@@ -1,0 +1,88 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 392738657e21f404ba110e7c2acfee05, type: 3}
+  m_Name: Endless
+  m_EditorClassIdentifier: 
+  levelId: endless
+  displayName: "\u65E0\u5C3D"
+  order: 4
+  mode: 1
+  unlockedByDefault: 1
+  description: 
+  goalRadius: 11
+  allowMusou: 1
+  allowBomb: 1
+  allowHook: 1
+  startRadius: 1.5
+  generation:
+    seed: 20261101
+    densityMultiplier: 1
+    laneSpacing: 0.5
+    ringCountMultiplier: 5.5
+    minPlanetsPerRing: 6
+    maxPlanetsPerRing: 64
+    gapCountMultiplier: 0.6
+    gapRadialOffset: 0.25
+    gapRadiusJitter: 0.05
+    sizeJitter: 0.15
+    swayMax: 0.11
+    swaySlotRatio: 0.22
+    swaySpeedMin: 0.25
+    swaySpeedMax: 0.7
+    initialBelow: 1.2
+    initialAbove: 3
+    spawnAhead: 8
+    backfillBehind: 4
+    minGenerationRadius: 0.18
+    recycleAbove: 40
+  typeWeights:
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    weight: 7
+  - type: {fileID: 11400000, guid: 677854d0e79b2ae47aee54bc34b482c2, type: 2}
+    weight: 2
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    weight: 1
+  - type: {fileID: 11400000, guid: 4ae0ab52f842768409c3e1cedfd87eb9, type: 2}
+    weight: 3
+  - type: {fileID: 11400000, guid: b47a3066dde2c4c48a228a3a495d36d4, type: 2}
+    weight: 1
+  planets: []
+  endless:
+    densityByRadius:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 20
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    maxDensity: 1.5
+    musouUnlockRadius: 0
+    bombUnlockRadius: 0
+    hookUnlockRadius: 0
+  endlessPreviewRadius: 20

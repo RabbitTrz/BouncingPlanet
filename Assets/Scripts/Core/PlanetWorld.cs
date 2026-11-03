@@ -31,17 +31,22 @@ namespace BouncingPlanet
 
         private GameConfig config;
         private PlayerController player;
+        private LevelConfig currentLevel;
+        private LevelGenerationSettings generation;
         private Transform viewRoot;
         private Transform poolRoot;
         private Transform bandRoot;
         private System.Random rng;
         private float spawnTop;
         private float lowR;
+        private float startRadius;
         private float lastBandPixelsPerUnit;
         private bool initialized;
+        private bool useFixedLayout;
 
         public IReadOnlyList<PlanetRuntime> Planets => planets;
         public int TotalCount => planets.Count;
+        public LevelConfig CurrentLevel => currentLevel;
 
         public int AliveCount
         {
@@ -89,30 +94,105 @@ namespace BouncingPlanet
                 Initialize(GameBootstrap.Instance);
         }
 
+        /// <summary>切换关卡并重建世界。null 表示沿用旧的单场景程序生成。</summary>
+        public void SetLevel(LevelConfig level)
+        {
+            currentLevel = level;
+            if (initialized)
+                Rebuild();
+        }
+
         private void LateUpdate()
         {
             if (initialized)
                 SyncViews();
         }
 
-        /// <summary>重开一局/换种子时重建。不会重置玩家或分数，由 GameFlow 处理。</summary>
+        /// <summary>重开一局/换关卡时重建。不会重置玩家或分数，由 GameFlow 处理。</summary>
         public void Rebuild()
         {
             if (config == null || player == null)
                 return;
 
             ClearWorld();
-            rng = new System.Random(config.generationSeed);
+            startRadius = currentLevel != null
+                ? currentLevel.startRadius
+                : config.startRadius;
+            useFixedLayout = currentLevel != null && !currentLevel.IsEndless;
 
-            lowR = Mathf.Max(config.minGenerationRadius,
-                config.startRadius - config.initialBelow);
-            spawnTop = config.startRadius + config.initialAbove;
+            if (useFixedLayout)
+            {
+                BuildBakedLevel();
+                SyncViews();
+                return;
+            }
 
-            for (float radius = lowR; radius < spawnTop; radius += config.laneSpacing)
+            generation = currentLevel != null
+                ? currentLevel.generation
+                : new LevelGenerationSettings();
+            if (generation == null)
+                generation = new LevelGenerationSettings();
+            if (currentLevel == null)
+                generation.CopyFrom(config);
+
+            rng = new System.Random(generation.seed);
+            lowR = Mathf.Max(generation.minGenerationRadius,
+                startRadius - generation.initialBelow);
+            spawnTop = startRadius + generation.initialAbove;
+
+            for (float radius = lowR; radius < spawnTop;
+                 radius += Mathf.Max(0.05f, generation.laneSpacing))
+            {
                 AddBand(radius);
+            }
 
             AddSafeCatchPlanet();
             SyncViews();
+        }
+
+        private void BuildBakedLevel()
+        {
+            if (currentLevel == null)
+                return;
+
+            generation = currentLevel.generation ?? new LevelGenerationSettings();
+            float maxRadius = Mathf.Max(startRadius, currentLevel.goalRadius);
+            if (currentLevel.planets != null)
+            {
+                for (int i = 0; i < currentLevel.planets.Count; i++)
+                {
+                    LevelPlanetEntry entry = currentLevel.planets[i];
+                    if (entry == null || entry.type == null)
+                        continue;
+
+                    float angle = entry.angleDegrees * Mathf.Deg2Rad;
+                    float swayAmplitude = Mathf.Max(0f, entry.swayAmplitude);
+                    float swaySpeed = Mathf.Max(0f, entry.swaySpeed);
+                    float swayPhase = entry.swayPhase;
+                    float worldRadius = Mathf.Max(0.005f,
+                        entry.type.baseSize * config.sizeScale *
+                        Mathf.Max(0.05f, entry.sizeMultiplier));
+
+                    planets.Add(new PlanetRuntime
+                    {
+                        def = entry.type,
+                        radius = entry.radius,
+                        baseAngle = angle,
+                        angle = angle + Mathf.Sin(swayPhase) * swayAmplitude,
+                        worldRadius = worldRadius,
+                        swayPhase = swayPhase,
+                        swaySpeed = swaySpeed,
+                        swayAmplitude = swayAmplitude
+                    });
+                    maxRadius = Mathf.Max(maxRadius, entry.radius);
+                }
+            }
+
+            float lane = Mathf.Max(0.05f, generation.laneSpacing);
+            float low = Mathf.Max(generation.minGenerationRadius,
+                startRadius - generation.initialBelow);
+            for (float radius = low; radius <= maxRadius; radius += lane)
+                AddBandView(radius);
         }
 
         /// <summary>由 CollisionSystem 每个仿真步调用。</summary>
@@ -122,8 +202,11 @@ namespace BouncingPlanet
                 return;
 
             float playerRadius = player.State.radius;
-            Extend(playerRadius);
-            CleanupFarAbove(playerRadius);
+            if (!useFixedLayout)
+            {
+                Extend(playerRadius);
+                CleanupFarAbove(playerRadius);
+            }
 
             for (int i = 0; i < planets.Count; i++)
             {
@@ -143,19 +226,21 @@ namespace BouncingPlanet
 
         private void Extend(float playerRadius)
         {
-            float lane = config.laneSpacing;
+            if (generation == null)
+                return;
+            float lane = Mathf.Max(0.05f, generation.laneSpacing);
 
-            while (spawnTop < playerRadius + config.spawnAhead)
+            while (spawnTop < playerRadius + generation.spawnAhead)
             {
                 AddBand(spawnTop);
                 spawnTop += lane;
             }
 
-            float lowerLimit = Mathf.Max(config.minGenerationRadius,
-                playerRadius - config.backfillBehind);
+            float lowerLimit = Mathf.Max(generation.minGenerationRadius,
+                playerRadius - generation.backfillBehind);
             while (lowR > lowerLimit)
             {
-                float next = Mathf.Max(config.minGenerationRadius, lowR - lane);
+                float next = Mathf.Max(generation.minGenerationRadius, lowR - lane);
                 if (next >= lowR)
                     break;
                 lowR = next;
@@ -165,7 +250,9 @@ namespace BouncingPlanet
 
         private void CleanupFarAbove(float playerRadius)
         {
-            float keep = playerRadius + config.recycleAbove;
+            if (generation == null)
+                return;
+            float keep = playerRadius + generation.recycleAbove;
 
             for (int i = planets.Count - 1; i >= 0; i--)
             {
@@ -189,7 +276,7 @@ namespace BouncingPlanet
 
         private void AddBand(float radius)
         {
-            if (radius < config.minGenerationRadius)
+            if (generation == null || radius < generation.minGenerationRadius)
                 return;
 
             for (int i = 0; i < bands.Count; i++)
@@ -200,9 +287,12 @@ namespace BouncingPlanet
 
             AddBandView(radius);
 
-            int count = config.GetRingCount(radius);
+            int count = GetRingCount(radius);
+            if (count <= 0)
+                return;
+
             float phase = (float)rng.NextDouble() * Mathf.PI * 2f;
-            float swayAmplitude = config.GetSwayAmplitude(count);
+            float swayAmplitude = generation.GetSwayAmplitude(count);
 
             for (int i = 0; i < count; i++)
             {
@@ -212,32 +302,79 @@ namespace BouncingPlanet
                 AddPlanet(radius, angle, PickType(), swayAmplitude);
             }
 
-            float gapRadius = radius - config.laneSpacing * 0.5f;
-            if (gapRadius >= config.minGenerationRadius)
+            float gapRadius = radius - Mathf.Max(0.05f, generation.laneSpacing) * 0.5f;
+            if (gapRadius >= generation.minGenerationRadius)
             {
-                int gapCount = config.GetGapCount(radius);
-                float gapSway = Mathf.Min(config.swayMax, 0.08f);
+                int gapCount = generation.GetGapCount(radius);
+                float gapSway = Mathf.Min(generation.swayMax, 0.08f);
                 for (int i = 0; i < gapCount; i++)
                 {
                     float angle = (float)rng.NextDouble() * Mathf.PI * 2f;
-                    float jitter = ((float)rng.NextDouble() * 2f - 1f) * config.gapRadiusJitter;
+                    float jitter = ((float)rng.NextDouble() * 2f - 1f) *
+                                   generation.gapRadiusJitter;
                     float r = gapRadius + jitter;
-                    if (r < config.minGenerationRadius || InSpawnClearZone(r, angle))
+                    if (r < generation.minGenerationRadius ||
+                        InSpawnClearZone(r, angle))
+                    {
                         continue;
+                    }
                     AddPlanet(r, angle, PickType(), gapSway);
                 }
             }
         }
 
+        private int GetRingCount(float radius)
+        {
+            int count = generation.GetRingCount(radius);
+            if (currentLevel != null && currentLevel.IsEndless &&
+                currentLevel.endless != null &&
+                currentLevel.endless.densityByRadius != null)
+            {
+                float density = currentLevel.endless.densityByRadius.Evaluate(radius);
+                density = Mathf.Clamp(density, 0.1f, currentLevel.endless.maxDensity);
+                count = Mathf.RoundToInt(count * density);
+                count = Mathf.Clamp(count,
+                    generation.minPlanetsPerRing,
+                    generation.maxPlanetsPerRing);
+            }
+            return count;
+        }
+
         private void AddSafeCatchPlanet()
         {
-            float radius = Mathf.Max(config.minGenerationRadius,
-                config.startRadius - 0.35f);
+            float radius = Mathf.Max(generation.minGenerationRadius,
+                startRadius - 0.35f);
             AddPlanet(radius, 0f, PlanetTypeId.Rock, 0f);
         }
 
         private PlanetTypeId PickType()
         {
+            if (currentLevel != null && currentLevel.typeWeights != null &&
+                currentLevel.typeWeights.Count > 0)
+            {
+                float levelTotal = 0f;
+                for (int i = 0; i < currentLevel.typeWeights.Count; i++)
+                {
+                    LevelTypeWeight entry = currentLevel.typeWeights[i];
+                    if (entry != null && entry.type != null)
+                        levelTotal += Mathf.Max(0f, entry.weight);
+                }
+
+                if (levelTotal > 0f)
+                {
+                    float levelRoll = (float)rng.NextDouble() * levelTotal;
+                    for (int i = 0; i < currentLevel.typeWeights.Count; i++)
+                    {
+                        LevelTypeWeight entry = currentLevel.typeWeights[i];
+                        if (entry == null || entry.type == null)
+                            continue;
+                        levelRoll -= Mathf.Max(0f, entry.weight);
+                        if (levelRoll <= 0f)
+                            return entry.type.id;
+                    }
+                }
+            }
+
             PlanetTypeDef[] types = bootstrap.planetTypes;
             if (types == null || types.Length == 0)
                 return PlanetTypeId.Rock;
@@ -272,9 +409,13 @@ namespace BouncingPlanet
             if (def == null)
                 return;
 
-            float sizeRoll = 1f + ((float)rng.NextDouble() * 2f - 1f) * config.sizeJitter;
+            float sizeRoll = 1f + ((float)rng.NextDouble() * 2f - 1f) *
+                             generation.sizeJitter;
             float worldRadius = Mathf.Max(0.005f, def.baseSize * config.sizeScale * sizeRoll);
-            float swaySpeed = swayAmplitude > 0f ? config.GetSwaySpeed(rng) : 0f;
+            float swaySpeed = swayAmplitude > 0f
+                ? Mathf.Lerp(generation.swaySpeedMin, generation.swaySpeedMax,
+                    (float)rng.NextDouble())
+                : 0f;
             float swayPhase = (float)rng.NextDouble() * Mathf.PI * 2f;
 
             planets.Add(new PlanetRuntime
@@ -300,7 +441,7 @@ namespace BouncingPlanet
             if (def == null)
                 return null;
 
-            float r = Mathf.Max(config.minGenerationRadius, radius);
+            float r = Mathf.Max(0.05f, radius);
             PlanetRuntime planet = new PlanetRuntime
             {
                 def = def,
@@ -338,7 +479,7 @@ namespace BouncingPlanet
 
         private bool InSpawnClearZone(float radius, float angle)
         {
-            float radialDelta = radius - config.startRadius;
+            float radialDelta = radius - startRadius;
             if (radialDelta < -0.5f || radialDelta > 0.35f)
                 return false;
             return Mathf.Abs(PolarMath.NormalizeAngle(angle)) < 0.28f;

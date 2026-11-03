@@ -3,8 +3,7 @@ using UnityEngine;
 namespace BouncingPlanet
 {
     /// <summary>
-    /// 初期 Demo 的流程：单关开始 → 游玩 → 暂停/死亡 → 重试或返回占位选关。
-    /// 真正的多关卡/技能解锁留到后续版本。
+    /// 关卡流程：选关 → 游玩 → 暂停/死亡/通关 → 重试、下一关或返回选关。
     /// </summary>
     [DisallowMultipleComponent]
     public sealed class GameFlow : MonoBehaviour
@@ -14,7 +13,8 @@ namespace BouncingPlanet
             Start,
             Playing,
             Paused,
-            Dead
+            Dead,
+            Win
         }
 
         public GameBootstrap bootstrap;
@@ -25,12 +25,16 @@ namespace BouncingPlanet
         private PlanetWorld planetWorld;
         private PlayerSkills skills;
         private PlayerInputReader input;
+        private LevelDatabase levelDatabase;
+        private LevelConfig currentLevel;
         private GUIStyle titleStyle;
         private GUIStyle bodyStyle;
         private GUIStyle buttonStyle;
 
         public FlowState State { get; private set; } = FlowState.Start;
         public bool IsSimulationAllowed => State == FlowState.Playing;
+        public LevelConfig CurrentLevel => currentLevel;
+        public LevelDatabase LevelDatabase => levelDatabase;
 
         public void Initialize(GameBootstrap gameBootstrap)
         {
@@ -44,10 +48,14 @@ namespace BouncingPlanet
             planetWorld = bootstrap.planetWorld;
             skills = bootstrap.skills;
             input = bootstrap.inputReader;
+            levelDatabase = bootstrap.levelDatabase;
+            if (levelDatabase == null)
+                levelDatabase = Resources.Load<LevelDatabase>("Levels/LevelDatabase");
 
             if (player != null)
                 player.Died += OnPlayerDied;
 
+            currentLevel = FindLevel(0);
             State = FlowState.Start;
             if (clock != null)
                 clock.Pause();
@@ -68,12 +76,16 @@ namespace BouncingPlanet
             {
                 case FlowState.Start:
                     if (StartPressed() || ConfirmPressed())
-                        StartRun();
+                        StartRun(currentLevel);
                     break;
 
                 case FlowState.Playing:
                     if (Input.GetKeyDown(KeyCode.Escape))
                         PauseRun();
+                    else if (currentLevel != null && !currentLevel.IsEndless &&
+                             player != null &&
+                             player.State.radius >= currentLevel.goalRadius)
+                        WinRun();
                     break;
 
                 case FlowState.Paused:
@@ -83,9 +95,18 @@ namespace BouncingPlanet
 
                 case FlowState.Dead:
                     if (RetryPressed() || StartPressed() || ConfirmPressed())
-                        StartRun();
+                        StartRun(currentLevel);
                     else if (Input.GetKeyDown(KeyCode.Escape))
                         ReturnToStart();
+                    break;
+
+                case FlowState.Win:
+                    if (Input.GetKeyDown(KeyCode.Escape))
+                        ReturnToStart();
+                    else if (RetryPressed())
+                        StartRun(currentLevel);
+                    else if (ConfirmPressed())
+                        NextLevel();
                     break;
             }
         }
@@ -107,6 +128,8 @@ namespace BouncingPlanet
 
         private void OnPlayerDied(PlayerState state)
         {
+            if (State != FlowState.Playing)
+                return;
             State = FlowState.Dead;
             if (clock != null)
                 clock.Pause();
@@ -114,14 +137,24 @@ namespace BouncingPlanet
 
         public void StartRun()
         {
+            StartRun(currentLevel);
+        }
+
+        public void StartRun(LevelConfig level)
+        {
             if (player == null)
                 return;
 
-            score?.ResetScore();
+            currentLevel = level != null ? level : FindLevel(0);
+            bool musou = currentLevel == null || currentLevel.allowMusou;
+            bool bomb = currentLevel == null || currentLevel.allowBomb;
+            bool hook = currentLevel == null || currentLevel.allowHook;
+            skills?.SetSkillFlags(musou, bomb, hook);
             skills?.ResetSkills();
+            score?.ResetScore();
             player.SetHoldRadius(false);
             player.Respawn();
-            planetWorld?.Rebuild();
+            planetWorld?.SetLevel(currentLevel);
             clock?.SetSlowMotion(1f);
             clock?.Resume();
             State = FlowState.Playing;
@@ -149,6 +182,62 @@ namespace BouncingPlanet
             clock?.Pause();
         }
 
+        public void WinRun()
+        {
+            if (State != FlowState.Playing)
+                return;
+            State = FlowState.Win;
+            clock?.Pause();
+        }
+
+        public void NextLevel()
+        {
+            int index = FindLevelIndex(currentLevel);
+            LevelConfig next = FindLevel(index + 1);
+            if (next != null)
+                StartRun(next);
+            else
+                ReturnToStart();
+        }
+
+        private LevelConfig FindLevel(int index)
+        {
+            if (levelDatabase == null || levelDatabase.levels == null ||
+                levelDatabase.levels.Count == 0)
+            {
+                return null;
+            }
+            index = Mathf.Clamp(index, 0, levelDatabase.levels.Count - 1);
+            for (int i = index; i < levelDatabase.levels.Count; i++)
+            {
+                if (levelDatabase.levels[i] != null)
+                    return levelDatabase.levels[i];
+            }
+            for (int i = index - 1; i >= 0; i--)
+            {
+                if (levelDatabase.levels[i] != null)
+                    return levelDatabase.levels[i];
+            }
+            return null;
+        }
+
+        private int FindLevelIndex(LevelConfig level)
+        {
+            if (levelDatabase == null || levelDatabase.levels == null || level == null)
+                return -1;
+            for (int i = 0; i < levelDatabase.levels.Count; i++)
+            {
+                if (levelDatabase.levels[i] == level)
+                    return i;
+            }
+            return -1;
+        }
+
+        private LevelConfig NextLevelConfig()
+        {
+            return FindLevel(FindLevelIndex(currentLevel) + 1);
+        }
+
         private void OnGUI()
         {
             if (State == FlowState.Playing)
@@ -162,16 +251,24 @@ namespace BouncingPlanet
             {
                 case FlowState.Start:
                     title = "跃动星球";
-                    body = "初期 Demo v1.1 · 单关演示\n\nA/D 环绕黑洞 · S 炸弹 · 左键 钩锁 · H 锁定半径 · F1 调试 · T 调参";
+                    body = "选择关卡\n\nA/D 环绕黑洞 · S 炸弹 · 左键 钩锁 · H 锁定半径 · F1 调试 · T 调参";
                     break;
                 case FlowState.Paused:
                     title = "暂停";
                     body = "回到游戏继续观察下落与弹跳。";
                     break;
+                case FlowState.Win:
+                    title = "通关";
+                    body = "到达目标高度！\n\n得分：" +
+                           (score != null ? score.Score : 0) +
+                           "    最高半径：" +
+                           (player != null ? player.State.maxRadius.ToString("0.00") : "-");
+                    break;
                 default:
                     title = "被黑洞吞噬";
                     body = "本局得分：" + (score != null ? score.Score : 0) +
-                           "    最高半径：" + (player != null ? player.State.maxRadius.ToString("0.00") : "-");
+                           "    最高半径：" +
+                           (player != null ? player.State.maxRadius.ToString("0.00") : "-");
                     break;
             }
 
@@ -181,8 +278,13 @@ namespace BouncingPlanet
             GUI.color = oldColor;
 
             float width = Mathf.Min(720f, Screen.width - 32f);
-            float height = State == FlowState.Start ? 330f : 280f;
-            Rect panel = new Rect((Screen.width - width) * 0.5f, (Screen.height - height) * 0.5f, width, height);
+            float height = State == FlowState.Start && HasLevelList() ? 500f : 300f;
+            height = Mathf.Min(height, Screen.height - 32f);
+            Rect panel = new Rect(
+                (Screen.width - width) * 0.5f,
+                (Screen.height - height) * 0.5f,
+                width,
+                height);
 
             GUI.color = new Color(0.96f, 0.92f, 0.82f, 1f);
             GUI.DrawTexture(panel, Texture2D.whiteTexture);
@@ -190,35 +292,84 @@ namespace BouncingPlanet
             GUI.DrawTexture(new Rect(panel.x, panel.y, panel.width, 5f), Texture2D.whiteTexture);
             GUI.color = oldColor;
 
-            GUILayout.BeginArea(new Rect(panel.x + 42f, panel.y + 28f, panel.width - 84f, panel.height - 56f));
+            GUILayout.BeginArea(new Rect(
+                panel.x + 42f, panel.y + 24f,
+                panel.width - 84f, panel.height - 48f));
             GUILayout.Label(title, titleStyle);
-            GUILayout.Space(10f);
+            GUILayout.Space(6f);
             GUILayout.Label(body, bodyStyle);
             GUILayout.FlexibleSpace();
 
-            if (State == FlowState.Start)
+            switch (State)
             {
-                if (GUILayout.Button("开始  (空格 / 回车)", buttonStyle, GUILayout.Height(48f)))
-                    StartRun();
-            }
-            else if (State == FlowState.Paused)
-            {
-                if (GUILayout.Button("继续  (Esc / 空格)", buttonStyle, GUILayout.Height(48f)))
-                    ResumeRun();
-                if (GUILayout.Button("返回选关", buttonStyle, GUILayout.Height(44f)))
-                    ReturnToStart();
-            }
-            else
-            {
-                GUILayout.BeginHorizontal();
-                if (GUILayout.Button("重试  (R)", buttonStyle, GUILayout.Height(48f)))
-                    StartRun();
-                if (GUILayout.Button("返回选关  (Esc)", buttonStyle, GUILayout.Height(48f)))
-                    ReturnToStart();
-                GUILayout.EndHorizontal();
+                case FlowState.Start:
+                    DrawStartButtons();
+                    break;
+
+                case FlowState.Paused:
+                    if (GUILayout.Button("继续  (Esc / 空格)", buttonStyle, GUILayout.Height(48f)))
+                        ResumeRun();
+                    if (GUILayout.Button("返回选关", buttonStyle, GUILayout.Height(44f)))
+                        ReturnToStart();
+                    break;
+
+                case FlowState.Win:
+                    GUILayout.BeginHorizontal();
+                    if (NextLevelConfig() != null &&
+                        GUILayout.Button("下一关  (空格)", buttonStyle, GUILayout.Height(48f)))
+                    {
+                        NextLevel();
+                    }
+                    if (GUILayout.Button("重试  (R)", buttonStyle, GUILayout.Height(48f)))
+                        StartRun(currentLevel);
+                    GUILayout.EndHorizontal();
+                    if (GUILayout.Button("返回选关  (Esc)", buttonStyle, GUILayout.Height(44f)))
+                        ReturnToStart();
+                    break;
+
+                default:
+                    GUILayout.BeginHorizontal();
+                    if (GUILayout.Button("重试  (R)", buttonStyle, GUILayout.Height(48f)))
+                        StartRun(currentLevel);
+                    if (GUILayout.Button("返回选关  (Esc)", buttonStyle, GUILayout.Height(48f)))
+                        ReturnToStart();
+                    GUILayout.EndHorizontal();
+                    break;
             }
 
             GUILayout.EndArea();
+        }
+
+        private bool HasLevelList()
+        {
+            return levelDatabase != null && levelDatabase.levels != null &&
+                   levelDatabase.levels.Count > 0;
+        }
+
+        private void DrawStartButtons()
+        {
+            if (!HasLevelList())
+            {
+                if (GUILayout.Button("开始  (空格 / 回车)", buttonStyle, GUILayout.Height(48f)))
+                    StartRun(null);
+                return;
+            }
+
+            for (int i = 0; i < levelDatabase.levels.Count; i++)
+            {
+                LevelConfig level = levelDatabase.levels[i];
+                if (level == null)
+                    continue;
+                string skills = string.Empty;
+                if (level.allowMusou) skills += " 无双";
+                if (level.allowBomb) skills += " 炸弹";
+                if (level.allowHook) skills += " 钩锁";
+                string label = level.displayName;
+                if (!string.IsNullOrEmpty(skills))
+                    label += "   [" + skills.Trim() + "]";
+                if (GUILayout.Button(label, buttonStyle, GUILayout.Height(44f)))
+                    StartRun(level);
+            }
         }
 
         private void EnsureStyles()
