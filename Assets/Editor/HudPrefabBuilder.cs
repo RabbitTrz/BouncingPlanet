@@ -38,7 +38,7 @@ namespace BouncingPlanet.Editor
 
             if (AssetDatabase.LoadAssetAtPath<GameObject>(PrefabPath) != null)
             {
-                EnsureReadyBursts();
+                EnsurePrefabUpgrades();
                 return;
             }
 
@@ -46,9 +46,10 @@ namespace BouncingPlanet.Editor
         }
 
         /// <summary>
-        /// 旧版 HUD 预制体没有 ReadyBurst 子节点时，只补上，不覆盖布局改动。
+        /// 旧版 HUD 预制体缺少 ReadyBurst / PressureWarning 时只补节点，
+        /// 不覆盖已经手动调整过的布局。
         /// </summary>
-        private static void EnsureReadyBursts()
+        private static void EnsurePrefabUpgrades()
         {
             GameObject root = PrefabUtility.LoadPrefabContents(PrefabPath);
             if (root == null)
@@ -63,6 +64,17 @@ namespace BouncingPlanet.Editor
                     continue;
                 view.readyBurst = CreateReadyBurst(view.transform);
                 changed = true;
+            }
+
+            GameHudView hud = root.GetComponentInChildren<GameHudView>(true);
+            if (hud != null && hud.pressureWarning == null)
+            {
+                RectTransform rootRect = root.GetComponent<RectTransform>();
+                if (rootRect != null)
+                {
+                    hud.pressureWarning = CreatePressureWarning(rootRect);
+                    changed = true;
+                }
             }
 
             if (changed)
@@ -132,6 +144,7 @@ namespace BouncingPlanet.Editor
 
             GameHudView hud = root.GetComponent<GameHudView>();
             hud.canvasGroup = group;
+            hud.pressureWarning = CreatePressureWarning(rootRect);
             hud.heightRecord = CreateNumberDisplay(
                 rootRect, "HeightRecord", new Vector2(48f, -36f),
                 TextAnchor.MiddleLeft, 5, digits);
@@ -284,6 +297,36 @@ namespace BouncingPlanet.Editor
             view.readyBurst = CreateReadyBurst(root.transform);
             view.hideWhenDisabled = true;
             return view;
+        }
+
+        private static Image CreatePressureWarning(Transform parent)
+        {
+            GameObject go = new GameObject(
+                "PressureWarning",
+                typeof(RectTransform),
+                typeof(CanvasRenderer),
+                typeof(Image));
+            go.transform.SetParent(parent, false);
+            go.transform.SetAsFirstSibling();
+
+            RectTransform rect = go.GetComponent<RectTransform>();
+            rect.anchorMin = new Vector2(0f, 0f);
+            rect.anchorMax = new Vector2(1f, 0f);
+            rect.pivot = new Vector2(0.5f, 0f);
+            rect.anchoredPosition = Vector2.zero;
+            rect.sizeDelta = new Vector2(0f, 120f);
+
+            Image image = go.GetComponent<Image>();
+            // 用内置 UI Sprite 保证空 Image 也能稳定渲染。
+            Sprite uiSprite =
+                AssetDatabase.GetBuiltinExtraResource<Sprite>(
+                    "UI/Skin/UISprite.psd");
+            if (uiSprite != null)
+                image.sprite = uiSprite;
+            image.color = new Color(0.22f, 0.02f, 0.04f, 0f);
+            image.raycastTarget = false;
+            image.enabled = false;
+            return image;
         }
 
         private static UiBurstEffect CreateReadyBurst(Transform parent)

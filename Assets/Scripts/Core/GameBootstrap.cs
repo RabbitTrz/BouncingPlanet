@@ -39,6 +39,7 @@ namespace BouncingPlanet
         public PlayerSkills skills;
         public CollisionSystem collisionSystem;
         public GameFlow gameFlow;
+        public EndlessPressureSystem pressureSystem;
         public HookView hookView;
         public SkillHud skillHud;
         public MusouRingView musouRingView;
@@ -115,6 +116,9 @@ namespace BouncingPlanet
 
             gameFlow = EnsureComponent(gameFlow);
             gameFlow.Initialize(this);
+
+            pressureSystem = EnsureComponent(pressureSystem);
+            pressureSystem.Initialize(this);
 
             hookView = EnsureComponent(hookView);
             hookView.Initialize(this);

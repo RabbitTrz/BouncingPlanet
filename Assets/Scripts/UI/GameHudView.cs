@@ -18,9 +18,16 @@ namespace BouncingPlanet
         public SkillIconView musouSkill;
         public SkillIconView bombSkill;
         public SkillIconView hookSkill;
+        public Image pressureWarning;
 
         [Tooltip("高度显示倍率；1 表示显示整数世界半径，10 表示显示一位小数。")]
         public float heightDisplayScale = 1f;
+
+        [Tooltip("无尽压力警告在屏幕底部升起的最大高度（UI 像素）。")]
+        public float pressureWarningMaxHeight = 150f;
+
+        [Range(0f, 1f)]
+        public float pressureWarningMaxAlpha = 0.55f;
 
         private GameBootstrap bootstrap;
         private float previousBombCooldown;
@@ -61,8 +68,11 @@ namespace BouncingPlanet
             {
                 // 重新进入游戏时重新取当前冷却，避免把暂停期间的变化当成“刚完成”。
                 cooldownInitialized = false;
+                UpdatePressureWarning(0f);
                 return;
             }
+
+            UpdatePressureWarning();
 
             PlayerState state = bootstrap.player.State;
             if (heightRecord != null)
@@ -131,6 +141,37 @@ namespace BouncingPlanet
                     config.hookCooldown,
                     false);
             }
+        }
+
+        private void UpdatePressureWarning()
+        {
+            float warning = 0f;
+            if (bootstrap.pressureSystem != null &&
+                bootstrap.pressureSystem.IsActive)
+            {
+                warning = bootstrap.pressureSystem.Warning01;
+            }
+            UpdatePressureWarning(warning);
+        }
+
+        private void UpdatePressureWarning(float warning)
+        {
+            if (pressureWarning == null)
+                return;
+
+            warning = Mathf.Clamp01(warning);
+            Color color = pressureWarning.color;
+            color.a = warning * pressureWarningMaxAlpha;
+            pressureWarning.color = color;
+            pressureWarning.enabled = warning > 0.001f;
+            if (!pressureWarning.enabled)
+                return;
+
+            RectTransform rect = pressureWarning.rectTransform;
+            Vector2 size = rect.sizeDelta;
+            size.y = Mathf.Lerp(24f, Mathf.Max(24f, pressureWarningMaxHeight),
+                warning);
+            rect.sizeDelta = size;
         }
 
         private void SetVisible(bool visible)

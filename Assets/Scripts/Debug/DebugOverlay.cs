@@ -117,6 +117,17 @@ namespace BouncingPlanet
                 GUILayout.Label("Clock: missing", labelStyle);
             }
 
+            if (bootstrap.pressureSystem != null &&
+                bootstrap.pressureSystem.IsActive)
+            {
+                EndlessPressureSystem pressure = bootstrap.pressureSystem;
+                GUILayout.Label(
+                    $"Pressure H={pressure.HazardRadius:F3}  gap={pressure.Gap:F3}  " +
+                    $"elapsed={pressure.Elapsed:F1}s  warning={pressure.Warning01:F2}  " +
+                    $"playerHazard={bootstrap.player?.HazardRadius ?? 0f:F3}",
+                    labelStyle);
+            }
+
             if (config != null)
             {
                 GUILayout.Space(4f);

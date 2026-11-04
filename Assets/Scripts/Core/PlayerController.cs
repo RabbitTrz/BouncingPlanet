@@ -23,10 +23,14 @@ namespace BouncingPlanet
         private bool subscribed;
         private bool hasPreviousPosition;
         private Vector2 previousWorldPosition;
+        private float hazardRadiusOverride = -1f;
 
         public PlayerState State => state;
         public bool IsDead => state.dead;
         public bool IsHoldingRadius => holdRadiusForTesting;
+        public float HazardRadius => hazardRadiusOverride >= 0f
+            ? hazardRadiusOverride
+            : (config != null ? config.deathRadius : 0.1f);
         public bool HasPreviousPosition => hasPreviousPosition;
         public Vector2 PreviousWorldPosition => previousWorldPosition;
         public event Action<PlayerState> Died;
@@ -54,6 +58,17 @@ namespace BouncingPlanet
 
             state.ResetRun(config);
             CapturePreviousPosition();
+            hazardRadiusOverride = -1f;
+        }
+
+        public void SetHazardRadius(float radius)
+        {
+            hazardRadiusOverride = Mathf.Max(0f, radius);
+        }
+
+        public void ClearHazardRadius()
+        {
+            hazardRadiusOverride = -1f;
         }
 
         private void Awake()
@@ -128,7 +143,7 @@ namespace BouncingPlanet
             if (state.radius > state.maxRadius)
                 state.maxRadius = state.radius;
 
-            if (!holdRadiusForTesting && !musou && state.radius < config.deathRadius)
+            if (!holdRadiusForTesting && !musou && state.radius < HazardRadius)
                 Die();
         }
 
@@ -149,6 +164,7 @@ namespace BouncingPlanet
         {
             state.Reset(config);
             CapturePreviousPosition();
+            hazardRadiusOverride = -1f;
             Respawned?.Invoke();
         }
 

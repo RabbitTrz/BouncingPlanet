@@ -58,6 +58,8 @@ namespace BouncingPlanet
         private bool initialized;
         private bool useFixedLayout;
         private bool useLocalArcs;
+        private float pressureFloor;
+        private float lastPressureFloor = -1f;
         private readonly HashSet<int> desiredSlots = new HashSet<int>();
         private readonly List<int> removeSlots = new List<int>();
 
@@ -119,6 +121,73 @@ namespace BouncingPlanet
                 Rebuild();
         }
 
+        /// <summary>无尽压力抬升生成下限；低于该半径的球和轨道会被清掉。</summary>
+        public void SetPressureFloor(float radius)
+        {
+            float target = Mathf.Max(0f, radius);
+            bool raised = target > lastPressureFloor + 0.001f;
+            pressureFloor = target;
+            lastPressureFloor = target;
+            if (raised && initialized)
+                CullBelow(pressureFloor);
+        }
+
+        private float EffectiveFloor => Mathf.Max(
+            generation != null ? generation.minGenerationRadius : 0f,
+            pressureFloor);
+
+        private void CullBelow(float floor)
+        {
+            for (int i = bands.Count - 1; i >= 0; i--)
+            {
+                BandView band = bands[i];
+                CullSlotsBelow(band.slots, floor);
+                CullSlotsBelow(band.gapSlots, floor);
+                if (band.radius < floor)
+                {
+                    RemoveBandPlanets(band);
+                    DestroyBand(band);
+                    bands.RemoveAt(i);
+                }
+            }
+
+            for (int i = planets.Count - 1; i >= 0; i--)
+            {
+                PlanetRuntime planet = planets[i];
+                if (planet.radius >= floor)
+                    continue;
+                planet.alive = false;
+                ReleasePlanetView(planet);
+                planets.RemoveAt(i);
+            }
+
+            lowR = Mathf.Max(lowR, floor);
+        }
+
+        private void CullSlotsBelow(
+            Dictionary<int, PlanetRuntime> slots, float floor)
+        {
+            removeSlots.Clear();
+            foreach (KeyValuePair<int, PlanetRuntime> pair in slots)
+            {
+                if (pair.Value != null && pair.Value.radius < floor)
+                    removeSlots.Add(pair.Key);
+            }
+
+            for (int i = 0; i < removeSlots.Count; i++)
+            {
+                int key = removeSlots[i];
+                if (!slots.TryGetValue(key, out PlanetRuntime planet))
+                    continue;
+                slots.Remove(key);
+                if (planet == null)
+                    continue;
+                planet.alive = false;
+                RemovePlanet(planet);
+            }
+            removeSlots.Clear();
+        }
+
         private void LateUpdate()
         {
             if (initialized)
@@ -154,7 +223,7 @@ namespace BouncingPlanet
                 generation.CopyFrom(config);
 
             rng = new System.Random(generation.seed);
-            lowR = Mathf.Max(generation.minGenerationRadius,
+            lowR = Mathf.Max(EffectiveFloor,
                 startRadius - generation.initialBelow);
             spawnTop = startRadius + generation.initialAbove;
 
@@ -256,11 +325,11 @@ namespace BouncingPlanet
                 spawnTop += lane;
             }
 
-            float lowerLimit = Mathf.Max(generation.minGenerationRadius,
+            float lowerLimit = Mathf.Max(EffectiveFloor,
                 playerRadius - generation.backfillBehind);
             while (lowR > lowerLimit)
             {
-                float next = Mathf.Max(generation.minGenerationRadius, lowR - lane);
+                float next = Mathf.Max(EffectiveFloor, lowR - lane);
                 if (next >= lowR)
                     break;
                 lowR = next;
@@ -297,7 +366,7 @@ namespace BouncingPlanet
 
         private void AddBand(float radius)
         {
-            if (generation == null || radius < generation.minGenerationRadius)
+            if (generation == null || radius < EffectiveFloor)
                 return;
 
             for (int i = 0; i < bands.Count; i++)
@@ -330,7 +399,7 @@ namespace BouncingPlanet
             }
 
             float gapRadius = radius - Mathf.Max(0.05f, generation.laneSpacing) * 0.5f;
-            if (gapRadius >= generation.minGenerationRadius)
+            if (gapRadius >= EffectiveFloor)
             {
                 int gapCount = generation.GetGapCount(radius);
                 float gapSway = Mathf.Min(generation.swayMax, 0.08f);
@@ -340,7 +409,7 @@ namespace BouncingPlanet
                     float jitter = ((float)rng.NextDouble() * 2f - 1f) *
                                    generation.gapRadiusJitter;
                     float r = gapRadius + jitter;
-                    if (r < generation.minGenerationRadius ||
+                    if (r < EffectiveFloor ||
                         InSpawnClearZone(r, angle))
                     {
                         continue;
@@ -366,7 +435,7 @@ namespace BouncingPlanet
 
             float gapRadius = radius -
                 Mathf.Max(0.05f, generation.laneSpacing) * 0.5f;
-            if (gapRadius >= generation.minGenerationRadius &&
+            if (gapRadius >= EffectiveFloor &&
                 generation.gapCountMultiplier > 0f)
             {
                 band.gapRadius = gapRadius;
@@ -604,7 +673,7 @@ namespace BouncingPlanet
 
         private void AddSafeCatchPlanet()
         {
-            float radius = Mathf.Max(generation.minGenerationRadius,
+            float radius = Mathf.Max(EffectiveFloor + 0.05f,
                 startRadius - 0.35f);
             AddPlanet(radius, 0f, PlanetTypeId.Rock, 0f);
         }

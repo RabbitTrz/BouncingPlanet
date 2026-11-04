@@ -22,6 +22,8 @@ namespace BouncingPlanet
         [Tooltip("可选的玩家静态 Sprite 状态配置；留空使用运行时默认状态机。")]
         public SpriteStateProfile playerProfile;
 
+        public BlackHoleView BlackHole => blackHoleView;
+
         private GameConfig config;
         private PlayerController player;
         private PlayerSkills skills;

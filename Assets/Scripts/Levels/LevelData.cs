@@ -125,5 +125,42 @@ namespace BouncingPlanet
         [Min(0f)] public float musouUnlockRadius;
         [Min(0f)] public float bombUnlockRadius;
         [Min(0f)] public float hookUnlockRadius;
+
+        [Header("黑洞压力 Black Hole Pressure")]
+        [LabelText("启用无尽黑洞压力")]
+        public bool pressureEnabled = true;
+
+        [LabelText("压力开始延迟（秒）")]
+        [Min(0f)] public float pressureStartDelay = 10f;
+
+        [LabelText("时间下限增长速度（世界单位/秒）")]
+        [Min(0f)] public float pressureGrowthPerSecond = 0.12f;
+
+        [LabelText("允许回落起始距离")]
+        [Min(0f)] public float pressureFallbackStart = 4f;
+
+        [LabelText("允许回落最终距离")]
+        [Min(0f)] public float pressureFallbackEnd = 1.8f;
+
+        [LabelText("回落收紧时长（秒）")]
+        [Min(0.1f)] public float pressureFallbackRampSeconds = 120f;
+
+        [LabelText("底部警告距离")]
+        [Min(0f)] public float pressureWarningDistance = 2f;
+
+        [LabelText("行星清理边距")]
+        [Min(0f)] public float pressureCullMargin = 0.35f;
+
+        [LabelText("视觉进入距离")]
+        [Min(0.1f)] public float pressureVisualEnterDistance = 3f;
+
+        [LabelText("黑洞视觉最小直径")]
+        [Min(0.01f)] public float pressureVisualDiameterMin = 0.52f;
+
+        [LabelText("黑洞视觉最大直径")]
+        [Min(0.01f)] public float pressureVisualDiameterMax = 2.2f;
+
+        [LabelText("暗色核心比例")]
+        [Range(0.1f, 1f)] public float pressureEventHorizonRatio = 0.62f;
     }
 }

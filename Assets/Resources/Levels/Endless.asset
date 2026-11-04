@@ -87,4 +87,16 @@ MonoBehaviour:
     musouUnlockRadius: 0
     bombUnlockRadius: 0
     hookUnlockRadius: 0
+    pressureEnabled: 1
+    pressureStartDelay: 5
+    pressureGrowthPerSecond: 0.12
+    pressureFallbackStart: 6
+    pressureFallbackEnd: 3
+    pressureFallbackRampSeconds: 120
+    pressureWarningDistance: 5
+    pressureCullMargin: 0.35
+    pressureVisualEnterDistance: 3.5
+    pressureVisualDiameterMin: 0.52
+    pressureVisualDiameterMax: 2.2
+    pressureEventHorizonRatio: 0.62
   endlessPreviewRadius: 20

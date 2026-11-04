@@ -17,6 +17,7 @@ namespace BouncingPlanet
         private Sprite[] frames;
         private int frameIndex;
         private float frameTimer;
+        private float diameterOverride = -1f;
         private bool initialized;
 
         /// <summary>成功加载并创建返回 true；失败时调用方可回退到程序化黑洞。</summary>
@@ -49,6 +50,26 @@ namespace BouncingPlanet
             return true;
         }
 
+        /// <summary>无尽压力表现使用：覆盖默认视觉直径。</summary>
+        public void SetVisualDiameter(float diameter)
+        {
+            diameterOverride = Mathf.Max(0.01f, diameter);
+            ApplyDiameter();
+        }
+
+        /// <summary>无尽压力表现使用：把黑洞放到世界坐标位置（相对 worldRoot）。</summary>
+        public void SetLocalWorldPosition(Vector2 position)
+        {
+            transform.localPosition = new Vector3(position.x, position.y, 0f);
+        }
+
+        public void ClearPressureVisual()
+        {
+            diameterOverride = -1f;
+            transform.localPosition = Vector3.zero;
+            ApplyDiameter();
+        }
+
         private void Update()
         {
             if (!initialized || config == null || frames == null ||
@@ -79,8 +100,10 @@ namespace BouncingPlanet
             Bounds bounds = body.sprite.bounds;
             float sourceSize = Mathf.Max(0.0001f,
                 Mathf.Max(bounds.size.x, bounds.size.y));
-            float scale = Mathf.Max(0.01f, config.blackHoleVisualDiameter) /
-                          sourceSize;
+            float diameter = diameterOverride >= 0f
+                ? diameterOverride
+                : config.blackHoleVisualDiameter;
+            float scale = Mathf.Max(0.01f, diameter) / sourceSize;
             body.transform.localScale = new Vector3(scale, scale, 1f);
             body.transform.localPosition = new Vector3(
                 -bounds.center.x * scale,

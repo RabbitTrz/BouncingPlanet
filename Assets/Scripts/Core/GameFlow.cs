@@ -154,6 +154,8 @@ namespace BouncingPlanet
             score?.ResetScore();
             player.SetHoldRadius(false);
             player.Respawn();
+            if (bootstrap != null)
+                bootstrap.pressureSystem?.SetLevel(currentLevel);
             planetWorld?.SetLevel(currentLevel);
             clock?.SetSlowMotion(1f);
             clock?.Resume();
@@ -180,6 +182,7 @@ namespace BouncingPlanet
         {
             State = FlowState.Start;
             clock?.Pause();
+            bootstrap?.pressureSystem?.SetLevel(null);
         }
 
         public void WinRun()
