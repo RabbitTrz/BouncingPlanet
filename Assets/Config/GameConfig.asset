@@ -31,10 +31,10 @@ MonoBehaviour:
   startRadialVelocity: 0.6
   deathRadius: 0.1
   maxAngularSpeed: 2.6
-  tangentialSpeed: 1.1
-  turnAcceleration: 2.4
-  glideDeceleration: 1.35
-  brakeDeceleration: 2
+  tangentialSpeed: 1.4
+  turnAcceleration: 3.6
+  glideDeceleration: 1.7
+  brakeDeceleration: 3.2
   ascendBlockFactor: 1
   gravity: 2.4
   playerLateralOffset: 0.015

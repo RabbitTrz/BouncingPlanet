@@ -26,22 +26,22 @@ MonoBehaviour:
   generation:
     seed: 20261101
     densityMultiplier: 1
-    laneSpacing: 0.5
-    ringCountMultiplier: 5.5
+    laneSpacing: 0.55
+    ringCountMultiplier: 4.2
     minPlanetsPerRing: 6
-    maxPlanetsPerRing: 64
-    gapCountMultiplier: 0.6
+    maxPlanetsPerRing: 96
+    gapCountMultiplier: 0.08
     gapRadialOffset: 0.25
-    gapRadiusJitter: 0.05
-    sizeJitter: 0.15
-    swayMax: 0.11
-    swaySlotRatio: 0.22
-    swaySpeedMin: 0.25
-    swaySpeedMax: 0.7
+    gapRadiusJitter: 0.015
+    sizeJitter: 0.05
+    swayMax: 0.05
+    swaySlotRatio: 0.12
+    swaySpeedMin: 0.2
+    swaySpeedMax: 0.32
     initialBelow: 1.2
     initialAbove: 3
-    spawnAhead: 8
-    backfillBehind: 4
+    spawnAhead: 4
+    backfillBehind: 2
     minGenerationRadius: 0.18
     recycleAbove: 40
   typeWeights:
