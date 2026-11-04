@@ -73,7 +73,7 @@ namespace BouncingPlanet
                 // 钩锁目标即使处于受击冷却也要检测，否则会被钩锁拉穿；
                 // 上升撞碎状态下同理，否则高速上升会从冷却中的星球穿过去。
                 bool isHookTarget = skills != null && skills.HookTarget == planet;
-                if (!planet.alive ||
+                if (!planet.alive || planet.smashImmunity > 0f ||
                     (planet.cooldown > 0f && !isHookTarget && !ascendingSmashCandidate))
                 {
                     continue;
@@ -84,8 +84,18 @@ namespace BouncingPlanet
                     continue;
 
                 Vector2 center = planet.WorldPosition;
+                float contactRadius = playerRadius + planet.worldRadius;
+
+                // 刚从这颗球弹起、还处在碰撞体内部时，不重复解析碰撞，
+                // 否则上升速度会被误判成“上升撞碎”或垂直墙反弹。
+                if (state.radialVelocity >= 0f &&
+                    Vector2.Distance(previous, center) <= contactRadius)
+                {
+                    continue;
+                }
+
                 float distance = SegmentCircleDistance(previous, current, center);
-                if (distance > playerRadius + planet.worldRadius)
+                if (distance > contactRadius)
                     continue;
 
                 Resolve(planet, state, center, current);
@@ -186,6 +196,7 @@ namespace BouncingPlanet
                         // 冰星使用专用弹力加成，不再被通用的 bounceMultiplier 覆盖。
                         iceRaw *= Mathf.Max(0f, def.iceBounceBonus);
                         state.radialVelocity = config.ClampLaunch(iceRaw);
+                        ApplyBounceSmashGrace(planet);
                         events.Emit(new GameEvent(GameEventType.Bounce, impactPoint,
                             impactSpeed, def.id, heavy: heavy));
                     }
@@ -217,6 +228,7 @@ namespace BouncingPlanet
                         float raw = impactSpeed * config.bounceGain + config.baseImpulse;
                         raw *= Mathf.Max(0f, def.bounceMultiplier);
                         state.radialVelocity = config.ClampLaunch(raw);
+                        ApplyBounceSmashGrace(planet);
                         AddScore(def);
                         events.Emit(new GameEvent(GameEventType.Bounce, impactPoint,
                             impactSpeed, def.id, heavy: heavy));
@@ -230,6 +242,23 @@ namespace BouncingPlanet
                     }
                     return;
             }
+        }
+
+        /// <summary>
+        /// 下降撞球弹起后，给这颗星球几帧撞碎免疫，让玩家先离开碰撞体。
+        /// 否则下一 tick 径向速度已变正，会被误判为上升撞碎。
+        /// </summary>
+        private void ApplyBounceSmashGrace(PlanetRuntime planet)
+        {
+            if (planet == null || config == null ||
+                config.bounceSmashGraceFrames <= 0)
+            {
+                return;
+            }
+
+            float seconds = config.bounceSmashGraceFrames /
+                (float)Mathf.Max(1, config.simulationHz);
+            planet.smashImmunity = Mathf.Max(planet.smashImmunity, seconds);
         }
 
         private void AddScore(PlanetTypeDef def)

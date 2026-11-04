@@ -15,6 +15,7 @@ namespace BouncingPlanet
         public float worldRadius;
         public bool alive = true;
         public float cooldown;
+        public float smashImmunity;
         public float flash;
         public float swayPhase;
         public float swaySpeed;

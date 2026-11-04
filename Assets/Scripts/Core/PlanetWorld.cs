@@ -302,6 +302,8 @@ namespace BouncingPlanet
                 PlanetRuntime planet = planets[i];
                 if (planet.cooldown > 0f)
                     planet.cooldown -= dt;
+                if (planet.smashImmunity > 0f)
+                    planet.smashImmunity = Mathf.Max(0f, planet.smashImmunity - dt);
                 if (planet.flash > 0f)
                     planet.flash = Mathf.Max(0f, planet.flash - dt * 2.5f);
                 if (planet.deathViewTimer > 0f)

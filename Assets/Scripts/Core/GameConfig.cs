@@ -248,6 +248,10 @@ namespace BouncingPlanet
         [Tunable("Collision", 0.1f, 2f, 0.05f, "云朵受击冷却")]
         public float cloudHitCooldown = 0.8f;
 
+        [Tunable("Collision", 0f, 30f, 1f, "下降反弹后撞碎免疫帧")]
+        [Tooltip("下降撞球弹起后，给该星球几帧免疫，避免下一 tick 被误判为上升撞碎。")]
+        public int bounceSmashGraceFrames = 6;
+
         [Header("碰撞横向冲量 Collision Lateral")]
         [Tunable("Collision", 0f, 1f, 1f, "启用横向冲量")]
         [Tooltip("只对普通星（含闪亮星）和冰冰星生效；云朵、炸弹、无双不生效。")]
@@ -514,6 +518,7 @@ namespace BouncingPlanet
             generationSeed = 20261101;
             planetHitCooldown = 0.28f;
             cloudHitCooldown = 0.8f;
+            bounceSmashGraceFrames = 6;
             collisionLateralEnabled = true;
             collisionLateralFactor = 1.2f;
             collisionLateralMaxSpeed = 1.2f;
@@ -587,6 +592,7 @@ namespace BouncingPlanet
             playerTrailTime = Mathf.Max(0.01f, playerTrailTime);
             playerTrailWidth = Mathf.Max(0.0001f, playerTrailWidth);
 
+            bounceSmashGraceFrames = Mathf.Clamp(bounceSmashGraceFrames, 0, 60);
             collisionLateralFactor = Mathf.Max(0f, collisionLateralFactor);
             collisionLateralMaxSpeed = Mathf.Max(0f, collisionLateralMaxSpeed);
             normalSmashSpeedThreshold = Mathf.Max(0f, normalSmashSpeedThreshold);

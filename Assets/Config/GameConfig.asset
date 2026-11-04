@@ -81,6 +81,7 @@ MonoBehaviour:
   generationSeed: 20261101
   planetHitCooldown: 0.28
   cloudHitCooldown: 0.8
+  bounceSmashGraceFrames: 6
   collisionLateralEnabled: 1
   collisionLateralFactor: 1.2
   collisionLateralMaxSpeed: 1.2
