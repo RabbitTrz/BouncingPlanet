@@ -40,6 +40,8 @@ namespace BouncingPlanet
         private SpriteStateMachine playerStateMachine;
         private Transform holeBody;
         private Transform holeGlow;
+        private BlackHoleView blackHoleView;
+        private TiledBackgroundView backgroundView;
 
         private readonly List<StarLayer> starLayers = new List<StarLayer>();
         private FeedbackDirector feedback;
@@ -76,8 +78,10 @@ namespace BouncingPlanet
             worldRoot.SetParent(transform, false);
 
             CreateBlackHole();
+            CreateBackground();
             CreatePlayer();
-            CreateStarfield();
+            if (backgroundView == null)
+                CreateStarfield();
             CreateGoalRing();
 
             if (player != null)
@@ -101,6 +105,10 @@ namespace BouncingPlanet
                 Destroy(playerTrailMaterial);
             if (goalRingMaterial != null)
                 Destroy(goalRingMaterial);
+            if (backgroundView != null)
+                Destroy(backgroundView.gameObject);
+            if (blackHoleView != null)
+                Destroy(blackHoleView.gameObject);
         }
 
         private void CreateGoalRing()
@@ -145,10 +153,35 @@ namespace BouncingPlanet
 
         private void CreateBlackHole()
         {
+            GameObject holeObject = new GameObject("BlackHole");
+            holeObject.transform.SetParent(worldRoot, false);
+            BlackHoleView view = holeObject.AddComponent<BlackHoleView>();
+            if (view.Initialize(config))
+            {
+                blackHoleView = view;
+                return;
+            }
+
+            Destroy(holeObject);
+
+            // 美术缺失时回退到原来的程序化圆 + 光晕。
             holeGlow = CreateSprite("BlackHoleGlow", ProceduralSprites.Circle,
                 new Color(0.55f, 0.18f, 0.9f, 0.18f), -20, worldRoot);
             holeBody = CreateSprite("BlackHoleBody", ProceduralSprites.Circle,
                 Color.black, -10, worldRoot);
+        }
+
+        private void CreateBackground()
+        {
+            GameObject backgroundObject = new GameObject("TiledBackground");
+            TiledBackgroundView view = backgroundObject.AddComponent<TiledBackgroundView>();
+            if (view.Initialize(bootstrap))
+            {
+                backgroundView = view;
+                return;
+            }
+
+            Destroy(backgroundObject);
         }
 
         private void CreatePlayer()
@@ -459,6 +492,10 @@ namespace BouncingPlanet
             if (!initialized)
                 return;
 
+            // 原生 HUD 存在时，旧的分数文字和操作提示不再绘制。
+            if (GameHudView.Instance != null)
+                return;
+
             if (hintStyle == null)
             {
                 hintStyle = new GUIStyle(GUI.skin.label)
@@ -468,8 +505,8 @@ namespace BouncingPlanet
                 hintStyle.normal.textColor = new Color(0.82f, 0.9f, 1f, 0.85f);
             }
 
-            GUI.Label(new Rect(16f, Screen.height - 38f, 900f, 28f),
-                "先点击 Game 视图 → A/D 环绕 · H 锁定半径 · R 重生 · F1 调试 · T 调参",
+            GUI.Label(new Rect(16f, Screen.height - 38f, 980f, 28f),
+                "先点击 Game 视图 → A/D 环绕 · H 锁定半径 · B 背景有线/无线 · R 重生 · F1 调试 · T 调参",
                 hintStyle);
 
             if (config != null && config.showScoreHud && score != null)

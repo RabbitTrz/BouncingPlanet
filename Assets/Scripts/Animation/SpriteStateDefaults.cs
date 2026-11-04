@@ -80,13 +80,42 @@ namespace BouncingPlanet
             profile.name = "Runtime_PlanetStates_" + def.name;
             profile.hideFlags = HideFlags.DontSave;
             profile.defaultState = "Idle";
-            profile.AddState(set.idle);
+            profile.AddState(CreateIdleState(def, set.idle));
             if (set.hit != null)
                 profile.AddState(set.hit);
             profile.AddState(IsShatterUsable(set.shattered)
                 ? set.shattered
                 : CreateShatterFallback(def));
             return profile;
+        }
+
+        /// <summary>
+        /// 开启待机摆动时，复制一份 Idle 状态并清掉呼吸缩放曲线；
+        /// 摆动本身由 SpriteStateMachine 叠加，不修改美术资产里的原始曲线。
+        /// </summary>
+        private static SpriteStateDefinition CreateIdleState(
+            PlanetTypeDef def, SpriteStateDefinition source)
+        {
+            if (source == null || def == null || !def.idleSwayEnabled)
+                return source;
+
+            return new SpriteStateDefinition
+            {
+                stateName = source.stateName,
+                frames = source.frames,
+                fps = source.fps,
+                loop = source.loop,
+                autoReturn = source.autoReturn,
+                durationOverride = source.durationOverride,
+                baseOffset = source.baseOffset,
+                baseScale = source.baseScale,
+                baseRotation = source.baseRotation,
+                offsetX = source.offsetX,
+                offsetY = source.offsetY,
+                scaleX = AnimationCurve.Constant(0f, 1f, 1f),
+                scaleY = AnimationCurve.Constant(0f, 1f, 1f),
+                rotation = AnimationCurve.Constant(0f, 1f, 0f)
+            };
         }
 
         /// <summary>
@@ -244,13 +273,18 @@ namespace BouncingPlanet
             profile.hideFlags = HideFlags.DontSave;
             profile.defaultState = "Idle";
 
+            bool useSway = def != null && def.idleSwayEnabled;
             profile.AddState(new SpriteStateDefinition
             {
                 stateName = "Idle",
                 loop = true,
                 durationOverride = 1.5f,
-                scaleX = Curve(0f, 1f, 0.5f, 1.025f, 1f, 1f),
-                scaleY = Curve(0f, 1f, 0.5f, 0.985f, 1f, 1f)
+                scaleX = useSway
+                    ? AnimationCurve.Constant(0f, 1f, 1f)
+                    : Curve(0f, 1f, 0.5f, 1.025f, 1f, 1f),
+                scaleY = useSway
+                    ? AnimationCurve.Constant(0f, 1f, 1f)
+                    : Curve(0f, 1f, 0.5f, 0.985f, 1f, 1f)
             });
             profile.AddState(new SpriteStateDefinition
             {

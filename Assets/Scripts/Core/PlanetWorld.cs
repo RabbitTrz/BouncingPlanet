@@ -16,6 +16,20 @@ namespace BouncingPlanet
             public float radius;
             public LineRenderer line;
             public Material material;
+
+            // 仅无尽模式局部弧生成使用。
+            public bool local;
+            public int seedKey;
+            public int slotCount;
+            public float phase;
+            public float swayAmplitude;
+            public float gapRadius;
+            public int gapSlotCount;
+            public float gapPhase;
+            public readonly Dictionary<int, PlanetRuntime> slots =
+                new Dictionary<int, PlanetRuntime>();
+            public readonly Dictionary<int, PlanetRuntime> gapSlots =
+                new Dictionary<int, PlanetRuntime>();
         }
 
         private const float PlanetViewRadius = 4.0f;
@@ -43,6 +57,9 @@ namespace BouncingPlanet
         private float lastBandPixelsPerUnit;
         private bool initialized;
         private bool useFixedLayout;
+        private bool useLocalArcs;
+        private readonly HashSet<int> desiredSlots = new HashSet<int>();
+        private readonly List<int> removeSlots = new List<int>();
 
         public IReadOnlyList<PlanetRuntime> Planets => planets;
         public int TotalCount => planets.Count;
@@ -119,6 +136,7 @@ namespace BouncingPlanet
                 ? currentLevel.startRadius
                 : config.startRadius;
             useFixedLayout = currentLevel != null && !currentLevel.IsEndless;
+            useLocalArcs = currentLevel != null && currentLevel.IsEndless;
 
             if (useFixedLayout)
             {
@@ -207,6 +225,8 @@ namespace BouncingPlanet
                 Extend(playerRadius);
                 CleanupFarAbove(playerRadius);
             }
+            if (useLocalArcs)
+                UpdateLocalArcs(player.State.WorldAngle);
 
             for (int i = 0; i < planets.Count; i++)
             {
@@ -266,6 +286,7 @@ namespace BouncingPlanet
             {
                 if (bands[i].radius <= keep)
                     continue;
+                RemoveBandPlanets(bands[i]);
                 DestroyBand(bands[i]);
                 bands.RemoveAt(i);
             }
@@ -283,6 +304,12 @@ namespace BouncingPlanet
             {
                 if (Mathf.Abs(bands[i].radius - radius) < 0.001f)
                     return;
+            }
+
+            if (useLocalArcs)
+            {
+                AddLocalBand(radius);
+                return;
             }
 
             AddBandView(radius);
@@ -323,6 +350,241 @@ namespace BouncingPlanet
             }
         }
 
+        private void AddLocalBand(float radius)
+        {
+            BandView band = AddBandView(radius);
+            band.local = true;
+            band.seedKey = Mathf.RoundToInt(radius * 1000f);
+
+            float spacing = Mathf.Max(0.1f, generation.targetArcSpacing);
+            float density = GetLocalDensity(radius);
+            int slots = Mathf.RoundToInt(
+                Mathf.PI * 2f * radius / spacing * density);
+            band.slotCount = Mathf.Max(generation.minPlanetsPerRing, Mathf.Max(1, slots));
+            band.phase = Hash01(generation.seed, band.seedKey, 0) * Mathf.PI * 2f;
+            band.swayAmplitude = generation.GetSwayAmplitude(band.slotCount);
+
+            float gapRadius = radius -
+                Mathf.Max(0.05f, generation.laneSpacing) * 0.5f;
+            if (gapRadius >= generation.minGenerationRadius &&
+                generation.gapCountMultiplier > 0f)
+            {
+                band.gapRadius = gapRadius;
+                band.gapSlotCount = Mathf.Max(1, Mathf.RoundToInt(
+                    band.slotCount * generation.gapCountMultiplier));
+                band.gapPhase = Hash01(generation.seed, band.seedKey, 1) *
+                                Mathf.PI * 2f;
+            }
+
+            UpdateBandWindow(band, player.State.WorldAngle);
+        }
+
+        private float GetLocalDensity(float radius)
+        {
+            float density = Mathf.Max(0.01f, generation.densityMultiplier);
+            if (currentLevel != null && currentLevel.IsEndless &&
+                currentLevel.endless != null &&
+                currentLevel.endless.densityByRadius != null)
+            {
+                float curve = currentLevel.endless.densityByRadius.Evaluate(radius);
+                density *= Mathf.Clamp(curve, 0.1f,
+                    currentLevel.endless.maxDensity);
+            }
+            return density;
+        }
+
+        private void UpdateLocalArcs(float playerAngle)
+        {
+            if (!useLocalArcs)
+                return;
+
+            float halfArc = GetScreenHalfWidthWorld() +
+                            Mathf.Max(0f, generation.arcWindowMargin);
+            for (int i = 0; i < bands.Count; i++)
+            {
+                BandView band = bands[i];
+                if (band.local)
+                    UpdateBandWindow(band, playerAngle, halfArc);
+            }
+        }
+
+        private void UpdateBandWindow(BandView band, float playerAngle)
+        {
+            float halfArc = GetScreenHalfWidthWorld() +
+                            Mathf.Max(0f, generation.arcWindowMargin);
+            UpdateBandWindow(band, playerAngle, halfArc);
+        }
+
+        private void UpdateBandWindow(BandView band, float playerAngle, float halfArc)
+        {
+            UpdateSlotWindow(band, playerAngle, halfArc, false);
+            if (band.gapSlotCount > 0)
+                UpdateSlotWindow(band, playerAngle, halfArc, true);
+        }
+
+        private void UpdateSlotWindow(BandView band, float playerAngle,
+            float halfArc, bool gap)
+        {
+            int count = gap ? band.gapSlotCount : band.slotCount;
+            if (count <= 0)
+                return;
+
+            float radius = gap ? band.gapRadius : band.radius;
+            float phase = gap ? band.gapPhase : band.phase;
+            float slotArc = Mathf.Max(0.0001f,
+                Mathf.PI * 2f * radius / count);
+            int halfCount = Mathf.CeilToInt(halfArc / slotArc);
+
+            desiredSlots.Clear();
+            if (halfCount * 2 + 1 >= count)
+            {
+                for (int i = 0; i < count; i++)
+                    desiredSlots.Add(i);
+            }
+            else
+            {
+                int center = IndexForAngle(playerAngle, phase, count);
+                for (int i = -halfCount; i <= halfCount; i++)
+                {
+                    int index = (center + i) % count;
+                    if (index < 0)
+                        index += count;
+                    desiredSlots.Add(index);
+                }
+            }
+
+            Dictionary<int, PlanetRuntime> active =
+                gap ? band.gapSlots : band.slots;
+            foreach (int slot in desiredSlots)
+            {
+                if (active.ContainsKey(slot))
+                    continue;
+                PlanetRuntime planet = CreateLocalPlanet(band, slot, gap);
+                if (planet != null)
+                    active[slot] = planet;
+            }
+
+            removeSlots.Clear();
+            foreach (KeyValuePair<int, PlanetRuntime> pair in active)
+            {
+                if (!desiredSlots.Contains(pair.Key))
+                    removeSlots.Add(pair.Key);
+            }
+            for (int i = 0; i < removeSlots.Count; i++)
+            {
+                int key = removeSlots[i];
+                if (!active.TryGetValue(key, out PlanetRuntime planet))
+                    continue;
+                active.Remove(key);
+                RemovePlanet(planet);
+            }
+        }
+
+        private static int IndexForAngle(float playerAngle, float phase, int count)
+        {
+            float relative = PolarMath.NormalizeAngle(playerAngle - phase);
+            int index = Mathf.FloorToInt(relative / (Mathf.PI * 2f / count));
+            index %= count;
+            if (index < 0)
+                index += count;
+            return index;
+        }
+
+        private PlanetRuntime CreateLocalPlanet(BandView band, int slot, bool gap)
+        {
+            int count = gap ? band.gapSlotCount : band.slotCount;
+            float radius = gap ? band.gapRadius : band.radius;
+            float phase = gap ? band.gapPhase : band.phase;
+            float slotAngle = Mathf.PI * 2f / Mathf.Max(1, count);
+            int seed = Hash(generation.seed, band.seedKey,
+                gap ? -slot - 1 : slot);
+            var slotRng = new System.Random(seed);
+
+            PlanetTypeId typeId = PickType(slotRng);
+            PlanetTypeDef def = bootstrap.GetPlanetType(typeId);
+            if (def == null)
+                return null;
+
+            float angleOffset = gap
+                ? ((float)slotRng.NextDouble() - 0.5f) * slotAngle * 0.4f
+                : 0f;
+            float baseAngle = phase + slot * slotAngle + angleOffset;
+            if (InSpawnClearZone(radius, baseAngle))
+                return null;
+            float swayAmplitude = gap
+                ? Mathf.Min(generation.swayMax, 0.08f)
+                : band.swayAmplitude;
+            float swaySpeed = swayAmplitude > 0f
+                ? Mathf.Lerp(generation.swaySpeedMin, generation.swaySpeedMax,
+                    (float)slotRng.NextDouble())
+                : 0f;
+            float swayPhase = (float)slotRng.NextDouble() * Mathf.PI * 2f;
+            float sizeRoll = 1f +
+                ((float)slotRng.NextDouble() * 2f - 1f) * generation.sizeJitter;
+            float worldRadius = Mathf.Max(0.005f,
+                def.baseSize * config.sizeScale * Mathf.Max(0.05f, sizeRoll));
+
+            PlanetRuntime planet = new PlanetRuntime
+            {
+                def = def,
+                radius = radius,
+                baseAngle = baseAngle,
+                angle = baseAngle + Mathf.Sin(swayPhase) * swayAmplitude,
+                worldRadius = worldRadius,
+                swayPhase = swayPhase,
+                swaySpeed = swaySpeed,
+                swayAmplitude = swayAmplitude
+            };
+            planets.Add(planet);
+            return planet;
+        }
+
+        private void RemovePlanet(PlanetRuntime planet)
+        {
+            if (planet == null)
+                return;
+            ReleasePlanetView(planet);
+            planets.Remove(planet);
+        }
+
+        private void RemoveBandPlanets(BandView band)
+        {
+            if (band == null)
+                return;
+            foreach (PlanetRuntime planet in band.slots.Values)
+                RemovePlanet(planet);
+            foreach (PlanetRuntime planet in band.gapSlots.Values)
+                RemovePlanet(planet);
+            band.slots.Clear();
+            band.gapSlots.Clear();
+        }
+
+        private float GetScreenHalfWidthWorld()
+        {
+            Camera camera = Camera.main;
+            if (camera != null && camera.orthographic)
+                return camera.orthographicSize * camera.aspect;
+            return config.cameraOrthographicSize * 1.78f;
+        }
+
+        private static int Hash(int seed, int a, int b)
+        {
+            unchecked
+            {
+                int value = 17;
+                value = value * 31 + seed;
+                value = value * 31 + a;
+                value = value * 31 + b;
+                return value;
+            }
+        }
+
+        private static float Hash01(int seed, int a, int b)
+        {
+            uint value = (uint)Hash(seed, a, b) & 0x7fffffffu;
+            return value / (float)0x7fffffff;
+        }
+
         private int GetRingCount(float radius)
         {
             int count = generation.GetRingCount(radius);
@@ -349,6 +611,11 @@ namespace BouncingPlanet
 
         private PlanetTypeId PickType()
         {
+            return PickType(rng);
+        }
+
+        private PlanetTypeId PickType(System.Random source)
+        {
             if (currentLevel != null && currentLevel.typeWeights != null &&
                 currentLevel.typeWeights.Count > 0)
             {
@@ -362,7 +629,7 @@ namespace BouncingPlanet
 
                 if (levelTotal > 0f)
                 {
-                    float levelRoll = (float)rng.NextDouble() * levelTotal;
+                    float levelRoll = (float)source.NextDouble() * levelTotal;
                     for (int i = 0; i < currentLevel.typeWeights.Count; i++)
                     {
                         LevelTypeWeight entry = currentLevel.typeWeights[i];
@@ -389,7 +656,7 @@ namespace BouncingPlanet
             if (total <= 0f)
                 return PlanetTypeId.Rock;
 
-            float roll = (float)rng.NextDouble() * total;
+            float roll = (float)source.NextDouble() * total;
             for (int i = 0; i < types.Length; i++)
             {
                 PlanetTypeDef def = types[i];
@@ -485,7 +752,7 @@ namespace BouncingPlanet
             return Mathf.Abs(PolarMath.NormalizeAngle(angle)) < 0.28f;
         }
 
-        private void AddBandView(float radius)
+        private BandView AddBandView(float radius)
         {
             GameObject go = new GameObject("Band_" + radius.ToString("0.00"));
             go.transform.SetParent(bandRoot, false);
@@ -521,12 +788,14 @@ namespace BouncingPlanet
                     0f));
             }
 
-            bands.Add(new BandView
+            BandView band = new BandView
             {
                 radius = radius,
                 line = line,
                 material = material
-            });
+            };
+            bands.Add(band);
+            return band;
         }
 
         private void SyncViews()
@@ -601,7 +870,8 @@ namespace BouncingPlanet
             for (int i = 0; i < bands.Count; i++)
             {
                 BandView band = bands[i];
-                band.line.enabled = Mathf.Abs(band.radius - playerRadius) <= RingVisibleRadius;
+                band.line.enabled = config.showRingLines &&
+                    Mathf.Abs(band.radius - playerRadius) <= RingVisibleRadius;
             }
         }
 

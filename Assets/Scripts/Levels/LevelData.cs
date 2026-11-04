@@ -36,6 +36,13 @@ namespace BouncingPlanet
         public float backfillBehind = 4f;
         public float minGenerationRadius = 0.18f;
         public float recycleAbove = 40f;
+        [LabelText("目标弧长间距（无尽）")]
+        [Tooltip("无尽关按这个屏幕弧长间距计算槽位，保持不同半径下的星球密度。")]
+        [Min(0.1f)] public float targetArcSpacing = 1.40f;
+
+        [LabelText("弧窗口额外边距（无尽）")]
+        [Tooltip("只实例化玩家附近角度窗口；边距越大越不容易在屏幕边缘看到生成/回收。")]
+        [Min(0f)] public float arcWindowMargin = 2.00f;
 
         public int GetRingCount(float radius)
         {

@@ -100,6 +100,9 @@ namespace BouncingPlanet
         [Tunable("Audio", 0f, 1f, 0.01f, "钩锁重击音效音量")]
         public float sfxHookVolume = 0.28f;
 
+        [Tunable("Audio", 0f, 1f, 0.01f, "冷却完成音效音量")]
+        public float sfxReadyVolume = 0.40f;
+
         [Header("其他 Other")]
         [Tunable("Other", 0f, 2f, 0.01f, "上升挡回震屏")]
         public float ascendBlockShake = 0.35f;
@@ -176,6 +179,7 @@ namespace BouncingPlanet
             sfxBombVolume = 0.60f;
             sfxDeathVolume = 0.50f;
             sfxHookVolume = 0.28f;
+            sfxReadyVolume = 0.40f;
 
             ascendBlockShake = 0.35f;
             screenFlashDecay = 2.20f;
@@ -219,6 +223,7 @@ namespace BouncingPlanet
             sfxBombVolume = Mathf.Clamp01(sfxBombVolume);
             sfxDeathVolume = Mathf.Clamp01(sfxDeathVolume);
             sfxHookVolume = Mathf.Clamp01(sfxHookVolume);
+            sfxReadyVolume = Mathf.Clamp01(sfxReadyVolume);
 
             ascendBlockShake = Mathf.Max(0f, ascendBlockShake);
             screenFlashDecay = Mathf.Max(0f, screenFlashDecay);

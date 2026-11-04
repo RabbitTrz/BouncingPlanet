@@ -160,6 +160,22 @@ namespace BouncingPlanet
         [Tunable("Planet", 0f, 10f, 0.1f, "生成权重")]
         public float spawnWeight = 7f;
 
+        [Header("待机摆动 Idle Sway")]
+        [Tunable("Planet", 0f, 15f, 0.1f, "待机摆动角度")]
+        [Tooltip("轻度左右旋转的角度；开启摆动时会替换 Idle 的呼吸缩放。")]
+        public float idleSwayAngle = 2.5f;
+
+        [Tunable("Planet", 0.1f, 5f, 0.05f, "待机摆动频率 Hz")]
+        [Tooltip("默认约等于黑洞 7 帧 / 10fps 的循环频率。")]
+        public float idleSwayFrequency = 1.43f;
+
+        [Tunable("Planet", 2f, 16f, 1f, "待机摆动帧数")]
+        [Tooltip("一个循环用几个离散姿势；7 帧配 1.43Hz 约等于 10fps。")]
+        public int idleSwaySteps = 7;
+
+        [Tunable("Planet", 0f, 1f, 1f, "启用待机摆动")]
+        public bool idleSwayEnabled = true;
+
         [Header("弹跳 / 分数 Bounce / Score")]
         [Tunable("Planet", 0f, 3f, 0.01f, "弹力倍率")]
         [Tooltip("通用弹力倍率；冰冰星使用下面的冰星弹力加成。")]
@@ -209,6 +225,10 @@ namespace BouncingPlanet
             visualProfile = null;
             animationStates = new PlanetAnimationSet();
             animationStates.EnsureDefaults();
+            idleSwayAngle = 2.5f;
+            idleSwayFrequency = 1.43f;
+            idleSwaySteps = 7;
+            idleSwayEnabled = true;
 
             switch (type)
             {
@@ -273,6 +293,9 @@ namespace BouncingPlanet
             if (animationStates == null)
                 animationStates = new PlanetAnimationSet();
             animationStates.EnsureDefaults();
+            idleSwayAngle = Mathf.Clamp(idleSwayAngle, 0f, 15f);
+            idleSwayFrequency = Mathf.Max(0.01f, idleSwayFrequency);
+            idleSwaySteps = Mathf.Clamp(idleSwaySteps, 2, 16);
         }
     }
 }

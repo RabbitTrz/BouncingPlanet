@@ -480,6 +480,10 @@ MonoBehaviour:
   visualProfile: {fileID: 0}
   baseSize: 0.2
   spawnWeight: 7
+  idleSwayAngle: 3
+  idleSwayFrequency: 1.43
+  idleSwaySteps: 3
+  idleSwayEnabled: 1
   bounceMultiplier: 1
   scoreMultiplier: 1
   iceBounceBonus: 1.15

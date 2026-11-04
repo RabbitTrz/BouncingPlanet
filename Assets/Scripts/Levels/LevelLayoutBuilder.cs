@@ -50,17 +50,23 @@ namespace BouncingPlanet
             if (radius < level.generation.minGenerationRadius)
                 return;
 
-            int count = level.generation.GetRingCount(radius);
-            if (level.IsEndless && level.endless != null)
+            int count;
+            if (level.IsEndless)
             {
-                float density = level.endless.densityByRadius != null
-                    ? level.endless.densityByRadius.Evaluate(radius)
-                    : 1f;
-                density = Mathf.Clamp(density, 0.1f, level.endless.maxDensity);
-                count = Mathf.RoundToInt(count * density);
-                count = Mathf.Clamp(count,
-                    level.generation.minPlanetsPerRing,
-                    level.generation.maxPlanetsPerRing);
+                float density = level.generation.densityMultiplier;
+                if (level.endless != null && level.endless.densityByRadius != null)
+                {
+                    float curve = level.endless.densityByRadius.Evaluate(radius);
+                    density *= Mathf.Clamp(curve, 0.1f, level.endless.maxDensity);
+                }
+                float spacing = Mathf.Max(0.1f, level.generation.targetArcSpacing);
+                count = Mathf.RoundToInt(
+                    Mathf.PI * 2f * radius / spacing * Mathf.Max(0.01f, density));
+                count = Mathf.Max(level.generation.minPlanetsPerRing, count);
+            }
+            else
+            {
+                count = level.generation.GetRingCount(radius);
             }
 
             if (count <= 0)
@@ -80,7 +86,9 @@ namespace BouncingPlanet
             if (gapRadius < level.generation.minGenerationRadius)
                 return;
 
-            int gapCount = level.generation.GetGapCount(radius);
+            int gapCount = level.IsEndless
+                ? Mathf.RoundToInt(count * level.generation.gapCountMultiplier)
+                : level.generation.GetGapCount(radius);
             float gapSway = Mathf.Min(level.generation.swayMax, 0.08f);
             for (int i = 0; i < gapCount; i++)
             {

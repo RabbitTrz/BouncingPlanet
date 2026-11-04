@@ -23,6 +23,10 @@ namespace BouncingPlanet
 
         private void OnGUI()
         {
+            // 场景里放了原生 uGUI HUD 后，旧的文字 HUD 自动让位。
+            if (GameHudView.Instance != null)
+                return;
+
             if (bootstrap == null || bootstrap.skills == null || bootstrap.gameConfig == null)
                 return;
 

@@ -43,6 +43,16 @@ namespace BouncingPlanet
             SpriteStateProfile profile = SpriteStateDefaults.GetPlanetProfile(def);
             stateMachine.Initialize(profile, body, visualRoot);
             stateMachine.SetState("Idle");
+            stateMachine.idleSwayAngle =
+                def != null && def.idleSwayEnabled ? def.idleSwayAngle : 0f;
+            stateMachine.idleSwayFrequency = def != null
+                ? Mathf.Max(0.01f, def.idleSwayFrequency)
+                : 0f;
+            stateMachine.idleSwaySteps = def != null
+                ? Mathf.Max(2, def.idleSwaySteps)
+                : 7;
+            stateMachine.idleSwayStepOffset = Random.Range(
+                0, stateMachine.idleSwaySteps);
             ApplyDiameter();
         }
 
@@ -71,6 +81,20 @@ namespace BouncingPlanet
         public void SetState(string stateName)
         {
             stateMachine?.SetState(stateName);
+        }
+
+        private void LateUpdate()
+        {
+            if (definition == null || stateMachine == null)
+                return;
+
+            // 允许 T 面板实时调参；相位在 Bind 时已经随机分配，这里只同步幅度/频率。
+            stateMachine.idleSwayAngle = definition.idleSwayEnabled
+                ? definition.idleSwayAngle
+                : 0f;
+            stateMachine.idleSwayFrequency = Mathf.Max(
+                0.01f, definition.idleSwayFrequency);
+            stateMachine.idleSwaySteps = Mathf.Max(2, definition.idleSwaySteps);
         }
 
         private void ApplyDiameter()

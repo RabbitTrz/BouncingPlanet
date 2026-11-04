@@ -58,6 +58,32 @@ namespace BouncingPlanet
         [LabelText("相机背景色")]
         public Color backgroundColor = new Color(0.02f, 0.024f, 0.04f, 1f);
 
+        [Header("背景 Background")]
+        [Tunable("Background", 0f, 1f, 1f, "启用循环背景")]
+        [Tooltip("关闭后显示相机纯色背景，不再绘制星空平铺图。")]
+        public bool backgroundEnabled = true;
+
+        [Tunable("Background", 0f, 1f, 1f, "使用带线版本")]
+        [Tooltip("运行时按 B 也可切换；带线版本带水平轨道线。")]
+        public bool backgroundUseLineVariant = false;
+
+        [Tunable("Background", 0f, 0.95f, 0.01f, "背景视差强度")]
+        [Tooltip("0 = 背景完全跟随相机不动；数值越大，背景相对相机反向滚动越明显。")]
+        public float backgroundParallax = 0.35f;
+
+        [Tunable("Background", 1f, 6f, 0.05f, "背景平铺世界尺寸")]
+        [Tooltip("一张 512 背景图在世界上覆盖的边长；越小星点越密。")]
+        public float backgroundTileSize = 2.4f;
+
+        [Header("黑洞 Black Hole")]
+        [Tunable("Black Hole", 0.1f, 2f, 0.01f, "视觉直径")]
+        [Tooltip("带纸边黑洞的外径；中央黑色区域会随比例变化。")]
+        public float blackHoleVisualDiameter = 0.52f;
+
+        [Tunable("Black Hole", 1f, 30f, 1f, "动画帧率")]
+        [Tooltip("黑洞 7 帧循环动画的播放帧率。")]
+        public float blackHoleAnimationFps = 10f;
+
         [Header("玩家移动 Player Movement")]
         [Tunable("Player", 0.02f, 0.4f, 0.005f, "玩家碰撞半径")]
         [Tooltip("玩家碰撞半径，乘统一尺寸缩放后得到世界半径。")]
@@ -150,6 +176,10 @@ namespace BouncingPlanet
         public bool useLaunchMax = false;
 
         [Header("星环与生成 Star Rings / Generation")]
+        [Tunable("World", 0f, 1f, 1f, "显示星环线")]
+        [Tooltip("关闭后不绘制每条轨道上的参考圆环线，只保留星球。")]
+        public bool showRingLines = false;
+
         [Tunable("World", 0.1f, 2f, 0.01f, "轨道间距")]
         public float laneSpacing = 0.50f;
 
@@ -238,6 +268,34 @@ namespace BouncingPlanet
 
         [Tunable("Smash", 0.5f, 10f, 0.1f, "撞碎速度阈值")]
         public float normalSmashSpeedThreshold = 2.0f;
+
+        [Header("撞碎速度线 Smash Speed Lines")]
+        [Tunable("Smash", 0f, 1f, 1f, "启用撞碎速度线")]
+        [Tooltip("达到普通撞碎速度阈值时，在屏幕两侧显示向下滑动的白线。")]
+        public bool smashSpeedLinesEnabled = true;
+
+        [Tunable("Smash", 4f, 40f, 1f, "速度线数量")]
+        public int smashSpeedLineCount = 18;
+
+        [Tunable("Smash", 0.05f, 3f, 0.05f, "速度线滑动速度")]
+        [Tooltip("以屏幕高度/秒为单位。")]
+        public float smashSpeedLineSpeed = 0.9f;
+
+        [Tunable("Smash", 10f, 400f, 1f, "速度线最短长度")]
+        public float smashSpeedLineMinLength = 48f;
+
+        [Tunable("Smash", 20f, 600f, 1f, "速度线最长长度")]
+        public float smashSpeedLineMaxLength = 150f;
+
+        [Tunable("Smash", 1f, 8f, 0.5f, "速度线宽度")]
+        public float smashSpeedLineWidth = 2f;
+
+        [Tunable("Smash", 0f, 1f, 0.01f, "速度线透明度")]
+        public float smashSpeedLineAlpha = 0.55f;
+
+        [Tunable("Smash", 0.02f, 0.35f, 0.01f, "速度线侧边范围")]
+        [Tooltip("屏幕左右两侧各占屏幕宽度的比例。")]
+        public float smashSpeedLineSideBand = 0.16f;
 
         [Header("分数 Score")]
         [Tunable("Score", 0f, 100f, 1f, "碰撞得分")]
@@ -396,6 +454,12 @@ namespace BouncingPlanet
             cameraPixelsPerUnit = 360f;
             cameraOrthographicSize = 1f;
             backgroundColor = new Color(0.02f, 0.024f, 0.04f, 1f);
+            backgroundEnabled = true;
+            backgroundUseLineVariant = false;
+            backgroundParallax = 0.35f;
+            backgroundTileSize = 2.4f;
+            blackHoleVisualDiameter = 0.52f;
+            blackHoleAnimationFps = 10f;
 
             playerCollisionRadius = 0.085f;
             sizeScale = 0.5f;
@@ -427,6 +491,7 @@ namespace BouncingPlanet
             launchMaxFactor = 1.28f;
             useLaunchMax = false;
 
+            showRingLines = false;
             laneSpacing = 0.50f;
             ringCountMultiplier = 5.5f;
             minPlanetsPerRing = 6;
@@ -454,6 +519,14 @@ namespace BouncingPlanet
             collisionLateralMaxSpeed = 1.2f;
             normalSmashEnabled = true;
             normalSmashSpeedThreshold = 2.0f;
+            smashSpeedLinesEnabled = true;
+            smashSpeedLineCount = 18;
+            smashSpeedLineSpeed = 0.9f;
+            smashSpeedLineMinLength = 48f;
+            smashSpeedLineMaxLength = 150f;
+            smashSpeedLineWidth = 2f;
+            smashSpeedLineAlpha = 0.55f;
+            smashSpeedLineSideBand = 0.16f;
 
             normalPlanetScore = 10;
             musouScoreThreshold = 150;
@@ -491,6 +564,10 @@ namespace BouncingPlanet
 
             cameraPixelsPerUnit = Mathf.Max(1f, cameraPixelsPerUnit);
             cameraOrthographicSize = Mathf.Max(0.01f, cameraOrthographicSize);
+            backgroundParallax = Mathf.Clamp(backgroundParallax, 0f, 0.95f);
+            backgroundTileSize = Mathf.Max(0.1f, backgroundTileSize);
+            blackHoleVisualDiameter = Mathf.Max(0.01f, blackHoleVisualDiameter);
+            blackHoleAnimationFps = Mathf.Max(0.1f, blackHoleAnimationFps);
 
             playerCollisionRadius = Mathf.Max(0.001f, playerCollisionRadius);
             sizeScale = Mathf.Max(0.01f, sizeScale);
@@ -513,6 +590,14 @@ namespace BouncingPlanet
             collisionLateralFactor = Mathf.Max(0f, collisionLateralFactor);
             collisionLateralMaxSpeed = Mathf.Max(0f, collisionLateralMaxSpeed);
             normalSmashSpeedThreshold = Mathf.Max(0f, normalSmashSpeedThreshold);
+            smashSpeedLineCount = Mathf.Clamp(smashSpeedLineCount, 4, 40);
+            smashSpeedLineSpeed = Mathf.Max(0f, smashSpeedLineSpeed);
+            smashSpeedLineMinLength = Mathf.Max(1f, smashSpeedLineMinLength);
+            smashSpeedLineMaxLength = Mathf.Max(
+                smashSpeedLineMinLength, smashSpeedLineMaxLength);
+            smashSpeedLineWidth = Mathf.Max(0.5f, smashSpeedLineWidth);
+            smashSpeedLineAlpha = Mathf.Clamp01(smashSpeedLineAlpha);
+            smashSpeedLineSideBand = Mathf.Clamp(smashSpeedLineSideBand, 0.02f, 0.35f);
 
             if (maxPlanetsPerRing < minPlanetsPerRing)
                 maxPlanetsPerRing = minPlanetsPerRing;

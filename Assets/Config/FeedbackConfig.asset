@@ -41,6 +41,7 @@ MonoBehaviour:
   sfxBombVolume: 0.6
   sfxDeathVolume: 0.5
   sfxHookVolume: 0.28
+  sfxReadyVolume: 0.6
   ascendBlockShake: 0.35
   screenFlashDecay: 2.2
   squashDecay: 6

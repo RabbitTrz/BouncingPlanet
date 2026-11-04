@@ -19,6 +19,17 @@ namespace BouncingPlanet
         public bool playDefaultOnEnable = true;
         public bool useUnscaledTime = true;
 
+        [Header("Idle Sway")]
+        [Tooltip("Idle 状态下额外叠加的左右摆动角度；0 表示关闭。")]
+        public float idleSwayAngle;
+        [Tooltip("待机摆动频率（Hz）。默认约等于黑洞 7 帧 / 10fps 的循环频率。")]
+        public float idleSwayFrequency = 1.43f;
+        [Min(2)]
+        [Tooltip("一个循环使用几个离散姿势，形成帧动画式摆动。")]
+        public int idleSwaySteps = 7;
+        [Tooltip("每个实例的起始步偏移，用于错开摆动。")]
+        public int idleSwayStepOffset;
+
         public string CurrentStateName { get; private set; }
         public SpriteStateDefinition CurrentState { get; private set; }
         public event Action<string> StateChanged;
@@ -174,6 +185,22 @@ namespace BouncingPlanet
             float sx = baseScale.x * Evaluate(CurrentState.scaleX, t, 1f);
             float sy = baseScale.y * Evaluate(CurrentState.scaleY, t, 1f);
             float rz = CurrentState.baseRotation + Evaluate(CurrentState.rotation, t, 0f);
+
+            // 待机摆动按离散帧推进，不做连续插值，呈现帧动画的顿挫感。
+            if (CurrentStateName == "Idle" && idleSwayAngle != 0f &&
+                idleSwayFrequency > 0f)
+            {
+                float time = useUnscaledTime ? Time.unscaledTime : Time.time;
+                int steps = Mathf.Max(2, idleSwaySteps);
+                int step = Mathf.FloorToInt(time * idleSwayFrequency * steps) +
+                           idleSwayStepOffset;
+                step %= steps;
+                if (step < 0)
+                    step += steps;
+
+                float steppedPhase = step / (float)steps * Mathf.PI * 2f;
+                rz += Mathf.Sin(steppedPhase) * idleSwayAngle;
+            }
 
             motionTarget.localPosition = baseLocalPosition + new Vector3(ox, oy, 0f);
             motionTarget.localScale = new Vector3(

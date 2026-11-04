@@ -21,6 +21,7 @@ namespace BouncingPlanet
         private AudioClip bombClip;
         private AudioClip hookClip;
         private AudioClip deathClip;
+        private AudioClip readyClip;
         private FeedbackConfig feedbackConfig;
         private bool initialized;
 
@@ -48,6 +49,7 @@ namespace BouncingPlanet
             bombClip = MakeBombClip();
             hookClip = MakeTone("HookHeavy", 110f, 38f, 0.55f, 0.9f);
             deathClip = MakeTone("Death", 300f, 55f, 0.65f, 0.6f);
+            readyClip = MakeReadyClip();
 
             initialized = true;
         }
@@ -91,6 +93,12 @@ namespace BouncingPlanet
         {
             PlayClip(hookClip,
                 feedbackConfig != null ? feedbackConfig.sfxHookVolume : 0.28f, 1.2f);
+        }
+
+        public void PlayCooldownReady()
+        {
+            PlayClip(readyClip,
+                feedbackConfig != null ? feedbackConfig.sfxReadyVolume : 0.40f, 1f);
         }
 
         private void PlayClip(AudioClip clip, float volume, float pitch)
@@ -248,6 +256,36 @@ namespace BouncingPlanet
             return clip;
         }
 
+        /// <summary>冷却完成：两声短促的上行提示音。</summary>
+        private static AudioClip MakeReadyClip()
+        {
+            const float duration = 0.24f;
+            int sampleCount = Mathf.Max(1, Mathf.CeilToInt(SampleRate * duration));
+            float[] data = new float[sampleCount];
+            for (int i = 0; i < sampleCount; i++)
+            {
+                float t = i / (float)SampleRate;
+                float sample = ReadyNote(t, 0f, 0.09f, 880f) * 0.22f;
+                sample += ReadyNote(t, 0.09f, 0.13f, 1320f) * 0.18f;
+                data[i] = Mathf.Clamp(sample, -1f, 1f);
+            }
+
+            AudioClip clip = AudioClip.Create(
+                "CooldownReady", sampleCount, 1, SampleRate, false);
+            clip.SetData(data, 0);
+            return clip;
+        }
+
+        private static float ReadyNote(float t, float start, float duration,
+            float frequency)
+        {
+            if (t < start || t >= start + duration)
+                return 0f;
+            float local = (t - start) / duration;
+            float envelope = Mathf.Sin(local * Mathf.PI);
+            return Mathf.Sin((t - start) * frequency * Mathf.PI * 2f) * envelope;
+        }
+
         private void OnDestroy()
         {
             if (bounceClip != null) Destroy(bounceClip);
@@ -256,6 +294,7 @@ namespace BouncingPlanet
             if (bombClip != null) Destroy(bombClip);
             if (hookClip != null) Destroy(hookClip);
             if (deathClip != null) Destroy(deathClip);
+            if (readyClip != null) Destroy(readyClip);
         }
     }
 }

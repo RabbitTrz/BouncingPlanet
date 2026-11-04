@@ -42,6 +42,7 @@ namespace BouncingPlanet
         public HookView hookView;
         public SkillHud skillHud;
         public MusouRingView musouRingView;
+        public SmashSpeedLinesView smashSpeedLinesView;
         public CameraRig cameraRig;
         public Stage1WorldView worldView;
         public Stage0Preview preview;
@@ -123,6 +124,8 @@ namespace BouncingPlanet
 
             musouRingView = EnsureComponent(musouRingView);
             musouRingView.Initialize(this);
+
+            smashSpeedLinesView = EnsureComponent(smashSpeedLinesView);
 
             debugOverlay = EnsureComponent(debugOverlay);
             debugOverlay.Initialize(this);

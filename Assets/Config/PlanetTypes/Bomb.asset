@@ -480,6 +480,10 @@ MonoBehaviour:
   visualProfile: {fileID: 0}
   baseSize: 0.23
   spawnWeight: 2
+  idleSwayAngle: 3
+  idleSwayFrequency: 1.43
+  idleSwaySteps: 3
+  idleSwayEnabled: 1
   bounceMultiplier: 1
   scoreMultiplier: 1
   iceBounceBonus: 1.15
@@ -487,5 +491,5 @@ MonoBehaviour:
   cloudSpeedMultiplier: 1.5
   cloudSpeedCap: 5
   bombFxRadius: 0.9
-  bombPushSpeed: 3.5
+  bombPushSpeed: 4
   bombPushRadius: 2.16

@@ -251,7 +251,7 @@ namespace BouncingPlanet
             {
                 case FlowState.Start:
                     title = "跃动星球";
-                    body = "选择关卡\n\nA/D 环绕黑洞 · S 炸弹 · 左键 钩锁 · H 锁定半径 · F1 调试 · T 调参";
+                    body = "选择关卡\n\nA/D 环绕黑洞 · S 炸弹 · 左键 钩锁 · H 锁定半径 · B 背景有线/无线 · F1 调试 · T 调参";
                     break;
                 case FlowState.Paused:
                     title = "暂停";
