@@ -55,13 +55,44 @@ namespace BouncingPlanet
             if (bootstrap.skills != null && bootstrap.skills.IsMusouActive)
                 return false;
 
-            float threshold = Mathf.Max(0.01f, config.normalSmashSpeedThreshold);
-            if (state.radialVelocity < threshold)
+            float threshold = GetSmashReadyThreshold();
+            if (threshold <= 0.01f || state.radialVelocity < threshold)
                 return false;
 
             factor = Mathf.InverseLerp(
                 threshold, threshold + 2f, state.radialVelocity);
             return true;
+        }
+
+        /// <summary>
+        /// 速度线表示“当前速度至少能撞碎一种非免疫星球”，
+        /// 所以取所有可撞碎星球里的最低阈值。
+        /// </summary>
+        private float GetSmashReadyThreshold()
+        {
+            GameConfig config = bootstrap != null ? bootstrap.gameConfig : null;
+            if (config == null)
+                return 0f;
+
+            PlanetTypeDef[] types = bootstrap.planetTypes;
+            if (types == null || types.Length == 0)
+                return config.normalSmashSpeedThreshold;
+
+            float min = float.PositiveInfinity;
+            for (int i = 0; i < types.Length; i++)
+            {
+                PlanetTypeDef def = types[i];
+                if (def == null || def.normalSmashImmune)
+                    continue;
+
+                float threshold = def.smashSpeedThreshold > 0.0001f
+                    ? def.smashSpeedThreshold
+                    : config.normalSmashSpeedThreshold;
+                if (threshold > 0f)
+                    min = Mathf.Min(min, threshold);
+            }
+
+            return float.IsInfinity(min) ? 0f : min;
         }
 
         private void OnGUI()

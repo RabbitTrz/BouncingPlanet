@@ -176,6 +176,15 @@ namespace BouncingPlanet
         [Tunable("Planet", 0f, 1f, 1f, "启用待机摆动")]
         public bool idleSwayEnabled = true;
 
+        [Header("撞碎 Smash")]
+        [Tunable("Planet", 0f, 20f, 0.05f, "撞碎速度阈值")]
+        [Tooltip("作为被撞目标时的普通上升撞碎阈值；填 0 表示使用 GameConfig 的全局阈值。")]
+        public float smashSpeedThreshold = 0f;
+
+        [Tunable("Planet", 0f, 1f, 1f, "普通撞碎免疫")]
+        [Tooltip("开启后普通上升撞碎无效；无双仍然可以撞碎。")]
+        public bool normalSmashImmune = false;
+
         [Header("弹跳 / 分数 Bounce / Score")]
         [Tunable("Planet", 0f, 3f, 0.01f, "弹力倍率")]
         [Tooltip("通用弹力倍率；冰冰星使用下面的冰星弹力加成。")]
@@ -229,6 +238,8 @@ namespace BouncingPlanet
             idleSwayFrequency = 1.43f;
             idleSwaySteps = 7;
             idleSwayEnabled = true;
+            smashSpeedThreshold = 0f;
+            normalSmashImmune = false;
 
             switch (type)
             {
@@ -252,6 +263,7 @@ namespace BouncingPlanet
                     scoreMultiplier = 1f;
                     cloudSpeedMultiplier = 2.2f;
                     cloudSpeedCap = 3.2f;
+                    normalSmashImmune = true;
                     break;
 
                 case PlanetTypeId.Ice:
@@ -296,6 +308,7 @@ namespace BouncingPlanet
             idleSwayAngle = Mathf.Clamp(idleSwayAngle, 0f, 15f);
             idleSwayFrequency = Mathf.Max(0.01f, idleSwayFrequency);
             idleSwaySteps = Mathf.Clamp(idleSwaySteps, 2, 16);
+            smashSpeedThreshold = Mathf.Max(0f, smashSpeedThreshold);
         }
     }
 }

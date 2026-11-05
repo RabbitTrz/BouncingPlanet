@@ -63,18 +63,17 @@ namespace BouncingPlanet
             Vector2 current = state.WorldPosition;
             float playerRadius = config.EffectivePlayerRadius;
             var planets = field.Planets;
-            bool ascendingSmashCandidate = config.normalSmashEnabled &&
-                config.normalSmashSpeedThreshold > 0f &&
-                state.radialVelocity >= config.normalSmashSpeedThreshold;
 
             for (int i = 0; i < planets.Count; i++)
             {
                 PlanetRuntime planet = planets[i];
+                PlanetTypeDef def = planet.def;
+                bool normalSmashCandidate = CanNormalSmash(def, state);
                 // 钩锁目标即使处于受击冷却也要检测，否则会被钩锁拉穿；
-                // 上升撞碎状态下同理，否则高速上升会从冷却中的星球穿过去。
+                // 达到该星球普通撞碎阈值时同理，否则高速上升会从冷却中的星球穿过去。
                 bool isHookTarget = skills != null && skills.HookTarget == planet;
                 if (!planet.alive || planet.smashImmunity > 0f ||
-                    (planet.cooldown > 0f && !isHookTarget && !ascendingSmashCandidate))
+                    (planet.cooldown > 0f && !isHookTarget && !normalSmashCandidate))
                 {
                     continue;
                 }
@@ -113,9 +112,7 @@ namespace BouncingPlanet
             Vector2 impactPoint = (playerPosition + center) * 0.5f;
             bool hooked = skills != null && skills.HookTarget == planet;
             bool heavy = hooked && impactSpeed >= config.hookHeavySpeed;
-            bool ascendingSmash = config.normalSmashEnabled &&
-                config.normalSmashSpeedThreshold > 0f &&
-                state.radialVelocity >= config.normalSmashSpeedThreshold;
+            bool ascendingSmash = CanNormalSmash(def, state);
 
             // 撞到任何固体星球都断钩：只有云朵允许继续穿过。
             if (skills != null && skills.IsHookActive &&
@@ -259,6 +256,25 @@ namespace BouncingPlanet
             float seconds = config.bounceSmashGraceFrames /
                 (float)Mathf.Max(1, config.simulationHz);
             planet.smashImmunity = Mathf.Max(planet.smashImmunity, seconds);
+        }
+
+        private float GetSmashThreshold(PlanetTypeDef def)
+        {
+            if (def != null && def.smashSpeedThreshold > 0.0001f)
+                return def.smashSpeedThreshold;
+            return config.normalSmashSpeedThreshold;
+        }
+
+        private bool CanNormalSmash(PlanetTypeDef def, PlayerState state)
+        {
+            if (!config.normalSmashEnabled || def == null ||
+                def.normalSmashImmune)
+            {
+                return false;
+            }
+
+            float threshold = GetSmashThreshold(def);
+            return threshold > 0f && state.radialVelocity >= threshold;
         }
 
         private void AddScore(PlanetTypeDef def)
