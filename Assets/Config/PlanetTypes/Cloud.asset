@@ -488,7 +488,7 @@ MonoBehaviour:
   scoreMultiplier: 1
   iceBounceBonus: 1.15
   iceBreaksOnFirstHit: 1
-  cloudSpeedMultiplier: 4
+  cloudSpeedMultiplier: 5
   cloudSpeedCap: 3.2
   bombFxRadius: 0.9
   bombPushSpeed: 2.9

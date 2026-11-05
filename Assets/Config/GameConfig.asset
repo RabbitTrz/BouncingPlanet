@@ -34,7 +34,7 @@ MonoBehaviour:
   playerCollisionRadius: 0.2
   sizeScale: 0.5
   startRadius: 1.5
-  startRadialVelocity: 0.6
+  startRadialVelocity: 0.8
   deathRadius: 0.1
   maxAngularSpeed: 2.6
   tangentialSpeed: 1.4
@@ -42,7 +42,7 @@ MonoBehaviour:
   glideDeceleration: 1.7
   brakeDeceleration: 3.2
   ascendBlockFactor: 1
-  gravity: 2.4
+  gravity: 2
   playerLateralOffset: 0.015
   playerBankAngle: 8
   playerMotionSmoothing: 0.06
@@ -52,12 +52,12 @@ MonoBehaviour:
   playerTrailWidth: 0.014
   playerTrailColor: {r: 0.65, g: 0.85, b: 1, a: 0.85}
   musouTrailColor: {r: 1, g: 0.85, b: 0.25, a: 0.95}
-  bounceGain: 0.5
-  baseImpulse: 1
+  bounceGain: 0.65
+  baseImpulse: 1.3
   jumpSpeed: 1.6
   launchMinFactor: 0.82
   launchMaxFactor: 1.28
-  useLaunchMax: 0
+  useLaunchMax: 1
   showRingLines: 0
   laneSpacing: 0.5
   ringCountMultiplier: 5.5
@@ -86,7 +86,7 @@ MonoBehaviour:
   collisionLateralFactor: 1.2
   collisionLateralMaxSpeed: 1.2
   normalSmashEnabled: 1
-  normalSmashSpeedThreshold: 3
+  normalSmashSpeedThreshold: 2
   smashSpeedLinesEnabled: 1
   smashSpeedLineCount: 18
   smashSpeedLineSpeed: 0.9
@@ -99,9 +99,9 @@ MonoBehaviour:
   musouScoreThreshold: 150
   smashScore: 15
   showScoreHud: 1
-  musouDuration: 2
-  musouExtension: 0.2
-  musouSpeed: 2
+  musouDuration: 2.5
+  musouExtension: 0.4
+  musouSpeed: 2.5
   showMusouRing: 1
   musouRingRadius: 0.2
   musouRingWidth: 0.007
@@ -109,13 +109,13 @@ MonoBehaviour:
   musouRingChargeColor: {r: 0.35, g: 0.82, b: 1, a: 1}
   musouRingActiveColor: {r: 1, g: 0.82, b: 0.32, a: 1}
   bombSkillCooldown: 5
-  bombSkillSpawnBelow: 0.3
+  bombSkillSpawnBelow: 0.15
   bombSkillExplosionRadius: 0.9
   bombSkillPushSpeed: 4
   hookCooldown: 1.5
-  hookRange: 0.75
-  hookAcceleration: 40
-  hookMaxSpeed: 4
+  hookRange: 0.8
+  hookAcceleration: 45
+  hookMaxSpeed: 5
   hookBreakDistance: 3
   hookLooseDistance: 0.08
   hookHeavySpeed: 1.7
