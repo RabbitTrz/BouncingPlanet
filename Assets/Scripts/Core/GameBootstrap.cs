@@ -39,6 +39,7 @@ namespace BouncingPlanet
         public PlayerSkills skills;
         public CollisionSystem collisionSystem;
         public GameFlow gameFlow;
+        public OutcomeSequenceController outcomeSequence;
         public EndlessPressureSystem pressureSystem;
         public HookView hookView;
         public SkillHud skillHud;
@@ -119,6 +120,9 @@ namespace BouncingPlanet
 
             pressureSystem = EnsureComponent(pressureSystem);
             pressureSystem.Initialize(this);
+
+            outcomeSequence = EnsureComponent(outcomeSequence);
+            outcomeSequence.Initialize(this);
 
             hookView = EnsureComponent(hookView);
             hookView.Initialize(this);

@@ -103,6 +103,24 @@ namespace BouncingPlanet
         [Tunable("Audio", 0f, 1f, 0.01f, "冷却完成音效音量")]
         public float sfxReadyVolume = 0.40f;
 
+        [Tunable("Audio", 0f, 1f, 0.01f, "贴纸悬浮音效音量")]
+        public float sfxStickerHoverVolume = 0.22f;
+
+        [Tunable("Audio", 0f, 1f, 0.01f, "贴纸点击音效音量")]
+        public float sfxStickerClickVolume = 0.35f;
+
+        [Tunable("Audio", 0f, 1f, 0.01f, "贴纸吸入音效音量")]
+        public float sfxStickerConsumeVolume = 0.45f;
+
+        [Tunable("Audio", 0f, 1f, 0.01f, "结算动画音效音量")]
+        public float sfxOutcomeVolume = 0.50f;
+
+        [Tunable("Audio", 0f, 1f, 0.01f, "胜利结算音效音量")]
+        public float sfxWinResultVolume = 0.55f;
+
+        [Tunable("Audio", 0f, 1f, 0.01f, "失败结算音效音量")]
+        public float sfxLoseResultVolume = 0.50f;
+
         [Header("其他 Other")]
         [Tunable("Other", 0f, 2f, 0.01f, "上升挡回震屏")]
         public float ascendBlockShake = 0.35f;
@@ -180,6 +198,12 @@ namespace BouncingPlanet
             sfxDeathVolume = 0.50f;
             sfxHookVolume = 0.28f;
             sfxReadyVolume = 0.40f;
+            sfxStickerHoverVolume = 0.22f;
+            sfxStickerClickVolume = 0.35f;
+            sfxStickerConsumeVolume = 0.45f;
+            sfxOutcomeVolume = 0.50f;
+            sfxWinResultVolume = 0.55f;
+            sfxLoseResultVolume = 0.50f;
 
             ascendBlockShake = 0.35f;
             screenFlashDecay = 2.20f;
@@ -224,6 +248,12 @@ namespace BouncingPlanet
             sfxDeathVolume = Mathf.Clamp01(sfxDeathVolume);
             sfxHookVolume = Mathf.Clamp01(sfxHookVolume);
             sfxReadyVolume = Mathf.Clamp01(sfxReadyVolume);
+            sfxStickerHoverVolume = Mathf.Clamp01(sfxStickerHoverVolume);
+            sfxStickerClickVolume = Mathf.Clamp01(sfxStickerClickVolume);
+            sfxStickerConsumeVolume = Mathf.Clamp01(sfxStickerConsumeVolume);
+            sfxOutcomeVolume = Mathf.Clamp01(sfxOutcomeVolume);
+            sfxWinResultVolume = Mathf.Clamp01(sfxWinResultVolume);
+            sfxLoseResultVolume = Mathf.Clamp01(sfxLoseResultVolume);
 
             ascendBlockShake = Mathf.Max(0f, ascendBlockShake);
             screenFlashDecay = Mathf.Max(0f, screenFlashDecay);

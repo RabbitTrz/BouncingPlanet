@@ -13,6 +13,7 @@ namespace BouncingPlanet.Editor
     {
         private const string PrefabFolder = "Assets/Prefabs/UI";
         private const string PrefabPath = PrefabFolder + "/GameHud.prefab";
+        private const string NewPrefabPath = PrefabFolder + "/GameHud-new.prefab";
         private const string SkillFolder = "Assets/Resources/Raw/skill/";
         private const string NumberFolder = "Assets/Resources/Raw/number/";
 
@@ -36,22 +37,23 @@ namespace BouncingPlanet.Editor
                 return;
             }
 
-            if (AssetDatabase.LoadAssetAtPath<GameObject>(PrefabPath) != null)
-            {
-                EnsurePrefabUpgrades();
-                return;
-            }
+            if (AssetDatabase.LoadAssetAtPath<GameObject>(PrefabPath) == null)
+                BuildPrefab();
 
-            BuildPrefab();
+            EnsurePrefabUpgrades(PrefabPath);
+            EnsurePrefabUpgrades(NewPrefabPath);
         }
 
         /// <summary>
-        /// 旧版 HUD 预制体缺少 ReadyBurst / PressureWarning 时只补节点，
-        /// 不覆盖已经手动调整过的布局。
+        /// 旧版 HUD 预制体缺少 ReadyBurst / PressureWarning / 当前高度时只补节点，
+        /// 不覆盖已经手动调整过的布局。GameHud 和 GameHud-new 都会检查。
         /// </summary>
-        private static void EnsurePrefabUpgrades()
+        private static void EnsurePrefabUpgrades(string path)
         {
-            GameObject root = PrefabUtility.LoadPrefabContents(PrefabPath);
+            if (AssetDatabase.LoadAssetAtPath<GameObject>(path) == null)
+                return;
+
+            GameObject root = PrefabUtility.LoadPrefabContents(path);
             if (root == null)
                 return;
 
@@ -77,11 +79,22 @@ namespace BouncingPlanet.Editor
                 }
             }
 
+            if (hud != null && hud.heightCurrent == null)
+            {
+                SpriteNumberDisplay current =
+                    CreateCurrentHeightDisplay(hud.heightRecord);
+                if (current != null)
+                {
+                    hud.heightCurrent = current;
+                    changed = true;
+                }
+            }
+
             if (changed)
             {
-                PrefabUtility.SaveAsPrefabAsset(root, PrefabPath);
+                PrefabUtility.SaveAsPrefabAsset(root, path);
                 AssetDatabase.SaveAssets();
-                Debug.Log("[HudPrefabBuilder] 已为 HUD 预制体补充 ReadyBurst。");
+                Debug.Log("[HudPrefabBuilder] 已为 " + path + " 补充 HUD 节点。");
             }
 
             PrefabUtility.UnloadPrefabContents(root);
@@ -102,6 +115,14 @@ namespace BouncingPlanet.Editor
             }
 
             BuildPrefab();
+            EnsurePrefabUpgrades(NewPrefabPath);
+        }
+
+        [MenuItem("Tools/BouncingPlanet/UI/Upgrade HUD Prefabs")]
+        public static void UpgradeFromMenu()
+        {
+            EnsurePrefabUpgrades(PrefabPath);
+            EnsurePrefabUpgrades(NewPrefabPath);
         }
 
         private static void BuildPrefab()
@@ -148,6 +169,7 @@ namespace BouncingPlanet.Editor
             hud.heightRecord = CreateNumberDisplay(
                 rootRect, "HeightRecord", new Vector2(48f, -36f),
                 TextAnchor.MiddleLeft, 5, digits);
+            hud.heightCurrent = CreateCurrentHeightDisplay(hud.heightRecord);
             hud.scoreDisplay = CreateNumberDisplay(
                 rootRect, "Score", new Vector2(-48f, -36f),
                 TextAnchor.MiddleRight, 6, digits);
@@ -188,7 +210,8 @@ namespace BouncingPlanet.Editor
 
         private static SpriteNumberDisplay CreateNumberDisplay(
             Transform parent, string name, Vector2 anchoredPosition,
-            TextAnchor alignment, int digitCount, Sprite[] digits)
+            TextAnchor alignment, int digitCount, Sprite[] digits,
+            float digitSize = 56f)
         {
             RectTransform root = CreateRectTransform(parent, name);
             bool alignRight = alignment == TextAnchor.MiddleRight;
@@ -232,13 +255,49 @@ namespace BouncingPlanet.Editor
                 image.raycastTarget = false;
 
                 LayoutElement element = digitObject.GetComponent<LayoutElement>();
-                element.preferredWidth = 56f;
-                element.preferredHeight = 56f;
+                element.preferredWidth = digitSize;
+                element.preferredHeight = digitSize;
 
                 display.digitImages[i] = image;
             }
 
             display.SetValue(0);
+            return display;
+        }
+
+        /// <summary>
+        /// 在“最高高度”数字下面补一个更小的当前高度数字。
+        /// 不挂到最高高度节点内部，避免被它的 HorizontalLayoutGroup 当成数字槽。
+        /// </summary>
+        private static SpriteNumberDisplay CreateCurrentHeightDisplay(
+            SpriteNumberDisplay record)
+        {
+            if (record == null)
+                return null;
+
+            RectTransform recordRect = record.transform as RectTransform;
+            if (recordRect == null || recordRect.parent == null)
+                return null;
+
+            Sprite[] digits = record.digitSprites;
+            if (digits == null || digits.Length < 10)
+                digits = LoadDigitSprites();
+
+            bool alignRight = recordRect.pivot.x > 0.5f;
+            TextAnchor alignment = alignRight
+                ? TextAnchor.MiddleRight
+                : TextAnchor.MiddleLeft;
+            Vector2 position = recordRect.anchoredPosition +
+                new Vector2(0f, -120f);
+
+            SpriteNumberDisplay display = CreateNumberDisplay(
+                recordRect.parent, "CurrentHeight", position,
+                alignment, 5, digits, 64f);
+            RectTransform rect = display.transform as RectTransform;
+            rect.anchorMin = recordRect.anchorMin;
+            rect.anchorMax = recordRect.anchorMax;
+            rect.pivot = recordRect.pivot;
+            rect.anchoredPosition = position;
             return display;
         }
 

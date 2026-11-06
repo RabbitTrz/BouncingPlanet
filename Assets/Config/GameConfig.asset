@@ -100,7 +100,7 @@ MonoBehaviour:
   smashScore: 15
   showScoreHud: 1
   musouDuration: 3
-  musouExtension: 0.4
+  musouExtension: 0.2
   musouSpeed: 2.5
   showMusouRing: 1
   musouRingRadius: 0.2

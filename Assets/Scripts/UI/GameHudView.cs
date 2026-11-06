@@ -14,6 +14,7 @@ namespace BouncingPlanet
 
         public CanvasGroup canvasGroup;
         public SpriteNumberDisplay heightRecord;
+        public SpriteNumberDisplay heightCurrent;
         public SpriteNumberDisplay scoreDisplay;
         public SkillIconView musouSkill;
         public SkillIconView bombSkill;
@@ -75,11 +76,17 @@ namespace BouncingPlanet
             UpdatePressureWarning();
 
             PlayerState state = bootstrap.player.State;
+            float displayScale = Mathf.Max(0.01f, heightDisplayScale);
             if (heightRecord != null)
             {
-                int height = Mathf.RoundToInt(
-                    state.maxRadius * Mathf.Max(0.01f, heightDisplayScale));
-                heightRecord.SetValue(height);
+                int record = Mathf.RoundToInt(state.maxRadius * displayScale);
+                heightRecord.SetValue(record);
+            }
+
+            if (heightCurrent != null)
+            {
+                int current = Mathf.RoundToInt(state.radius * displayScale);
+                heightCurrent.SetValue(current);
             }
 
             if (scoreDisplay != null && bootstrap.score != null)

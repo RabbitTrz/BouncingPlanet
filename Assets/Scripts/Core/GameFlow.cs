@@ -13,6 +13,8 @@ namespace BouncingPlanet
             Start,
             Playing,
             Paused,
+            Dying,
+            Winning,
             Dead,
             Win
         }
@@ -75,13 +77,21 @@ namespace BouncingPlanet
             switch (State)
             {
                 case FlowState.Start:
-                    if (StartPressed() || ConfirmPressed())
+                    // 场景里放了原生开始页后，由贴纸拖动负责开始；旧键盘入口让位。
+                    if (StartPageController.Instance == null &&
+                        (StartPressed() || ConfirmPressed()))
+                    {
                         StartRun(currentLevel);
+                    }
                     break;
 
                 case FlowState.Playing:
-                    if (Input.GetKeyDown(KeyCode.Escape))
+                    // 原生暂停弹窗存在时，Esc 由 PauseMenuController 处理。
+                    if (PauseMenuController.Instance == null &&
+                        Input.GetKeyDown(KeyCode.Escape))
+                    {
                         PauseRun();
+                    }
                     else if (currentLevel != null && !currentLevel.IsEndless &&
                              player != null &&
                              player.State.radius >= currentLevel.goalRadius)
@@ -89,11 +99,20 @@ namespace BouncingPlanet
                     break;
 
                 case FlowState.Paused:
-                    if (Input.GetKeyDown(KeyCode.Escape) || ConfirmPressed())
+                    if (PauseMenuController.Instance == null &&
+                        (Input.GetKeyDown(KeyCode.Escape) || ConfirmPressed()))
+                    {
                         ResumeRun();
+                    }
+                    break;
+
+                case FlowState.Dying:
+                case FlowState.Winning:
                     break;
 
                 case FlowState.Dead:
+                    if (ResultMenuController.Instance != null)
+                        break;
                     if (RetryPressed() || StartPressed() || ConfirmPressed())
                         StartRun(currentLevel);
                     else if (Input.GetKeyDown(KeyCode.Escape))
@@ -101,6 +120,8 @@ namespace BouncingPlanet
                     break;
 
                 case FlowState.Win:
+                    if (ResultMenuController.Instance != null)
+                        break;
                     if (Input.GetKeyDown(KeyCode.Escape))
                         ReturnToStart();
                     else if (RetryPressed())
@@ -130,9 +151,26 @@ namespace BouncingPlanet
         {
             if (State != FlowState.Playing)
                 return;
-            State = FlowState.Dead;
-            if (clock != null)
-                clock.Pause();
+
+            if (OutcomeSequenceController.Instance != null)
+            {
+                State = FlowState.Dying;
+                clock?.Pause();
+                OutcomeSequenceController.Instance.PlayDeath();
+            }
+            else
+            {
+                State = FlowState.Dead;
+                clock?.Pause();
+            }
+        }
+
+        public void CompleteOutcome(bool victory)
+        {
+            if (State != FlowState.Dying && State != FlowState.Winning)
+                return;
+            State = victory ? FlowState.Win : FlowState.Dead;
+            clock?.Pause();
         }
 
         public void StartRun()
@@ -189,8 +227,18 @@ namespace BouncingPlanet
         {
             if (State != FlowState.Playing)
                 return;
-            State = FlowState.Win;
-            clock?.Pause();
+
+            if (OutcomeSequenceController.Instance != null)
+            {
+                State = FlowState.Winning;
+                clock?.Pause();
+                OutcomeSequenceController.Instance.PlayWin();
+            }
+            else
+            {
+                State = FlowState.Win;
+                clock?.Pause();
+            }
         }
 
         public void NextLevel()
@@ -243,8 +291,23 @@ namespace BouncingPlanet
 
         private void OnGUI()
         {
-            if (State == FlowState.Playing)
+            if (State == FlowState.Playing ||
+                State == FlowState.Dying ||
+                State == FlowState.Winning)
+            {
                 return;
+            }
+
+            // 原生 UI 存在时，对应旧面板让位。
+            if (State == FlowState.Start && StartPageController.Instance != null)
+                return;
+            if (State == FlowState.Paused && PauseMenuController.Instance != null)
+                return;
+            if ((State == FlowState.Dead || State == FlowState.Win) &&
+                ResultMenuController.Instance != null)
+            {
+                return;
+            }
 
             EnsureStyles();
             string title;

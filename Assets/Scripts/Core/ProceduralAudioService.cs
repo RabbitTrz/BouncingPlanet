@@ -22,6 +22,13 @@ namespace BouncingPlanet
         private AudioClip hookClip;
         private AudioClip deathClip;
         private AudioClip readyClip;
+        private AudioClip stickerHoverClip;
+        private AudioClip stickerClickClip;
+        private AudioClip stickerConsumeClip;
+        private AudioClip outcomeDeathClip;
+        private AudioClip outcomeWinClip;
+        private AudioClip winResultClip;
+        private AudioClip loseResultClip;
         private FeedbackConfig feedbackConfig;
         private bool initialized;
 
@@ -50,6 +57,20 @@ namespace BouncingPlanet
             hookClip = MakeTone("HookHeavy", 110f, 38f, 0.55f, 0.9f);
             deathClip = MakeTone("Death", 300f, 55f, 0.65f, 0.6f);
             readyClip = MakeReadyClip();
+            stickerHoverClip = MakeTone(
+                "StickerHover", 1200f, 1500f, 0.045f, 0.22f);
+            stickerClickClip = MakeTone(
+                "StickerClick", 520f, 760f, 0.07f, 0.35f);
+            stickerConsumeClip = MakeTone(
+                "StickerConsume", 260f, 1400f, 0.38f, 0.50f);
+            outcomeDeathClip = MakeTone(
+                "OutcomeDeath", 520f, 65f, 0.70f, 0.55f);
+            outcomeWinClip = MakeTone(
+                "OutcomeWin", 220f, 1350f, 0.60f, 0.55f);
+            winResultClip = MakeTone(
+                "WinResult", 660f, 1320f, 0.45f, 0.55f);
+            loseResultClip = MakeTone(
+                "LoseResult", 260f, 90f, 0.60f, 0.50f);
 
             initialized = true;
         }
@@ -99,6 +120,55 @@ namespace BouncingPlanet
         {
             PlayClip(readyClip,
                 feedbackConfig != null ? feedbackConfig.sfxReadyVolume : 0.40f, 1f);
+        }
+
+        public void PlayStickerHover()
+        {
+            PlayClip(stickerHoverClip,
+                feedbackConfig != null ? feedbackConfig.sfxStickerHoverVolume : 0.22f,
+                1f);
+        }
+
+        public void PlayStickerClick()
+        {
+            PlayClip(stickerClickClip,
+                feedbackConfig != null ? feedbackConfig.sfxStickerClickVolume : 0.35f,
+                1f);
+        }
+
+        public void PlayStickerConsume()
+        {
+            PlayClip(stickerConsumeClip,
+                feedbackConfig != null ? feedbackConfig.sfxStickerConsumeVolume : 0.45f,
+                1f);
+        }
+
+        public void PlayOutcomeDeath()
+        {
+            PlayClip(outcomeDeathClip,
+                feedbackConfig != null ? feedbackConfig.sfxOutcomeVolume : 0.50f,
+                1f);
+        }
+
+        public void PlayOutcomeWin()
+        {
+            PlayClip(outcomeWinClip,
+                feedbackConfig != null ? feedbackConfig.sfxOutcomeVolume : 0.50f,
+                1f);
+        }
+
+        public void PlayWinResult()
+        {
+            PlayClip(winResultClip,
+                feedbackConfig != null ? feedbackConfig.sfxWinResultVolume : 0.55f,
+                1f);
+        }
+
+        public void PlayLoseResult()
+        {
+            PlayClip(loseResultClip,
+                feedbackConfig != null ? feedbackConfig.sfxLoseResultVolume : 0.50f,
+                1f);
         }
 
         private void PlayClip(AudioClip clip, float volume, float pitch)
@@ -295,6 +365,13 @@ namespace BouncingPlanet
             if (hookClip != null) Destroy(hookClip);
             if (deathClip != null) Destroy(deathClip);
             if (readyClip != null) Destroy(readyClip);
+            if (stickerHoverClip != null) Destroy(stickerHoverClip);
+            if (stickerClickClip != null) Destroy(stickerClickClip);
+            if (stickerConsumeClip != null) Destroy(stickerConsumeClip);
+            if (outcomeDeathClip != null) Destroy(outcomeDeathClip);
+            if (outcomeWinClip != null) Destroy(outcomeWinClip);
+            if (winResultClip != null) Destroy(winResultClip);
+            if (loseResultClip != null) Destroy(loseResultClip);
         }
     }
 }

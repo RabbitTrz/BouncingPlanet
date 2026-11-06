@@ -373,13 +373,19 @@ namespace BouncingPlanet
                 player != null ? player.State.WorldPosition : Vector2.zero));
         }
 
-        /// <summary>无双撞碎星球后调用：只延长持续时间，无双期间不积分。</summary>
+        /// <summary>
+        /// 无双撞碎星球后调用：只延长持续时间，无双期间不积分。
+        /// 剩余时间最多封顶到一次完整无双时长，不能靠连续撞碎无限续杯。
+        /// </summary>
         public void OnMusouSmash()
         {
             if (!musouActive || config == null)
                 return;
 
-            musouRemaining += config.musouExtension;
+            float cap = Mathf.Max(0f, config.musouDuration);
+            musouRemaining = Mathf.Min(
+                cap,
+                musouRemaining + Mathf.Max(0f, config.musouExtension));
         }
     }
 }
