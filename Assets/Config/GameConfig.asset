@@ -42,7 +42,7 @@ MonoBehaviour:
   glideDeceleration: 1.7
   brakeDeceleration: 3.2
   ascendBlockFactor: 1
-  gravity: 2
+  gravity: 2.4
   playerLateralOffset: 0.015
   playerBankAngle: 8
   playerMotionSmoothing: 0.06
@@ -56,7 +56,7 @@ MonoBehaviour:
   baseImpulse: 1.3
   jumpSpeed: 1.6
   launchMinFactor: 0.82
-  launchMaxFactor: 1.28
+  launchMaxFactor: 1.5
   useLaunchMax: 1
   showRingLines: 0
   laneSpacing: 0.5
@@ -86,7 +86,7 @@ MonoBehaviour:
   collisionLateralFactor: 1.2
   collisionLateralMaxSpeed: 1.2
   normalSmashEnabled: 1
-  normalSmashSpeedThreshold: 2
+  normalSmashSpeedThreshold: 2.3
   smashSpeedLinesEnabled: 1
   smashSpeedLineCount: 18
   smashSpeedLineSpeed: 0.9
@@ -96,10 +96,10 @@ MonoBehaviour:
   smashSpeedLineAlpha: 0.55
   smashSpeedLineSideBand: 0.32
   normalPlanetScore: 10
-  musouScoreThreshold: 150
+  musouScoreThreshold: 260
   smashScore: 15
   showScoreHud: 1
-  musouDuration: 2.5
+  musouDuration: 3
   musouExtension: 0.4
   musouSpeed: 2.5
   showMusouRing: 1

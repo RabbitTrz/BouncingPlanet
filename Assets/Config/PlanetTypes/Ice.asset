@@ -486,12 +486,12 @@ MonoBehaviour:
   idleSwayEnabled: 1
   bounceMultiplier: 1.15
   scoreMultiplier: 1
-  iceBounceBonus: 1.3
+  iceBounceBonus: 1.5
   iceBreaksOnFirstHit: 1
   cloudSpeedMultiplier: 2.2
   cloudSpeedCap: 3.2
   bombFxRadius: 0.9
   bombPushSpeed: 2.9
   bombPushRadius: 2.16
-  smashSpeedThreshold: 0
+  smashSpeedThreshold: 1.5
   normalSmashImmune: 0
