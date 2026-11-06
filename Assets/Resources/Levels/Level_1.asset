@@ -155,7 +155,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 9.7000
+    radius: 9.7
     angleDegrees: -11.8136
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -163,7 +163,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 9.7000
+    radius: 9.7
     angleDegrees: -8.8602
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -171,7 +171,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 9.7000
+    radius: 9.7
     angleDegrees: -5.9068
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -179,7 +179,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 9.7000
+    radius: 9.7
     angleDegrees: -2.9534
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -187,15 +187,15 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 9.7000
-    angleDegrees: 0.0000
+    radius: 9.7
+    angleDegrees: 0
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 9.7000
+    radius: 9.7
     angleDegrees: 2.9534
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -203,7 +203,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 9.7000
+    radius: 9.7
     angleDegrees: 5.9068
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -211,7 +211,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 9.7000
+    radius: 9.7
     angleDegrees: 8.8602
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -219,7 +219,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 9.7000
+    radius: 9.7
     angleDegrees: 11.8136
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -227,7 +227,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 10.0000
+    radius: 10
     angleDegrees: -11.4592
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -235,7 +235,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 10.0000
+    radius: 10
     angleDegrees: -8.5944
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -243,7 +243,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 10.0000
+    radius: 10
     angleDegrees: -5.7296
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -251,7 +251,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 10.0000
+    radius: 10
     angleDegrees: -2.8648
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -259,15 +259,15 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 10.0000
-    angleDegrees: 0.0000
+    radius: 10
+    angleDegrees: 0
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 10.0000
+    radius: 10
     angleDegrees: 2.8648
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -275,7 +275,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 10.0000
+    radius: 10
     angleDegrees: 5.7296
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -283,7 +283,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 10.0000
+    radius: 10
     angleDegrees: 8.5944
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -291,7 +291,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 10.0000
+    radius: 10
     angleDegrees: 11.4592
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -299,7 +299,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 10.3000
+    radius: 10.3
     angleDegrees: -11.1254
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -307,15 +307,15 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 10.3000
-    angleDegrees: -8.3440
+    radius: 10.3
+    angleDegrees: -8.344
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 10.3000
+    radius: 10.3
     angleDegrees: -5.5627
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -323,7 +323,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 10.3000
+    radius: 10.3
     angleDegrees: -2.7813
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -331,15 +331,15 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 10.3000
-    angleDegrees: 0.0000
+    radius: 10.3
+    angleDegrees: 0
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 10.3000
+    radius: 10.3
     angleDegrees: 2.7813
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -347,7 +347,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 10.3000
+    radius: 10.3
     angleDegrees: 5.5627
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -355,15 +355,15 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 10.3000
-    angleDegrees: 8.3440
+    radius: 10.3
+    angleDegrees: 8.344
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 10.3000
+    radius: 10.3
     angleDegrees: 11.1254
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -371,7 +371,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: b47a3066dde2c4c48a228a3a495d36d4, type: 2}
-    radius: 11.0000
+    radius: 11
     angleDegrees: -8.8548
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -379,7 +379,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: b47a3066dde2c4c48a228a3a495d36d4, type: 2}
-    radius: 11.0000
+    radius: 11
     angleDegrees: -6.6411
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -387,7 +387,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: b47a3066dde2c4c48a228a3a495d36d4, type: 2}
-    radius: 11.0000
+    radius: 11
     angleDegrees: -4.4274
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -395,7 +395,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: b47a3066dde2c4c48a228a3a495d36d4, type: 2}
-    radius: 11.0000
+    radius: 11
     angleDegrees: -2.2137
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -403,15 +403,15 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: b47a3066dde2c4c48a228a3a495d36d4, type: 2}
-    radius: 11.0000
-    angleDegrees: 0.0000
+    radius: 11
+    angleDegrees: 0
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: b47a3066dde2c4c48a228a3a495d36d4, type: 2}
-    radius: 11.0000
+    radius: 11
     angleDegrees: 2.2137
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -419,7 +419,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: b47a3066dde2c4c48a228a3a495d36d4, type: 2}
-    radius: 11.0000
+    radius: 11
     angleDegrees: 4.4274
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -427,7 +427,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: b47a3066dde2c4c48a228a3a495d36d4, type: 2}
-    radius: 11.0000
+    radius: 11
     angleDegrees: 6.6411
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -435,7 +435,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: b47a3066dde2c4c48a228a3a495d36d4, type: 2}
-    radius: 11.0000
+    radius: 11
     angleDegrees: 8.8548
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -443,15 +443,15 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.5000
-    angleDegrees: -22.0000
+    radius: 18.5
+    angleDegrees: -22
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.5000
+    radius: 18.5
     angleDegrees: -20.5333
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -459,7 +459,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.5000
+    radius: 18.5
     angleDegrees: -19.0667
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -467,15 +467,15 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.5000
-    angleDegrees: -17.6000
+    radius: 18.5
+    angleDegrees: -17.6
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.5000
+    radius: 18.5
     angleDegrees: -16.1333
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -483,7 +483,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.5000
+    radius: 18.5
     angleDegrees: -14.6667
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -491,15 +491,15 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.5000
-    angleDegrees: -13.2000
+    radius: 18.5
+    angleDegrees: -13.2
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.5000
+    radius: 18.5
     angleDegrees: -11.7333
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -507,7 +507,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.5000
+    radius: 18.5
     angleDegrees: -10.2667
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -515,15 +515,15 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.5000
-    angleDegrees: -8.8000
+    radius: 18.5
+    angleDegrees: -8.8
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.5000
+    radius: 18.5
     angleDegrees: -7.3333
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -531,7 +531,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.5000
+    radius: 18.5
     angleDegrees: -5.8667
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -539,15 +539,15 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.5000
-    angleDegrees: -4.4000
+    radius: 18.5
+    angleDegrees: -4.4
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.5000
+    radius: 18.5
     angleDegrees: -2.9333
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -555,7 +555,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.5000
+    radius: 18.5
     angleDegrees: -1.4667
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -563,15 +563,15 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.5000
-    angleDegrees: 0.0000
+    radius: 18.5
+    angleDegrees: 0
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.5000
+    radius: 18.5
     angleDegrees: 1.4667
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -579,7 +579,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.5000
+    radius: 18.5
     angleDegrees: 2.9333
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -587,15 +587,15 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.5000
-    angleDegrees: 4.4000
+    radius: 18.5
+    angleDegrees: 4.4
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.5000
+    radius: 18.5
     angleDegrees: 5.8667
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -603,7 +603,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.5000
+    radius: 18.5
     angleDegrees: 7.3333
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -611,15 +611,15 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.5000
-    angleDegrees: 8.8000
+    radius: 18.5
+    angleDegrees: 8.8
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.5000
+    radius: 18.5
     angleDegrees: 10.2667
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -627,7 +627,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.5000
+    radius: 18.5
     angleDegrees: 11.7333
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -635,15 +635,15 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.5000
-    angleDegrees: 13.2000
+    radius: 18.5
+    angleDegrees: 13.2
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.5000
+    radius: 18.5
     angleDegrees: 14.6667
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -651,7 +651,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.5000
+    radius: 18.5
     angleDegrees: 16.1333
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -659,15 +659,15 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.5000
-    angleDegrees: 17.6000
+    radius: 18.5
+    angleDegrees: 17.6
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.5000
+    radius: 18.5
     angleDegrees: 19.0667
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -675,7 +675,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.5000
+    radius: 18.5
     angleDegrees: 20.5333
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -683,23 +683,23 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.5000
-    angleDegrees: 22.0000
+    radius: 18.5
+    angleDegrees: 22
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.8000
-    angleDegrees: -22.0000
+    radius: 18.8
+    angleDegrees: -22
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.8000
+    radius: 18.8
     angleDegrees: -20.5806
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -707,7 +707,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.8000
+    radius: 18.8
     angleDegrees: -19.1613
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -715,7 +715,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.8000
+    radius: 18.8
     angleDegrees: -17.7419
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -723,7 +723,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.8000
+    radius: 18.8
     angleDegrees: -16.3226
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -731,7 +731,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.8000
+    radius: 18.8
     angleDegrees: -14.9032
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -739,7 +739,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.8000
+    radius: 18.8
     angleDegrees: -13.4839
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -747,7 +747,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.8000
+    radius: 18.8
     angleDegrees: -12.0645
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -755,7 +755,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.8000
+    radius: 18.8
     angleDegrees: -10.6452
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -763,7 +763,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.8000
+    radius: 18.8
     angleDegrees: -9.2258
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -771,7 +771,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.8000
+    radius: 18.8
     angleDegrees: -7.8065
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -779,7 +779,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.8000
+    radius: 18.8
     angleDegrees: -6.3871
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -787,7 +787,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.8000
+    radius: 18.8
     angleDegrees: -4.9677
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -795,7 +795,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.8000
+    radius: 18.8
     angleDegrees: -3.5484
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -803,15 +803,15 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.8000
-    angleDegrees: -2.1290
+    radius: 18.8
+    angleDegrees: -2.129
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.8000
+    radius: 18.8
     angleDegrees: -0.7097
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -819,7 +819,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.8000
+    radius: 18.8
     angleDegrees: 0.7097
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -827,15 +827,15 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.8000
-    angleDegrees: 2.1290
+    radius: 18.8
+    angleDegrees: 2.129
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.8000
+    radius: 18.8
     angleDegrees: 3.5484
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -843,7 +843,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.8000
+    radius: 18.8
     angleDegrees: 4.9677
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -851,7 +851,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.8000
+    radius: 18.8
     angleDegrees: 6.3871
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -859,7 +859,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.8000
+    radius: 18.8
     angleDegrees: 7.8065
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -867,7 +867,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.8000
+    radius: 18.8
     angleDegrees: 9.2258
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -875,7 +875,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.8000
+    radius: 18.8
     angleDegrees: 10.6452
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -883,7 +883,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.8000
+    radius: 18.8
     angleDegrees: 12.0645
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -891,7 +891,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.8000
+    radius: 18.8
     angleDegrees: 13.4839
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -899,7 +899,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.8000
+    radius: 18.8
     angleDegrees: 14.9032
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -907,7 +907,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.8000
+    radius: 18.8
     angleDegrees: 16.3226
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -915,7 +915,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.8000
+    radius: 18.8
     angleDegrees: 17.7419
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -923,7 +923,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.8000
+    radius: 18.8
     angleDegrees: 19.1613
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -931,7 +931,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.8000
+    radius: 18.8
     angleDegrees: 20.5806
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -939,23 +939,23 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 18.8000
-    angleDegrees: 22.0000
+    radius: 18.8
+    angleDegrees: 22
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.1000
-    angleDegrees: -22.0000
+    radius: 19.1
+    angleDegrees: -22
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.1000
+    radius: 19.1
     angleDegrees: -20.5806
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -963,7 +963,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.1000
+    radius: 19.1
     angleDegrees: -19.1613
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -971,7 +971,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.1000
+    radius: 19.1
     angleDegrees: -17.7419
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -979,7 +979,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.1000
+    radius: 19.1
     angleDegrees: -16.3226
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -987,7 +987,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.1000
+    radius: 19.1
     angleDegrees: -14.9032
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -995,7 +995,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.1000
+    radius: 19.1
     angleDegrees: -13.4839
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -1003,7 +1003,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.1000
+    radius: 19.1
     angleDegrees: -12.0645
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -1011,7 +1011,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.1000
+    radius: 19.1
     angleDegrees: -10.6452
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -1019,7 +1019,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.1000
+    radius: 19.1
     angleDegrees: -9.2258
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -1027,7 +1027,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.1000
+    radius: 19.1
     angleDegrees: -7.8065
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -1035,7 +1035,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.1000
+    radius: 19.1
     angleDegrees: -6.3871
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -1043,7 +1043,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.1000
+    radius: 19.1
     angleDegrees: -4.9677
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -1051,7 +1051,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.1000
+    radius: 19.1
     angleDegrees: -3.5484
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -1059,15 +1059,15 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.1000
-    angleDegrees: -2.1290
+    radius: 19.1
+    angleDegrees: -2.129
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.1000
+    radius: 19.1
     angleDegrees: -0.7097
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -1075,7 +1075,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.1000
+    radius: 19.1
     angleDegrees: 0.7097
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -1083,15 +1083,15 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.1000
-    angleDegrees: 2.1290
+    radius: 19.1
+    angleDegrees: 2.129
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.1000
+    radius: 19.1
     angleDegrees: 3.5484
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -1099,7 +1099,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.1000
+    radius: 19.1
     angleDegrees: 4.9677
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -1107,7 +1107,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.1000
+    radius: 19.1
     angleDegrees: 6.3871
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -1115,7 +1115,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.1000
+    radius: 19.1
     angleDegrees: 7.8065
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -1123,7 +1123,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.1000
+    radius: 19.1
     angleDegrees: 9.2258
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -1131,7 +1131,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.1000
+    radius: 19.1
     angleDegrees: 10.6452
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -1139,7 +1139,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.1000
+    radius: 19.1
     angleDegrees: 12.0645
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -1147,7 +1147,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.1000
+    radius: 19.1
     angleDegrees: 13.4839
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -1155,7 +1155,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.1000
+    radius: 19.1
     angleDegrees: 14.9032
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -1163,7 +1163,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.1000
+    radius: 19.1
     angleDegrees: 16.3226
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -1171,7 +1171,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.1000
+    radius: 19.1
     angleDegrees: 17.7419
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -1179,7 +1179,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.1000
+    radius: 19.1
     angleDegrees: 19.1613
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -1187,7 +1187,7 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.1000
+    radius: 19.1
     angleDegrees: 20.5806
     sizeMultiplier: 1
     swayAmplitude: 0
@@ -1195,280 +1195,276 @@ MonoBehaviour:
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.1000
-    angleDegrees: 22.0000
+    radius: 19.1
+    angleDegrees: 22
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.4000
-    angleDegrees: -22.0000
+    radius: 19.4
+    angleDegrees: -22
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.4000
-    angleDegrees: -20.6250
+    radius: 19.4
+    angleDegrees: -20.625
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.4000
-    angleDegrees: -19.2500
+    radius: 19.4
+    angleDegrees: -19.25
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.4000
-    angleDegrees: -17.8750
+    radius: 19.4
+    angleDegrees: -17.875
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.4000
-    angleDegrees: -16.5000
+    radius: 19.4
+    angleDegrees: -16.5
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.4000
-    angleDegrees: -15.1250
+    radius: 19.4
+    angleDegrees: -15.125
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.4000
-    angleDegrees: -13.7500
+    radius: 19.4
+    angleDegrees: -13.75
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.4000
-    angleDegrees: -12.3750
+    radius: 19.4
+    angleDegrees: -12.375
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.4000
-    angleDegrees: -11.0000
+    radius: 19.4
+    angleDegrees: -11
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.4000
-    angleDegrees: -9.6250
+    radius: 19.4
+    angleDegrees: -9.625
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.4000
-    angleDegrees: -8.2500
+    radius: 19.4
+    angleDegrees: -8.25
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.4000
-    angleDegrees: -6.8750
+    radius: 19.4
+    angleDegrees: -6.875
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.4000
-    angleDegrees: -5.5000
+    radius: 19.4
+    angleDegrees: -5.5
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.4000
-    angleDegrees: -4.1250
+    radius: 19.4
+    angleDegrees: -4.125
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.4000
-    angleDegrees: -2.7500
+    radius: 19.4
+    angleDegrees: -2.75
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.4000
-    angleDegrees: -1.3750
+    radius: 19.4
+    angleDegrees: -1.375
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.4000
-    angleDegrees: 0.0000
+    radius: 19.4
+    angleDegrees: 0
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.4000
-    angleDegrees: 1.3750
+    radius: 19.4
+    angleDegrees: 1.375
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.4000
-    angleDegrees: 2.7500
+    radius: 19.4
+    angleDegrees: 2.75
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.4000
-    angleDegrees: 4.1250
+    radius: 19.4
+    angleDegrees: 4.125
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.4000
-    angleDegrees: 5.5000
+    radius: 19.4
+    angleDegrees: 5.5
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.4000
-    angleDegrees: 6.8750
+    radius: 19.4
+    angleDegrees: 6.875
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.4000
-    angleDegrees: 8.2500
+    radius: 19.4
+    angleDegrees: 8.25
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.4000
-    angleDegrees: 9.6250
+    radius: 19.4
+    angleDegrees: 9.625
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.4000
-    angleDegrees: 11.0000
+    radius: 19.4
+    angleDegrees: 11
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.4000
-    angleDegrees: 12.3750
+    radius: 19.4
+    angleDegrees: 12.375
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.4000
-    angleDegrees: 13.7500
+    radius: 19.4
+    angleDegrees: 13.75
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.4000
-    angleDegrees: 15.1250
+    radius: 19.4
+    angleDegrees: 15.125
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.4000
-    angleDegrees: 16.5000
+    radius: 19.4
+    angleDegrees: 16.5
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.4000
-    angleDegrees: 17.8750
+    radius: 19.4
+    angleDegrees: 17.875
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.4000
-    angleDegrees: 19.2500
+    radius: 19.4
+    angleDegrees: 19.25
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.4000
-    angleDegrees: 20.6250
+    radius: 19.4
+    angleDegrees: 20.625
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
     note: 
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
-    radius: 19.4000
-    angleDegrees: 22.0000
+    radius: 19.4
+    angleDegrees: 22
     sizeMultiplier: 1
     swayAmplitude: 0
     swaySpeed: 0
     swayPhase: 0
-    note: 
-    note: 
-    note: 
-    note: 
     note: 
   endless:
     densityByRadius:
