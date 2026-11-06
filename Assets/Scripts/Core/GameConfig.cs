@@ -322,6 +322,7 @@ namespace BouncingPlanet
         public float musouDuration = 4f;
 
         [Tunable("Musou", 0f, 5f, 0.05f, "每次撞碎延长")]
+        [Tooltip("无双每次撞碎的延长时间；剩余时长最多封顶到一次完整无双持续时间。")]
         public float musouExtension = 0.75f;
 
         [Tunable("Musou", 0.1f, 10f, 0.1f, "无双上升速度")]

@@ -23,6 +23,23 @@ namespace BouncingPlanet
         public SpriteStateProfile playerProfile;
 
         public BlackHoleView BlackHole => blackHoleView;
+        public Transform OutcomePlayerRoot => playerRoot;
+
+        public void BeginOutcomeVisual(bool victory)
+        {
+            outcomeVisualActive = true;
+            if (playerRoot != null)
+                playerRoot.gameObject.SetActive(true);
+            playerStateMachine?.SetState(
+                victory ? "override" : "up", true);
+            if (playerTrail != null)
+                playerTrail.emitting = false;
+        }
+
+        public void EndOutcomeVisual()
+        {
+            outcomeVisualActive = false;
+        }
 
         private GameConfig config;
         private PlayerController player;
@@ -44,6 +61,7 @@ namespace BouncingPlanet
         private Transform holeGlow;
         private BlackHoleView blackHoleView;
         private TiledBackgroundView backgroundView;
+        private bool outcomeVisualActive;
 
         private readonly List<StarLayer> starLayers = new List<StarLayer>();
         private FeedbackDirector feedback;
@@ -323,7 +341,7 @@ namespace BouncingPlanet
             PlayerState state = player.State;
             Vector2 worldPosition = state.WorldPosition;
 
-            if (playerRoot != null)
+            if (playerRoot != null && !outcomeVisualActive)
             {
                 playerRoot.gameObject.SetActive(!state.dead);
                 playerRoot.position = new Vector3(worldPosition.x, worldPosition.y, 0f);
@@ -483,6 +501,7 @@ namespace BouncingPlanet
 
         private void OnPlayerRespawned()
         {
+            outcomeVisualActive = false;
             if (playerStateMachine != null)
                 playerStateMachine.SetState("happy", true);
             if (playerTrail != null)

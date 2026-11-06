@@ -42,6 +42,12 @@ MonoBehaviour:
   sfxDeathVolume: 0.5
   sfxHookVolume: 0.28
   sfxReadyVolume: 0.6
+  sfxStickerHoverVolume: 0.42
+  sfxStickerClickVolume: 0.55
+  sfxStickerConsumeVolume: 0.65
+  sfxOutcomeVolume: 0.5
+  sfxWinResultVolume: 0.55
+  sfxLoseResultVolume: 0.5
   ascendBlockShake: 0.35
   screenFlashDecay: 2.2
   squashDecay: 6

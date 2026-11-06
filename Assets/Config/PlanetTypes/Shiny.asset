@@ -484,8 +484,10 @@ MonoBehaviour:
   idleSwayFrequency: 1.43
   idleSwaySteps: 3
   idleSwayEnabled: 1
+  smashSpeedThreshold: 1.1
+  normalSmashImmune: 0
   bounceMultiplier: 1
-  scoreMultiplier: 3
+  scoreMultiplier: 6
   iceBounceBonus: 1.15
   iceBreaksOnFirstHit: 1
   cloudSpeedMultiplier: 2.2
@@ -493,5 +495,3 @@ MonoBehaviour:
   bombFxRadius: 0.9
   bombPushSpeed: 2.9
   bombPushRadius: 2.16
-  smashSpeedThreshold: 1.1
-  normalSmashImmune: 0
