@@ -12,17 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9016e4b34da50f343a0c475af63563b7, type: 3}
   m_Name: FeedbackConfig
   m_EditorClassIdentifier: 
-  landingHitstopBase: 0.04
+  landingHitstopBase: 0.05
   landingHitstopPerSpeed: 0.008
-  landingHitstopMax: 0.06
+  landingHitstopMax: 0.08
   landingShakeBase: 0.18
   landingShakePerSpeed: 0.09
   landingPunchBase: 0.4
   landingPunchPerSpeed: 0.22
-  landingSquashBase: 0.55
+  landingSquashBase: 0.65
   landingSquashPerSpeed: 0.09
   landingSquashMax: 1
-  bombHitstop: 0.1
+  bombHitstop: 0.15
   bombShake: 2.6
   bombPunch: 1.4
   bombSquash: 1
@@ -36,9 +36,9 @@ MonoBehaviour:
   hookHeavyShake: 1.2
   sfxMasterVolume: 1
   sfxBounceVolume: 0.35
-  sfxIceVolume: 0.35
+  sfxIceVolume: 0.5
   sfxCloudVolume: 0.28
-  sfxBombVolume: 0.6
+  sfxBombVolume: 0.7
   sfxDeathVolume: 0.5
   sfxHookVolume: 0.28
   sfxReadyVolume: 0.6

@@ -100,7 +100,7 @@ MonoBehaviour:
   smashScore: 15
   showScoreHud: 1
   musouDuration: 3
-  musouExtension: 0.2
+  musouExtension: 0.17
   musouSpeed: 2.5
   showMusouRing: 1
   musouRingRadius: 0.2
@@ -114,8 +114,8 @@ MonoBehaviour:
   bombSkillPushSpeed: 4
   hookCooldown: 1.5
   hookRange: 0.8
-  hookAcceleration: 45
-  hookMaxSpeed: 5
+  hookAcceleration: 40
+  hookMaxSpeed: 4.85
   hookBreakDistance: 3
   hookLooseDistance: 0.08
   hookHeavySpeed: 1.7
