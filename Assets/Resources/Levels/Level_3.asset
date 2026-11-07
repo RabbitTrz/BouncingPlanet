@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: Level_3
   m_EditorClassIdentifier: 
   levelId: level_3
-  displayName: "\u7B2C3\u5173 \xB7 \u94A9\u9501"
+  displayName: "第3关 · 钩锁"
   order: 3
   mode: 0
   unlockedByDefault: 1
   description: 
-  goalRadius: 55
+  goalRadius: 27
   allowMusou: 0
   allowBomb: 0
   allowHook: 1
@@ -57,7 +57,1848 @@ MonoBehaviour:
     weight: 3
   - type: {fileID: 11400000, guid: b47a3066dde2c4c48a228a3a495d36d4, type: 2}
     weight: 1
-  planets: []
+  planets:
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 1.5000
+    angleDegrees: -11.4592
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 1.5000
+    angleDegrees: 0.0000
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 1.5000
+    angleDegrees: 11.4592
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 2.4000
+    angleDegrees: 7.1620
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 2.4000
+    angleDegrees: 14.3239
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 2.4000
+    angleDegrees: 21.4859
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 3.3000
+    angleDegrees: -15.6261
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 3.3000
+    angleDegrees: -10.4174
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 3.3000
+    angleDegrees: -5.2087
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 4.1000
+    angleDegrees: 0.0000
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 5.4000
+    angleDegrees: 6.3662
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 5.4000
+    angleDegrees: 9.5493
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 5.4000
+    angleDegrees: 12.7324
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 7.2000
+    angleDegrees: -35.8099
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 7.2000
+    angleDegrees: -33.4225
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 7.2000
+    angleDegrees: -31.0352
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 7.2000
+    angleDegrees: -28.6479
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 7.2000
+    angleDegrees: -26.2606
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 7.2000
+    angleDegrees: -23.8732
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 7.2000
+    angleDegrees: -21.4859
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 7.2000
+    angleDegrees: -19.0986
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 7.2000
+    angleDegrees: -16.7113
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 7.2000
+    angleDegrees: -14.3239
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 7.2000
+    angleDegrees: -11.9366
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 7.2000
+    angleDegrees: -9.5493
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 7.2000
+    angleDegrees: -7.1620
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 7.2000
+    angleDegrees: -4.7746
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 7.2000
+    angleDegrees: -2.3873
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 7.2000
+    angleDegrees: 0.0000
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 7.2000
+    angleDegrees: 2.3873
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 7.2000
+    angleDegrees: 4.7746
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 7.2000
+    angleDegrees: 7.1620
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 7.2000
+    angleDegrees: 9.5493
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 7.2000
+    angleDegrees: 11.9366
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 7.2000
+    angleDegrees: 14.3239
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 7.2000
+    angleDegrees: 16.7113
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 7.2000
+    angleDegrees: 19.0986
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 7.2000
+    angleDegrees: 21.4859
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 7.2000
+    angleDegrees: 23.8732
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 7.2000
+    angleDegrees: 26.2606
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 7.2000
+    angleDegrees: 28.6479
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 7.2000
+    angleDegrees: 31.0352
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 7.2000
+    angleDegrees: 33.4225
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 7.2000
+    angleDegrees: 35.8099
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 10.8000
+    angleDegrees: -23.8732
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 10.8000
+    angleDegrees: -22.2817
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 10.8000
+    angleDegrees: -20.6901
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 10.8000
+    angleDegrees: -19.0986
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 10.8000
+    angleDegrees: -17.5070
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 10.8000
+    angleDegrees: -15.9155
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 10.8000
+    angleDegrees: -14.3239
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 10.8000
+    angleDegrees: -12.7324
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 10.8000
+    angleDegrees: -11.1408
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 10.8000
+    angleDegrees: -9.5493
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 10.8000
+    angleDegrees: -7.9577
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 10.8000
+    angleDegrees: -6.3662
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 10.8000
+    angleDegrees: -4.7746
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 10.8000
+    angleDegrees: -3.1831
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 10.8000
+    angleDegrees: -1.5915
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 10.8000
+    angleDegrees: 0.0000
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 10.8000
+    angleDegrees: 1.5915
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 10.8000
+    angleDegrees: 3.1831
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 10.8000
+    angleDegrees: 4.7746
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 10.8000
+    angleDegrees: 6.3662
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 10.8000
+    angleDegrees: 7.9577
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 10.8000
+    angleDegrees: 9.5493
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 10.8000
+    angleDegrees: 11.1408
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 10.8000
+    angleDegrees: 12.7324
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 10.8000
+    angleDegrees: 14.3239
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 10.8000
+    angleDegrees: 15.9155
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 10.8000
+    angleDegrees: 17.5070
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 10.8000
+    angleDegrees: 19.0986
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 10.8000
+    angleDegrees: 20.6901
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 10.8000
+    angleDegrees: 22.2817
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 10.8000
+    angleDegrees: 23.8732
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 13.3300
+    angleDegrees: -19.3422
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 13.3300
+    angleDegrees: -18.0527
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 13.3300
+    angleDegrees: -16.7632
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 13.3300
+    angleDegrees: -15.4737
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 13.3300
+    angleDegrees: -14.1843
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 13.3300
+    angleDegrees: -12.8948
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 13.3300
+    angleDegrees: -11.6053
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 13.3300
+    angleDegrees: -10.3158
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 13.3300
+    angleDegrees: -9.0263
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 13.3300
+    angleDegrees: -7.7369
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 13.3300
+    angleDegrees: -6.4474
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 13.3300
+    angleDegrees: -5.1579
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 13.3300
+    angleDegrees: -3.8684
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 13.3300
+    angleDegrees: -2.5790
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 13.3300
+    angleDegrees: -1.2895
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 13.3300
+    angleDegrees: 0.0000
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 13.3300
+    angleDegrees: 1.2895
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 13.3300
+    angleDegrees: 2.5790
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 13.3300
+    angleDegrees: 3.8684
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 13.3300
+    angleDegrees: 5.1579
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 13.3300
+    angleDegrees: 6.4474
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 13.3300
+    angleDegrees: 7.7369
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 13.3300
+    angleDegrees: 9.0263
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 13.3300
+    angleDegrees: 10.3158
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 13.3300
+    angleDegrees: 11.6053
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 13.3300
+    angleDegrees: 12.8948
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 13.3300
+    angleDegrees: 14.1843
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 13.3300
+    angleDegrees: 15.4737
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 13.3300
+    angleDegrees: 16.7632
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 13.3300
+    angleDegrees: 18.0527
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 13.3300
+    angleDegrees: 19.3422
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 17.4000
+    angleDegrees: -14.8179
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 17.4000
+    angleDegrees: -13.8300
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 17.4000
+    angleDegrees: -12.8422
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 17.4000
+    angleDegrees: -11.8543
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 17.4000
+    angleDegrees: -10.8664
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 17.4000
+    angleDegrees: -9.8786
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 17.4000
+    angleDegrees: -8.8907
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 17.4000
+    angleDegrees: -7.9029
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 17.4000
+    angleDegrees: -6.9150
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 17.4000
+    angleDegrees: -5.9271
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 17.4000
+    angleDegrees: -4.9393
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 17.4000
+    angleDegrees: -3.9514
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 17.4000
+    angleDegrees: -2.9636
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 17.4000
+    angleDegrees: -1.9757
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 17.4000
+    angleDegrees: -0.9879
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 17.4000
+    angleDegrees: 0.0000
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 17.4000
+    angleDegrees: 0.9879
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 17.4000
+    angleDegrees: 1.9757
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 17.4000
+    angleDegrees: 2.9636
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 17.4000
+    angleDegrees: 3.9514
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 17.4000
+    angleDegrees: 4.9393
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 17.4000
+    angleDegrees: 5.9271
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 17.4000
+    angleDegrees: 6.9150
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 17.4000
+    angleDegrees: 7.9029
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 17.4000
+    angleDegrees: 8.8907
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 17.4000
+    angleDegrees: 9.8786
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 17.4000
+    angleDegrees: 10.8664
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 17.4000
+    angleDegrees: 11.8543
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 17.4000
+    angleDegrees: 12.8422
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 17.4000
+    angleDegrees: 13.8300
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 17.4000
+    angleDegrees: 14.8179
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 19.5500
+    angleDegrees: -13.1883
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 19.5500
+    angleDegrees: -12.3091
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 19.5500
+    angleDegrees: -11.4298
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 19.5500
+    angleDegrees: -10.5506
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 19.5500
+    angleDegrees: -9.6714
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 19.5500
+    angleDegrees: -8.7922
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 19.5500
+    angleDegrees: -7.9130
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 19.5500
+    angleDegrees: -7.0338
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 19.5500
+    angleDegrees: -6.1545
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 19.5500
+    angleDegrees: -5.2753
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 19.5500
+    angleDegrees: -4.3961
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 19.5500
+    angleDegrees: -3.5169
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 19.5500
+    angleDegrees: -2.6377
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 19.5500
+    angleDegrees: -1.7584
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 19.5500
+    angleDegrees: -0.8792
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 19.5500
+    angleDegrees: 0.0000
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 19.5500
+    angleDegrees: 0.8792
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 19.5500
+    angleDegrees: 1.7584
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 19.5500
+    angleDegrees: 2.6377
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 19.5500
+    angleDegrees: 3.5169
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 19.5500
+    angleDegrees: 4.3961
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 19.5500
+    angleDegrees: 5.2753
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 19.5500
+    angleDegrees: 6.1545
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 19.5500
+    angleDegrees: 7.0338
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 19.5500
+    angleDegrees: 7.9130
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 19.5500
+    angleDegrees: 8.7922
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 19.5500
+    angleDegrees: 9.6714
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 19.5500
+    angleDegrees: 10.5506
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 19.5500
+    angleDegrees: 11.4298
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 19.5500
+    angleDegrees: 12.3091
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 19.5500
+    angleDegrees: 13.1883
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 24.0300
+    angleDegrees: -10.7295
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 24.0300
+    angleDegrees: -10.0142
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 24.0300
+    angleDegrees: -9.2989
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 24.0300
+    angleDegrees: -8.5836
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 24.0300
+    angleDegrees: -7.8683
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 24.0300
+    angleDegrees: -7.1530
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 24.0300
+    angleDegrees: -6.4377
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 24.0300
+    angleDegrees: -5.7224
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 24.0300
+    angleDegrees: -5.0071
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 24.0300
+    angleDegrees: -4.2918
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 24.0300
+    angleDegrees: -3.5765
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 24.0300
+    angleDegrees: -2.8612
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 24.0300
+    angleDegrees: -2.1459
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 24.0300
+    angleDegrees: -1.4306
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 24.0300
+    angleDegrees: -0.7153
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 24.0300
+    angleDegrees: 0.0000
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 24.0300
+    angleDegrees: 0.7153
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 24.0300
+    angleDegrees: 1.4306
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 24.0300
+    angleDegrees: 2.1459
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 24.0300
+    angleDegrees: 2.8612
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 24.0300
+    angleDegrees: 3.5765
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 24.0300
+    angleDegrees: 4.2918
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 24.0300
+    angleDegrees: 5.0071
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 24.0300
+    angleDegrees: 5.7224
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 24.0300
+    angleDegrees: 6.4377
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 24.0300
+    angleDegrees: 7.1530
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 24.0300
+    angleDegrees: 7.8683
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 24.0300
+    angleDegrees: 8.5836
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 24.0300
+    angleDegrees: 9.2989
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 24.0300
+    angleDegrees: 10.0142
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
+    radius: 24.0300
+    angleDegrees: 10.7295
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 25.6800
+    angleDegrees: -10.0401
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 25.6800
+    angleDegrees: -9.3708
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 25.6800
+    angleDegrees: -8.7015
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 25.6800
+    angleDegrees: -8.0321
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 25.6800
+    angleDegrees: -7.3628
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 25.6800
+    angleDegrees: -6.6934
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 25.6800
+    angleDegrees: -6.0241
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 25.6800
+    angleDegrees: -5.3547
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 25.6800
+    angleDegrees: -4.6854
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 25.6800
+    angleDegrees: -4.0161
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 25.6800
+    angleDegrees: -3.3467
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 25.6800
+    angleDegrees: -2.6774
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 25.6800
+    angleDegrees: -2.0080
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 25.6800
+    angleDegrees: -1.3387
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 25.6800
+    angleDegrees: -0.6693
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 25.6800
+    angleDegrees: 0.0000
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 25.6800
+    angleDegrees: 0.6693
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 25.6800
+    angleDegrees: 1.3387
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 25.6800
+    angleDegrees: 2.0080
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 25.6800
+    angleDegrees: 2.6774
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 25.6800
+    angleDegrees: 3.3467
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 25.6800
+    angleDegrees: 4.0161
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 25.6800
+    angleDegrees: 4.6854
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 25.6800
+    angleDegrees: 5.3547
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 25.6800
+    angleDegrees: 6.0241
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 25.6800
+    angleDegrees: 6.6934
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 25.6800
+    angleDegrees: 7.3628
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 25.6800
+    angleDegrees: 8.0321
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 25.6800
+    angleDegrees: 8.7015
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 25.6800
+    angleDegrees: 9.3708
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+  - type: {fileID: 11400000, guid: 0542c042943468f42b78ef059bb8b828, type: 2}
+    radius: 25.6800
+    angleDegrees: 10.0401
+    sizeMultiplier: 1
+    swayAmplitude: 0
+    swaySpeed: 0
+    swayPhase: 0
+    note: 
+    note: 
   endless:
     densityByRadius:
       serializedVersion: 2
