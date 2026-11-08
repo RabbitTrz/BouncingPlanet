@@ -9,6 +9,8 @@ namespace BouncingPlanet
         public RectTransform area;
         public LevelSelectController levelSelect;
         public int levelIndex = -1;
+        [Tooltip("关闭后只作为换装等自定义拖放的判定区，不再触发页面动作。")]
+        public bool acceptActions = true;
 
         private void Awake()
         {
@@ -26,6 +28,8 @@ namespace BouncingPlanet
 
         public void Accept(StickerAction action)
         {
+            if (!acceptActions)
+                return;
             if (levelSelect != null && levelIndex >= 0)
             {
                 levelSelect.StartLevel(levelIndex);

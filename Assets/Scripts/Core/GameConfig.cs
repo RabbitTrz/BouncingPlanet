@@ -381,6 +381,21 @@ namespace BouncingPlanet
         [Tunable("Hook", 0.1f, 5f, 0.1f, "钩锁重击速度阈值")]
         public float hookHeavySpeed = 1.7f;
 
+        [Header("BGM")]
+        [Tooltip("留空时自动从 Resources/Audio/BGM_StartPage 加载。")]
+        public AudioClip bgmStartPage;
+        [Tooltip("留空时自动从 Resources/Audio/BGM_LevelSelect 加载。")]
+        public AudioClip bgmLevelSelect;
+        [Tooltip("留空时自动从 Resources/Audio/BGM_Game 加载。")]
+        public AudioClip bgmGame;
+
+        [Range(0f, 1f)]
+        [Tooltip("BGM 音量；默认压得比音效低，避免连续音乐盖住短促音效。")]
+        public float bgmVolume = 0.2f;
+
+        [Range(0.05f, 5f)]
+        public float bgmFadeDuration = 0.8f;
+
         // ------------------------------------------------------------------
         // Derived values
         // ------------------------------------------------------------------
@@ -561,6 +576,9 @@ namespace BouncingPlanet
             hookBreakDistance = 3f;
             hookLooseDistance = 0.08f;
             hookHeavySpeed = 1.7f;
+
+            bgmVolume = 0.2f;
+            bgmFadeDuration = 0.8f;
         }
 
         private void OnValidate()
@@ -624,6 +642,9 @@ namespace BouncingPlanet
             musouRingRadius = Mathf.Max(0.001f, musouRingRadius);
             musouRingWidth = Mathf.Max(0.0001f, musouRingWidth);
             musouRingBaseAlpha = Mathf.Clamp01(musouRingBaseAlpha);
+
+            bgmVolume = Mathf.Clamp01(bgmVolume);
+            bgmFadeDuration = Mathf.Clamp(bgmFadeDuration, 0.05f, 5f);
         }
     }
 }

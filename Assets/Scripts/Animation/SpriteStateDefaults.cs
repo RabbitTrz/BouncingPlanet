@@ -244,7 +244,7 @@ namespace BouncingPlanet
             });
             profile.AddState(new SpriteStateDefinition
             {
-                stateName = "override",
+                stateName = "overdrive",
                 loop = true,
                 autoReturn = false,
                 durationOverride = 0.24f,

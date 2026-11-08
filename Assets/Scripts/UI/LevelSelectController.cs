@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,8 +13,13 @@ namespace BouncingPlanet
         public DragSticker playerSticker;
         public Button backButton;
         public Button clothButton;
+        public GameObject dressUpPage;
+        public DressUpPageController dressUp;
+        public CanvasGroup[] guideLines;
+        public float guideLineFadeDuration = 0.22f;
 
         private GameFlow flow;
+        private Coroutine guideRoutine;
 
         private void Awake()
         {
@@ -47,8 +53,57 @@ namespace BouncingPlanet
 
             UiOrbitArrival[] arrivals =
                 page.GetComponentsInChildren<UiOrbitArrival>(true);
+            float revealDelay = 0f;
             for (int i = 0; i < arrivals.Length; i++)
+            {
                 arrivals[i].Play();
+                revealDelay = Mathf.Max(
+                    revealDelay,
+                    arrivals[i].delay + Mathf.Max(0.05f, arrivals[i].duration));
+            }
+
+            HideGuideLines();
+            if (guideRoutine != null)
+                StopCoroutine(guideRoutine);
+            guideRoutine = StartCoroutine(RevealGuideLines(revealDelay));
+        }
+
+        private IEnumerator RevealGuideLines(float delay)
+        {
+            float elapsed = 0f;
+            while (elapsed < delay)
+            {
+                elapsed += Time.unscaledDeltaTime;
+                yield return null;
+            }
+
+            float duration = Mathf.Max(0.01f, guideLineFadeDuration);
+            elapsed = 0f;
+            while (elapsed < duration)
+            {
+                elapsed += Time.unscaledDeltaTime;
+                SetGuideLineAlpha(Mathf.Clamp01(elapsed / duration));
+                yield return null;
+            }
+
+            SetGuideLineAlpha(1f);
+            guideRoutine = null;
+        }
+
+        private void HideGuideLines()
+        {
+            SetGuideLineAlpha(0f);
+        }
+
+        private void SetGuideLineAlpha(float alpha)
+        {
+            if (guideLines == null)
+                return;
+            for (int i = 0; i < guideLines.Length; i++)
+            {
+                if (guideLines[i] != null)
+                    guideLines[i].alpha = alpha;
+            }
         }
 
         public void StartLevel(int index)
@@ -83,7 +138,22 @@ namespace BouncingPlanet
 
         private void OnCloth()
         {
-            // 换装界面按规划暂不实现；按钮保留点击音效/粒子。
+            if (dressUpPage == null)
+                return;
+
+            if (UiTransition.Instance != null)
+            {
+                UiTransition.Instance.Play(() =>
+                {
+                    dressUpPage.SetActive(true);
+                    dressUp?.Show();
+                });
+            }
+            else
+            {
+                dressUpPage.SetActive(true);
+                dressUp?.Show();
+            }
         }
 
         private LevelConfig FindLevel(int index)

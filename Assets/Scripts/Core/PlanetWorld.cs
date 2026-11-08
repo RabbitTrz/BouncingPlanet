@@ -220,7 +220,15 @@ namespace BouncingPlanet
             if (generation == null)
                 generation = new LevelGenerationSettings();
             if (currentLevel == null)
+            {
                 generation.CopyFrom(config);
+            }
+            else if (currentLevel.IsEndless)
+            {
+                // 每次开无尽（含重来）换一个随机种子；只改运行时副本。
+                generation = generation.Clone();
+                generation.seed = Random.Range(1, int.MaxValue);
+            }
 
             rng = new System.Random(generation.seed);
             lowR = Mathf.Max(EffectiveFloor,
@@ -576,9 +584,23 @@ namespace BouncingPlanet
             if (def == null)
                 return null;
 
-            float angleOffset = gap
-                ? ((float)slotRng.NextDouble() - 0.5f) * slotAngle * 0.4f
-                : 0f;
+            float angleOffset;
+            if (gap)
+            {
+                angleOffset = ((float)slotRng.NextDouble() - 0.5f) *
+                              slotAngle * 0.4f;
+            }
+            else if (generation.angularJitter > 0.0001f)
+            {
+                // 主环槽位做 ±angularJitter × 槽位角 的角度抖动，
+                // 打散同角度跨环排列形成的径向连线。
+                angleOffset = ((float)slotRng.NextDouble() * 2f - 1f) *
+                              slotAngle * generation.angularJitter;
+            }
+            else
+            {
+                angleOffset = 0f;
+            }
             float baseAngle = phase + slot * slotAngle + angleOffset;
             if (InSpawnClearZone(radius, baseAngle))
                 return null;

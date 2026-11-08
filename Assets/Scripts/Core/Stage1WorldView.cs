@@ -31,7 +31,7 @@ namespace BouncingPlanet
             if (playerRoot != null)
                 playerRoot.gameObject.SetActive(true);
             playerStateMachine?.SetState(
-                victory ? "override" : "up", true);
+                victory ? "overdrive" : "up", true);
             if (playerTrail != null)
                 playerTrail.emitting = false;
         }
@@ -218,16 +218,39 @@ namespace BouncingPlanet
             visualObject.transform.SetParent(playerMotionPivot, false);
             playerVisual = visualObject.transform;
             playerRenderer = visualObject.AddComponent<SpriteRenderer>();
-            playerRenderer.sprite = ProceduralSprites.Circle;
+            Wardrobe wardrobe = bootstrap != null ? bootstrap.wardrobe : null;
+            Sprite paper = wardrobe != null
+                ? wardrobe.GetLayers("happy")[0]
+                : ProceduralSprites.Circle;
+            playerRenderer.sprite = paper;
             playerRenderer.color = Color.white;
             playerRenderer.sortingOrder = 20;
 
             playerStateMachine = visualObject.AddComponent<SpriteStateMachine>();
+            playerStateMachine.applySprites = false;
             SpriteStateProfile profile = playerProfile != null
                 ? playerProfile
                 : SpriteStateDefaults.GetPlayerProfile();
             playerStateMachine.Initialize(profile, playerRenderer, playerVisual);
             playerStateMachine.SetState("happy");
+
+            // paper 是底层，其余 6 层按 paper<...<hand 叠在它上面。
+            SpriteRenderer[] playerLayers = new SpriteRenderer[Wardrobe.LayerCount];
+            playerLayers[0] = playerRenderer;
+            for (int i = 1; i < playerLayers.Length; i++)
+            {
+                GameObject layerObject = new GameObject(
+                    "PlayerLayer_" + i, typeof(SpriteRenderer));
+                layerObject.transform.SetParent(visualObject.transform, false);
+                SpriteRenderer layer = layerObject.GetComponent<SpriteRenderer>();
+                layer.color = Color.white;
+                layer.sortingOrder = 20 + i;
+                playerLayers[i] = layer;
+            }
+            LayeredPlayerRenderer layered =
+                visualObject.AddComponent<LayeredPlayerRenderer>();
+            layered.layers = playerLayers;
+            layered.Initialize(playerStateMachine);
 
             // 让 Sprite 的 native size 归一化为 1 世界单位，兼容不同导入 PPU；
             // 同一状态的帧请保持相同像素尺寸。
@@ -240,7 +263,7 @@ namespace BouncingPlanet
 
             // 一个屏幕正上方的小点，用来验证“径向朝上”和左右手性。
             Transform marker = CreateSprite("PlayerUpMarker", ProceduralSprites.Circle,
-                new Color(1f, 0.97f, 0.82f, 0.95f), 21, playerRoot);
+                new Color(1f, 0.97f, 0.82f, 0.95f), 30, playerRoot);
             marker.localPosition = new Vector3(0f, 0.62f, 0f);
             marker.localScale = new Vector3(0.22f, 0.22f, 1f);
 
@@ -388,10 +411,10 @@ namespace BouncingPlanet
                     }
                     else if (skills != null && skills.IsMusouActive)
                     {
-                        if (current != "override")
-                            playerStateMachine.SetState("override");
+                        if (current != "overdrive")
+                            playerStateMachine.SetState("overdrive");
                     }
-                    else if (current == "override" || current == "dead" ||
+                    else if (current == "overdrive" || current == "dead" ||
                              string.IsNullOrEmpty(current))
                     {
                         playerStateMachine.SetState("happy");
@@ -491,7 +514,7 @@ namespace BouncingPlanet
                 return;
 
             string current = playerStateMachine.CurrentStateName;
-            if (current == "override" || current == "dead")
+            if (current == "overdrive" || current == "dead")
                 return;
 
             // 先回到 happy，保证 up/down 播完后返回 happy，而不是上一段表情。

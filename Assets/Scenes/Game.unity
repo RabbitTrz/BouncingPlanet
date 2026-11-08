@@ -171,7 +171,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bootstrap: {fileID: 1746397653}
-  visibleOnStart: 1
+  visibleOnStart: 0
 --- !u!114 &1746397650
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -239,11 +239,14 @@ MonoBehaviour:
   score: {fileID: 0}
   vfx: {fileID: 0}
   audioService: {fileID: 0}
+  bgmPlayer: {fileID: 0}
+  wardrobe: {fileID: 0}
   feedbackDirector: {fileID: 0}
   planetWorld: {fileID: 0}
   skills: {fileID: 0}
   collisionSystem: {fileID: 0}
   gameFlow: {fileID: 0}
+  outcomeSequence: {fileID: 0}
   pressureSystem: {fileID: 0}
   hookView: {fileID: 0}
   skillHud: {fileID: 0}
@@ -368,6 +371,22 @@ PrefabInstance:
     - target: {fileID: 5115779233406730106, guid: c445c4a7279f01545be869c0ee6233fa, type: 3}
       propertyPath: m_Name
       value: GameUiRoot
+      objectReference: {fileID: 0}
+    - target: {fileID: 5115779233406730106, guid: c445c4a7279f01545be869c0ee6233fa, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7007980352748628705, guid: c445c4a7279f01545be869c0ee6233fa, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7007980352748628705, guid: c445c4a7279f01545be869c0ee6233fa, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7007980352748628705, guid: c445c4a7279f01545be869c0ee6233fa, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7278620636393018070, guid: c445c4a7279f01545be869c0ee6233fa, type: 3}
       propertyPath: m_AnchorMax.y

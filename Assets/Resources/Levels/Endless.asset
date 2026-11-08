@@ -19,6 +19,7 @@ MonoBehaviour:
   unlockedByDefault: 1
   description: 
   goalRadius: 11
+  bgm: {fileID: 8300000, guid: 8d7f3bee142c0fc4783f396c2ded50a7, type: 3}
   allowMusou: 1
   allowBomb: 1
   allowHook: 1
@@ -45,6 +46,7 @@ MonoBehaviour:
     minGenerationRadius: 0.18
     recycleAbove: 40
     targetArcSpacing: 1.4
+    angularJitter: 0.5
     arcWindowMargin: 2
   typeWeights:
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}

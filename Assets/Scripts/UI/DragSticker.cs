@@ -23,6 +23,20 @@ namespace BouncingPlanet
         public Sprite dragSprite;
         public Sprite consumeSprite;
 
+        [Header("Player Layered Visual")]
+        [Tooltip("设置后贴纸用分层玩家视图显示，不再改自身 Image 的 Sprite。")]
+        public PlayerLayeredView playerView;
+        public string idleState = "happy";
+        public string dragState = "down";
+        public string consumeState = "up";
+
+        [Header("Clothing")]
+        public bool equipClothing;
+        public ClothingCategory clothingCategory;
+        public int clothingIndex;
+        [Tooltip("吸入后回到原位；换装页的服装贴纸需要开启。")]
+        public bool restoreAfterConsume;
+
         [Header("Idle Sway")]
         public float idleSwayAngle = 5f;
         public float idleSwayFrequency = 1.43f;
@@ -68,8 +82,9 @@ namespace BouncingPlanet
             if (group == null)
                 group = gameObject.AddComponent<CanvasGroup>();
             image = GetComponent<Image>();
-            if (image != null && idleSprite != null)
-                image.sprite = idleSprite;
+            if (image != null && playerView != null)
+                image.color = new Color(1f, 1f, 1f, 0f);
+            ApplyVisualState(VisualState.Idle);
             swayStepOffset = Random.Range(0, Mathf.Max(1, idleSwaySteps));
         }
 
@@ -82,7 +97,7 @@ namespace BouncingPlanet
             hovering = false;
             returning = false;
             inputLocked = false;
-            SetStateSprite(idleSprite);
+            ApplyVisualState(VisualState.Idle);
             if (rect != null)
             {
                 rect.anchoredPosition = homePosition;
@@ -182,7 +197,7 @@ namespace BouncingPlanet
             StopReturn();
             hovering = false;
             dragging = true;
-            SetStateSprite(dragSprite);
+            ApplyVisualState(VisualState.Drag);
             if (parentRect == null)
                 parentRect = rect.parent as RectTransform;
 
@@ -268,7 +283,7 @@ namespace BouncingPlanet
             hovering = false;
             returning = false;
             inputLocked = false;
-            SetStateSprite(idleSprite);
+            ApplyVisualState(VisualState.Idle);
             rect.anchoredPosition = homePosition;
             rect.localScale = baseScale;
             rect.localRotation = baseRotation;
@@ -294,6 +309,42 @@ namespace BouncingPlanet
                 image.raycastTarget = true;
         }
 
+        private enum VisualState
+        {
+            Idle,
+            Drag,
+            Consume
+        }
+
+        private void ApplyVisualState(VisualState state)
+        {
+            if (playerView != null)
+            {
+                string stateName = state == VisualState.Drag
+                    ? dragState
+                    : state == VisualState.Consume
+                        ? consumeState
+                        : idleState;
+                playerView.SetState(stateName);
+                return;
+            }
+
+            SetStateSprite(state == VisualState.Drag
+                ? dragSprite
+                : state == VisualState.Consume
+                    ? consumeSprite
+                    : idleSprite);
+        }
+
+        public void SetIdleSprite(Sprite sprite)
+        {
+            idleSprite = sprite;
+            dragSprite = sprite;
+            consumeSprite = sprite;
+            if (!dragging && !consumed && !returning)
+                ApplyVisualState(VisualState.Idle);
+        }
+
         private void SetStateSprite(Sprite sprite)
         {
             if (image != null && sprite != null)
@@ -304,7 +355,7 @@ namespace BouncingPlanet
         {
             StopReturn();
             StopConsume();
-            SetStateSprite(consumeSprite);
+            ApplyVisualState(VisualState.Consume);
             consumeRoutine = StartCoroutine(ConsumeRoutine(target));
         }
 
@@ -344,7 +395,12 @@ namespace BouncingPlanet
             if (group != null)
                 group.alpha = 0f;
             consumeRoutine = null;
+
+            if (equipClothing && Wardrobe.Instance != null)
+                Wardrobe.Instance.Equip(clothingCategory, clothingIndex);
             target?.Accept(action);
+            if (restoreAfterConsume)
+                Restore();
         }
 
         private Vector2 GetTargetLocalPosition(StickerDropTarget target)
@@ -363,7 +419,7 @@ namespace BouncingPlanet
         private void StartReturn()
         {
             StopReturn();
-            SetStateSprite(idleSprite);
+            ApplyVisualState(VisualState.Idle);
             returnRoutine = StartCoroutine(ReturnHome());
         }
 

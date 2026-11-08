@@ -16,6 +16,7 @@ namespace BouncingPlanet.Editor
         private const string NewPrefabPath = PrefabFolder + "/GameHud-new.prefab";
         private const string SkillFolder = "Assets/Resources/Raw/skill/";
         private const string NumberFolder = "Assets/Resources/Raw/number/";
+        private const string KeyFolder = "Assets/Resources/Raw/key/";
 
         [InitializeOnLoadMethod]
         private static void ScheduleAutoBuild()
@@ -58,6 +59,17 @@ namespace BouncingPlanet.Editor
                 return;
 
             bool changed = false;
+            if (EnsureSkillKeyHint(root, "Skill_Bomb", "Key_S",
+                    KeyFolder + "S.PNG"))
+            {
+                changed = true;
+            }
+            if (EnsureSkillKeyHint(root, "Skill_Hook", "Key_Left",
+                    KeyFolder + "Left.PNG"))
+            {
+                changed = true;
+            }
+
             SkillIconView[] views = root.GetComponentsInChildren<SkillIconView>(true);
             for (int i = 0; i < views.Length; i++)
             {
@@ -88,6 +100,14 @@ namespace BouncingPlanet.Editor
                     hud.heightCurrent = current;
                     changed = true;
                 }
+            }
+
+            if (hud != null && hud.pauseButton == null)
+            {
+                hud.pauseButton = CreateHudPauseButton(
+                    root.GetComponent<RectTransform>());
+                if (hud.pauseButton != null)
+                    changed = true;
             }
 
             if (changed)
@@ -200,6 +220,11 @@ namespace BouncingPlanet.Editor
                 skillsRoot, "Skill_Bomb", bombSprite);
             hud.hookSkill = CreateSkillIcon(
                 skillsRoot, "Skill_Hook", hookSprite);
+            AddKeyHint(hud.bombSkill.transform, "Key_S",
+                LoadSprite(KeyFolder + "S.PNG"));
+            AddKeyHint(hud.hookSkill.transform, "Key_Left",
+                LoadSprite(KeyFolder + "Left.PNG"));
+            hud.pauseButton = CreateHudPauseButton(rootRect);
 
             PrefabUtility.SaveAsPrefabAsset(root, PrefabPath);
             Object.DestroyImmediate(root);
@@ -386,6 +411,117 @@ namespace BouncingPlanet.Editor
             image.raycastTarget = false;
             image.enabled = false;
             return image;
+        }
+
+        /// <summary>左上角暂停按钮 + Esc 键提示，不覆盖 HUD 其他节点。</summary>
+        private static Button CreateHudPauseButton(RectTransform root)
+        {
+            if (root == null)
+                return null;
+
+            Sprite pauseSprite = LoadSprite(
+                "Assets/Resources/Raw/button/pause_p.PNG");
+            if (pauseSprite == null)
+                return null;
+
+            GameObject go = new GameObject(
+                "PauseButton",
+                typeof(RectTransform),
+                typeof(CanvasRenderer),
+                typeof(Image),
+                typeof(Button));
+            go.transform.SetParent(root, false);
+
+            RectTransform rect = go.GetComponent<RectTransform>();
+            rect.anchorMin = rect.anchorMax = new Vector2(0f, 1f);
+            rect.pivot = new Vector2(0f, 1f);
+            rect.anchoredPosition = new Vector2(36f, -36f);
+            rect.sizeDelta = new Vector2(72f, 72f);
+
+            Image image = go.GetComponent<Image>();
+            image.sprite = pauseSprite;
+            image.preserveAspect = true;
+            image.raycastTarget = true;
+
+            Button button = go.GetComponent<Button>();
+            button.targetGraphic = image;
+            button.transition = Selectable.Transition.ColorTint;
+
+            Sprite escSprite = LoadSprite(KeyFolder + "ESC.PNG");
+            if (escSprite != null && root.Find("Key_ESC") == null)
+            {
+                GameObject key = new GameObject(
+                    "Key_ESC",
+                    typeof(RectTransform),
+                    typeof(CanvasRenderer),
+                    typeof(Image));
+                key.transform.SetParent(root, false);
+                RectTransform keyRect = key.GetComponent<RectTransform>();
+                keyRect.anchorMin = keyRect.anchorMax = new Vector2(0f, 1f);
+                keyRect.pivot = new Vector2(0f, 1f);
+                keyRect.anchoredPosition = new Vector2(118f, -54f);
+                keyRect.sizeDelta = new Vector2(54f, 36f);
+                Image keyImage = key.GetComponent<Image>();
+                keyImage.sprite = escSprite;
+                keyImage.preserveAspect = true;
+                keyImage.raycastTarget = false;
+            }
+
+            return button;
+        }
+
+        private static bool EnsureSkillKeyHint(
+            GameObject root, string skillName, string keyName, string spritePath)
+        {
+            Transform skill = FindDeepChild(root.transform, skillName);
+            if (skill == null || skill.Find(keyName) != null)
+                return false;
+
+            Sprite sprite = LoadSprite(spritePath);
+            if (sprite == null)
+                return false;
+
+            AddKeyHint(skill, keyName, sprite);
+            return true;
+        }
+
+        /// <summary>在技能图标上方加按键提示，不参与技能栏布局。</summary>
+        private static void AddKeyHint(
+            Transform parent, string name, Sprite sprite)
+        {
+            if (parent == null || sprite == null || parent.Find(name) != null)
+                return;
+
+            GameObject go = new GameObject(
+                name,
+                typeof(RectTransform),
+                typeof(CanvasRenderer),
+                typeof(Image));
+            go.transform.SetParent(parent, false);
+
+            RectTransform rect = go.GetComponent<RectTransform>();
+            rect.anchorMin = rect.anchorMax = new Vector2(0.5f, 1f);
+            rect.pivot = new Vector2(0.5f, 0f);
+            rect.anchoredPosition = new Vector2(0f, 8f);
+            rect.sizeDelta = new Vector2(56f, 56f);
+
+            Image image = go.GetComponent<Image>();
+            image.sprite = sprite;
+            image.preserveAspect = true;
+            image.raycastTarget = false;
+        }
+
+        private static Transform FindDeepChild(Transform root, string name)
+        {
+            if (root.name == name)
+                return root;
+            for (int i = 0; i < root.childCount; i++)
+            {
+                Transform found = FindDeepChild(root.GetChild(i), name);
+                if (found != null)
+                    return found;
+            }
+            return null;
         }
 
         private static UiBurstEffect CreateReadyBurst(Transform parent)

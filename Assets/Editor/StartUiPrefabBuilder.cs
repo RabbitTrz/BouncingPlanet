@@ -66,6 +66,15 @@ namespace BouncingPlanet.Editor
                 "Assets/Resources/Raw/button/setting_p.PNG");
             Sprite buttonRestart = LoadSprite(
                 "Assets/Resources/Raw/button/restart_p.PNG");
+            Sprite buttonContinue = LoadSprite(
+                "Assets/Resources/Raw/button/continue_p.PNG");
+            Sprite[] tutorialSprites =
+            {
+                LoadSprite("Assets/Resources/Raw/guide/guide1.png"),
+                LoadSprite("Assets/Resources/Raw/guide/guide2.png"),
+                LoadSprite("Assets/Resources/Raw/guide/guide3.png"),
+                LoadSprite("Assets/Resources/Raw/guide/guide4.png")
+            };
             Sprite backWin = LoadSprite(
                 "Assets/Resources/Raw/backgroud/back_win.PNG");
             Sprite backLose = LoadSprite(
@@ -100,6 +109,8 @@ namespace BouncingPlanet.Editor
                 "Assets/Resources/Raw/volume/volume_block.PNG");
             Sprite chooseBackground = LoadSprite(
                 "Assets/Resources/Raw/backgroud/back_choose.PNG");
+            Sprite dressUpBackground = LoadSprite(
+                "Assets/Resources/Raw/backgroud/back_cloth.PNG");
             Sprite cloth = LoadSprite(
                 "Assets/Resources/Raw/button/clothchange_p.PNG");
             Sprite shiny = LoadSprite(
@@ -111,8 +122,27 @@ namespace BouncingPlanet.Editor
             Sprite[] holeFrames = LoadSprites(
                 "Assets/Resources/Image/Hole/hole_paper.PNG");
             Sprite hole = holeFrames.Length > 0 ? holeFrames[0] : null;
-            Sprite infinity = LoadSprite(
-                "Assets/Resources/Raw/hole/ehdless1.PNG");
+            Sprite[] infinityFrames = LoadSprites(
+                "Assets/Resources/Raw/hole/endless_sheet.PNG");
+            Sprite infinity = infinityFrames.Length > 0
+                ? infinityFrames[0]
+                : null;
+            Sprite lineSettingToHole = LoadSprite(
+                "Assets/Resources/Raw/line/setting to hole.png");
+            Sprite linePlayerToHole = LoadSprite(
+                "Assets/Resources/Raw/line/player to hole_begin.png");
+            Sprite lineQuitToHole = LoadSprite(
+                "Assets/Resources/Raw/line/quit to hole.png");
+            Sprite lineGroupToHole = LoadSprite(
+                "Assets/Resources/Raw/line/group to hole.png");
+            Sprite linePlayerTo1 = LoadSprite(
+                "Assets/Resources/Raw/line/player to 1.png");
+            Sprite linePlayerTo2 = LoadSprite(
+                "Assets/Resources/Raw/line/player to 2.png");
+            Sprite linePlayerTo3 = LoadSprite(
+                "Assets/Resources/Raw/line/player to 3.png");
+            Sprite linePlayerToChoose = LoadSprite(
+                "Assets/Resources/Raw/line/player to hole_choose.png");
             Sprite uiSprite = AssetDatabase.GetBuiltinExtraResource<Sprite>(
                 "UI/Skin/UISprite.psd");
             Sprite fullSprite = AssetDatabase.GetBuiltinExtraResource<Sprite>(
@@ -150,6 +180,15 @@ namespace BouncingPlanet.Editor
 
             Image bg = CreateFullImage(start, "Background", background, uiSprite);
             bg.color = Color.white;
+
+            CreateImage(start, "Line_SettingsToHole", lineSettingToHole,
+                new Vector2(-368f, 53f), new Vector2(536f, 159f));
+            CreateImage(start, "Line_PlayerToHole", linePlayerToHole,
+                new Vector2(350f, 30f), new Vector2(459f, 141f));
+            CreateImage(start, "Line_QuitToHole", lineQuitToHole,
+                new Vector2(250f, -150f), new Vector2(368f, 188f));
+            CreateImage(start, "Line_GroupToHole", lineGroupToHole,
+                new Vector2(-297f, -165f), new Vector2(397f, 197f));
 
             Image titleImage = CreateImage(start, "Title", title,
                 new Vector2(0f, 365f), new Vector2(1040f, 347f));
@@ -257,6 +296,16 @@ namespace BouncingPlanet.Editor
                 levelPage, "Background", chooseBackground, fullSprite);
             levelBackground.color = Color.white;
 
+            CanvasGroup lineTo1Group = CreateGuideLine(
+                levelPage, "Line_PlayerTo1", linePlayerTo1,
+                new Vector2(-170f, 50f), new Vector2(215f, 486f));
+            CanvasGroup lineTo2Group = CreateGuideLine(
+                levelPage, "Line_PlayerTo2", linePlayerTo2,
+                new Vector2(32f, 237f), new Vector2(512f, 139f));
+            CanvasGroup lineTo3Group = CreateGuideLine(
+                levelPage, "Line_PlayerTo3", linePlayerTo3,
+                new Vector2(200f, 78f), new Vector2(863f, 458f));
+
             Image endlessImage = CreateImage(levelPage, "Endless", hole,
                 new Vector2(-650f, 25f), new Vector2(520f, 520f));
             endlessImage.raycastTarget = false;
@@ -268,11 +317,20 @@ namespace BouncingPlanet.Editor
             Image infinityImage = CreateImage(endlessImage.transform,
                 "Infinity", infinity, Vector2.zero, new Vector2(220f, 110f));
             infinityImage.raycastTarget = false;
+            UiSpriteAnimator infinityAnimator = infinityImage.gameObject
+                .AddComponent<UiSpriteAnimator>();
+            infinityAnimator.target = infinityImage;
+            infinityAnimator.frames = infinityFrames;
+            infinityAnimator.fps = 10f;
             StickerDropTarget endlessTarget = endlessImage.gameObject
                 .AddComponent<StickerDropTarget>();
             endlessTarget.area = endlessImage.rectTransform;
             endlessTarget.levelSelect = levelSelect;
             endlessTarget.levelIndex = 3;
+
+            CanvasGroup lineToHoleGroup = CreateGuideLine(
+                levelPage, "Line_PlayerToHole", linePlayerToChoose,
+                new Vector2(-495f, 165f), new Vector2(188f, 162f));
 
             StickerDropTarget shinyTarget = CreateLevelIcon(
                 levelPage, "Level_1_Shiny", shiny,
@@ -304,6 +362,12 @@ namespace BouncingPlanet.Editor
                 shinyTarget, bombTarget, cloudTarget, endlessTarget
             };
             levelPlayer.clickBurst = CreateBurstLayer(playerImage.transform);
+            PlayerLayeredView levelPlayerView =
+                playerImage.gameObject.AddComponent<PlayerLayeredView>();
+            levelPlayer.playerView = levelPlayerView;
+            levelPlayer.idleState = "happy";
+            levelPlayer.dragState = "down";
+            levelPlayer.consumeState = "up";
             UiOrbitArrival playerArrival = playerImage.gameObject
                 .AddComponent<UiOrbitArrival>();
             playerArrival.orbitCenter = new Vector2(-650f, 25f);
@@ -325,6 +389,10 @@ namespace BouncingPlanet.Editor
             levelSelect.playerSticker = levelPlayer;
             levelSelect.backButton = backButton;
             levelSelect.clothButton = clothButton;
+            levelSelect.guideLines = new[]
+            {
+                lineTo1Group, lineTo2Group, lineTo3Group, lineToHoleGroup
+            };
             controller.levelSelectPage = levelPage.gameObject;
             controller.levelSelect = levelSelect;
             levelPage.gameObject.SetActive(false);
@@ -348,11 +416,38 @@ namespace BouncingPlanet.Editor
             Button pauseRestart = CreateButton(pausePanel.transform,
                 "Restart", buttonRestart,
                 new Vector2(230f, 0f), new Vector2(130f, 130f));
+            Button pauseContinue = CreateButton(pausePanel.transform,
+                "Continue", buttonContinue,
+                new Vector2(0f, -125f), new Vector2(110f, 110f));
             pause.pausePopup = pausePopup;
             pause.settingsPopup = settingsPopup;
             pause.settingsButton = pauseSettings;
             pause.levelSelectButton = pauseBack;
             pause.restartButton = pauseRestart;
+            pause.continueButton = pauseContinue;
+
+            GameObject tutorialPopup = CreatePopup(
+                rootRect, "TutorialPopup", fullSprite, paper);
+            Image tutorialPanel = CreateImage(tutorialPopup.transform,
+                "Panel", paper, Vector2.zero, new Vector2(1220f, 860f));
+            tutorialPanel.preserveAspect = false;
+            tutorialPanel.raycastTarget = true;
+            PopupScaleIn tutorialAnimation =
+                tutorialPanel.gameObject.AddComponent<PopupScaleIn>();
+            tutorialAnimation.closeRoot = tutorialPopup;
+            Image tutorialGuide = CreateImage(tutorialPanel.transform,
+                "Guide", tutorialSprites[0],
+                new Vector2(0f, 50f), new Vector2(1080f, 620f));
+            tutorialGuide.raycastTarget = false;
+            Button tutorialContinue = CreateButton(tutorialPanel.transform,
+                "Continue", buttonContinue,
+                new Vector2(0f, -330f), new Vector2(110f, 110f));
+            tutorialPopup.SetActive(false);
+            pause.tutorialPopup = tutorialPopup;
+            pause.tutorialImage = tutorialGuide;
+            pause.tutorialSprites = tutorialSprites;
+            pause.tutorialContinueButton = tutorialContinue;
+
             pausePopup.SetActive(false);
 
             ResultMenuController result = root.AddComponent<ResultMenuController>();
@@ -376,6 +471,70 @@ namespace BouncingPlanet.Editor
             result.levelSelectButton = resultBack;
             result.restartButton = resultRestart;
             resultPage.gameObject.SetActive(false);
+
+            RectTransform dressUpRect = CreateRect(rootRect, "DressUpPage");
+            Stretch(dressUpRect);
+            DressUpPageController dressController =
+                dressUpRect.gameObject.AddComponent<DressUpPageController>();
+
+            Image dressBackground = CreateFullImage(dressUpRect,
+                "Background", dressUpBackground, fullSprite);
+            dressBackground.color = Color.white;
+            dressBackground.raycastTarget = true;
+
+            RectTransform previewRect = CreateRect(dressUpRect, "Preview");
+            previewRect.anchorMin = previewRect.anchorMax =
+                new Vector2(0.5f, 0.5f);
+            previewRect.pivot = new Vector2(0.5f, 0.5f);
+            previewRect.anchoredPosition = new Vector2(-480f, -20f);
+            previewRect.sizeDelta = new Vector2(820f, 820f);
+            PlayerLayeredView previewView =
+                previewRect.gameObject.AddComponent<PlayerLayeredView>();
+            StickerDropTarget dressTarget =
+                previewRect.gameObject.AddComponent<StickerDropTarget>();
+            dressTarget.area = previewRect;
+            dressTarget.acceptActions = false;
+
+            Vector2[] stickerPositions =
+            {
+                new Vector2(70f, 170f), new Vector2(390f, 170f),
+                new Vector2(710f, 170f), new Vector2(70f, -120f),
+                new Vector2(390f, -120f), new Vector2(710f, -120f)
+            };
+            ClothingCategory[] stickerCategories =
+            {
+                ClothingCategory.Hair, ClothingCategory.Cloth,
+                ClothingCategory.Decoration, ClothingCategory.Hair,
+                ClothingCategory.Cloth, ClothingCategory.Decoration
+            };
+            DragSticker[] dressStickers = new DragSticker[6];
+            for (int i = 0; i < dressStickers.Length; i++)
+            {
+                Image stickerImage = CreateImage(dressUpRect,
+                    "Sticker_Cloth_" + i, null, stickerPositions[i],
+                    new Vector2(250f, 250f));
+                stickerImage.raycastTarget = true;
+                stickerImage.preserveAspect = true;
+                DragSticker sticker = stickerImage.gameObject
+                    .AddComponent<DragSticker>();
+                sticker.dropTarget = dressTarget;
+                sticker.equipClothing = true;
+                sticker.clothingCategory = stickerCategories[i];
+                sticker.restoreAfterConsume = true;
+                sticker.clickBurst = CreateBurstLayer(stickerImage.transform);
+                dressStickers[i] = sticker;
+            }
+
+            Button dressBack = CreateButton(dressUpRect, "Back", back,
+                new Vector2(0f, 440f), new Vector2(110f, 110f));
+            dressController.page = dressUpRect.gameObject;
+            dressController.preview = previewView;
+            dressController.stickers = dressStickers;
+            dressController.backButton = dressBack;
+            dressUpRect.gameObject.SetActive(false);
+
+            levelSelect.dressUpPage = dressUpRect.gameObject;
+            levelSelect.dressUp = dressController;
 
             Image transitionImage = CreateFullImage(rootRect,
                 "TransitionOverlay", null, fullSprite);
@@ -609,6 +768,13 @@ namespace BouncingPlanet.Editor
             image.raycastTarget = false;
             image.preserveAspect = true;
             return image;
+        }
+
+        private static CanvasGroup CreateGuideLine(Transform parent,
+            string name, Sprite sprite, Vector2 position, Vector2 size)
+        {
+            Image image = CreateImage(parent, name, sprite, position, size);
+            return image.gameObject.AddComponent<CanvasGroup>();
         }
 
         private static RectTransform CreateRect(Transform parent, string name)

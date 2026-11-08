@@ -15,8 +15,14 @@ namespace BouncingPlanet
         public Button settingsButton;
         public Button levelSelectButton;
         public Button restartButton;
+        public Button continueButton;
+        public GameObject tutorialPopup;
+        public Image tutorialImage;
+        public Sprite[] tutorialSprites;
+        public Button tutorialContinueButton;
 
         private GameFlow flow;
+        private GameFlow subscribedFlow;
         private bool ownsSettings;
 
         private void Awake()
@@ -30,6 +36,10 @@ namespace BouncingPlanet
                 levelSelectButton.onClick.AddListener(ReturnToLevelSelect);
             if (restartButton != null)
                 restartButton.onClick.AddListener(RestartLevel);
+            if (continueButton != null)
+                continueButton.onClick.AddListener(ResumeRun);
+            if (tutorialContinueButton != null)
+                tutorialContinueButton.onClick.AddListener(CloseTutorial);
         }
 
         private void OnDestroy()
@@ -40,6 +50,13 @@ namespace BouncingPlanet
                 levelSelectButton.onClick.RemoveListener(ReturnToLevelSelect);
             if (restartButton != null)
                 restartButton.onClick.RemoveListener(RestartLevel);
+            if (continueButton != null)
+                continueButton.onClick.RemoveListener(ResumeRun);
+            if (tutorialContinueButton != null)
+                tutorialContinueButton.onClick.RemoveListener(CloseTutorial);
+            if (subscribedFlow != null)
+                subscribedFlow.RunStarted -= OnRunStarted;
+            subscribedFlow = null;
             if (Instance == this)
                 Instance = null;
         }
@@ -53,7 +70,11 @@ namespace BouncingPlanet
             if (flow == null)
                 return;
 
+            SubscribeFlow();
+
             bool paused = flow.State == GameFlow.FlowState.Paused;
+            bool tutorialOpen = tutorialPopup != null &&
+                                tutorialPopup.activeSelf;
             bool settingsActive = settingsPopup != null &&
                                   settingsPopup.activeSelf;
             if (ownsSettings && !settingsActive)
@@ -61,9 +82,9 @@ namespace BouncingPlanet
             bool settingsOpen = ownsSettings && settingsActive;
             if (pausePopup != null)
             {
-                if (settingsOpen)
+                if (settingsOpen || tutorialOpen)
                 {
-                    // 设置弹窗在层级上早于暂停弹窗，打开设置时先让暂停弹窗退场。
+                    // 设置/教程弹窗优先，暂停弹窗让位。
                     if (pausePopup.activeSelf)
                         pausePopup.SetActive(false);
                 }
@@ -80,6 +101,13 @@ namespace BouncingPlanet
             if (!paused && settingsOpen)
                 HideSettings();
 
+            if (tutorialOpen)
+            {
+                if (Input.GetKeyDown(KeyCode.Escape))
+                    CloseTutorial();
+                return;
+            }
+
             if (!Input.GetKeyDown(KeyCode.Escape))
                 return;
 
@@ -94,6 +122,78 @@ namespace BouncingPlanet
                 else
                     flow.ResumeRun();
             }
+        }
+
+        /// <summary>HUD 暂停按钮调用；只在游戏进行中生效。</summary>
+        public void OpenPause()
+        {
+            if (flow == null)
+                flow = GameBootstrap.Instance?.gameFlow;
+            if (flow != null && flow.State == GameFlow.FlowState.Playing)
+                flow.PauseRun();
+        }
+
+        private void ResumeRun()
+        {
+            if (flow == null)
+                flow = GameBootstrap.Instance?.gameFlow;
+            flow?.ResumeRun();
+        }
+
+        private void SubscribeFlow()
+        {
+            if (flow == subscribedFlow)
+                return;
+            if (subscribedFlow != null)
+                subscribedFlow.RunStarted -= OnRunStarted;
+            subscribedFlow = flow;
+            if (subscribedFlow != null)
+                subscribedFlow.RunStarted += OnRunStarted;
+        }
+
+        private void OnRunStarted(LevelConfig level)
+        {
+            if (tutorialPopup == null || tutorialImage == null ||
+                tutorialSprites == null || tutorialSprites.Length == 0)
+            {
+                return;
+            }
+
+            Sprite sprite = GetTutorialSprite(level);
+            if (sprite == null)
+                return;
+
+            tutorialImage.sprite = sprite;
+            tutorialPopup.SetActive(true);
+            subscribedFlow?.PauseRun();
+        }
+
+        private Sprite GetTutorialSprite(LevelConfig level)
+        {
+            if (level == null)
+                return null;
+            int index = level.IsEndless
+                ? tutorialSprites.Length - 1
+                : level.order - 1;
+            if (index < 0 || index >= tutorialSprites.Length)
+                return null;
+            return tutorialSprites[index];
+        }
+
+        private void CloseTutorial()
+        {
+            if (tutorialPopup == null || !tutorialPopup.activeSelf)
+                return;
+
+            PopupScaleIn animation =
+                tutorialPopup.GetComponentInChildren<PopupScaleIn>(true);
+            if (animation != null)
+                animation.Close();
+            else
+                tutorialPopup.SetActive(false);
+
+            if (flow != null && flow.State == GameFlow.FlowState.Paused)
+                flow.ResumeRun();
         }
 
         private void OpenSettings()

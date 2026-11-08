@@ -34,6 +34,8 @@ namespace BouncingPlanet
         public ScoreSystem score;
         public ImpactVfxService vfx;
         public ProceduralAudioService audioService;
+        public BgmPlayer bgmPlayer;
+        public Wardrobe wardrobe;
         public FeedbackDirector feedbackDirector;
         public PlanetWorld planetWorld;
         public PlayerSkills skills;
@@ -91,6 +93,12 @@ namespace BouncingPlanet
 
             audioService = EnsureComponent(audioService);
             audioService.Initialize(this);
+
+            bgmPlayer = EnsureComponent(bgmPlayer);
+            bgmPlayer.Initialize(this);
+
+            wardrobe = EnsureComponent(wardrobe);
+            wardrobe.Initialize(this);
 
             feedbackDirector = EnsureComponent(feedbackDirector);
             feedbackDirector.Initialize(this);

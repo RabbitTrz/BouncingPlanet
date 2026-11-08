@@ -18,6 +18,8 @@ namespace BouncingPlanet
         public Transform motionTarget;
         public bool playDefaultOnEnable = true;
         public bool useUnscaledTime = true;
+        [Tooltip("关闭后状态机只驱动运动曲线，不再改 targetRenderer 的 Sprite。")]
+        public bool applySprites = true;
 
         [Header("Idle Sway")]
         [Tooltip("Idle 状态下额外叠加的左右摆动角度；0 表示关闭。")]
@@ -137,7 +139,8 @@ namespace BouncingPlanet
 
         private void ApplySpriteForTime(float normalized)
         {
-            if (targetRenderer == null || CurrentState == null || !CurrentState.HasFrames)
+            if (!applySprites || targetRenderer == null ||
+                CurrentState == null || !CurrentState.HasFrames)
                 return;
 
             Sprite[] frames = CurrentState.frames;

@@ -19,6 +19,7 @@ MonoBehaviour:
   unlockedByDefault: 1
   description: 
   goalRadius: 15
+  bgm: {fileID: 8300000, guid: e69543cecb6422b44bd0b74ceacfcbb5, type: 3}
   allowMusou: 0
   allowBomb: 1
   allowHook: 0

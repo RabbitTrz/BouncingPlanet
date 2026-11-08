@@ -21,6 +21,9 @@ namespace BouncingPlanet
 
         public GameBootstrap bootstrap;
 
+        /// <summary>每次 StartRun 成功后触发，用于关卡开始时的教程弹窗。</summary>
+        public event System.Action<LevelConfig> RunStarted;
+
         private SimulationClock clock;
         private PlayerController player;
         private ScoreSystem score;
@@ -198,6 +201,7 @@ namespace BouncingPlanet
             clock?.SetSlowMotion(1f);
             clock?.Resume();
             State = FlowState.Playing;
+            RunStarted?.Invoke(currentLevel);
         }
 
         public void PauseRun()

@@ -21,6 +21,10 @@ namespace BouncingPlanet
         [Header("目标 Goal")]
         [Min(0.1f)] public float goalRadius = 11f;
 
+        [Header("音频 Audio")]
+        [Tooltip("该关卡的 BGM；留空时使用 GameConfig.bgmGame。")]
+        public AudioClip bgm;
+
         [Header("技能 Skills")]
         public bool allowMusou = true;
         public bool allowBomb = true;
@@ -67,6 +71,7 @@ namespace BouncingPlanet
             generation.maxPlanetsPerRing = Mathf.Max(
                 generation.minPlanetsPerRing, generation.maxPlanetsPerRing);
             generation.laneSpacing = Mathf.Max(0.01f, generation.laneSpacing);
+            generation.angularJitter = Mathf.Clamp01(generation.angularJitter);
             generation.minGenerationRadius = Mathf.Max(0.01f, generation.minGenerationRadius);
             if (generation.swaySpeedMax < generation.swaySpeedMin)
                 generation.swaySpeedMax = generation.swaySpeedMin;

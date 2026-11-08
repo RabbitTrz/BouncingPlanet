@@ -40,6 +40,10 @@ namespace BouncingPlanet
         [Tooltip("无尽关按这个屏幕弧长间距计算槽位，保持不同半径下的星球密度。")]
         [Min(0.1f)] public float targetArcSpacing = 1.40f;
 
+        [LabelText("槽位角度抖动（无尽）")]
+        [Tooltip("主环星球偏离等角槽位的比例：±该值 × 槽位角，用来打散径向连线。")]
+        [Range(0f, 0.5f)] public float angularJitter = 0.25f;
+
         [LabelText("弧窗口额外边距（无尽）")]
         [Tooltip("只实例化玩家附近角度窗口；边距越大越不容易在屏幕边缘看到生成/回收。")]
         [Min(0f)] public float arcWindowMargin = 2.00f;
@@ -90,6 +94,12 @@ namespace BouncingPlanet
             backfillBehind = config.backfillBehind;
             minGenerationRadius = config.minGenerationRadius;
             recycleAbove = config.recycleAbove;
+        }
+
+        /// <summary>运行时副本；用于换随机种子而不改到关卡资产。</summary>
+        public LevelGenerationSettings Clone()
+        {
+            return (LevelGenerationSettings)MemberwiseClone();
         }
     }
 

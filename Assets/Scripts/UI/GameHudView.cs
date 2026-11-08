@@ -20,6 +20,7 @@ namespace BouncingPlanet
         public SkillIconView bombSkill;
         public SkillIconView hookSkill;
         public Image pressureWarning;
+        public Button pauseButton;
 
         [Tooltip("高度显示倍率；1 表示显示整数世界半径，10 表示显示一位小数。")]
         public float heightDisplayScale = 1f;
@@ -43,13 +44,22 @@ namespace BouncingPlanet
                 canvasGroup = GetComponent<CanvasGroup>();
             if (canvasGroup == null)
                 canvasGroup = gameObject.AddComponent<CanvasGroup>();
+            if (pauseButton != null)
+                pauseButton.onClick.AddListener(OpenPauseMenu);
             SetVisible(false);
         }
 
         private void OnDestroy()
         {
+            if (pauseButton != null)
+                pauseButton.onClick.RemoveListener(OpenPauseMenu);
             if (Instance == this)
                 Instance = null;
+        }
+
+        private void OpenPauseMenu()
+        {
+            PauseMenuController.Instance?.OpenPause();
         }
 
         private void Update()

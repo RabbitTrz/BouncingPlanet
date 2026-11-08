@@ -119,3 +119,8 @@ MonoBehaviour:
   hookBreakDistance: 3
   hookLooseDistance: 0.08
   hookHeavySpeed: 1.7
+  bgmStartPage: {fileID: 8300000, guid: 4d2894628e24e994c85ada818521e575, type: 3}
+  bgmLevelSelect: {fileID: 8300000, guid: 4d2894628e24e994c85ada818521e575, type: 3}
+  bgmGame: {fileID: 0}
+  bgmVolume: 0.05
+  bgmFadeDuration: 0.8
