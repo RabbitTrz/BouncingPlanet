@@ -266,6 +266,7 @@ namespace BouncingPlanet
                 new Color(1f, 0.97f, 0.82f, 0.95f), 30, playerRoot);
             marker.localPosition = new Vector3(0f, 0.62f, 0f);
             marker.localScale = new Vector3(0.22f, 0.22f, 1f);
+            marker.gameObject.SetActive(false);
 
             CreatePlayerTrail();
         }
