@@ -24,6 +24,7 @@ namespace BouncingPlanet
         public PlanetView viewComponent;
         public float deathViewTimer;
         public bool fromBombSkill;
+        public bool markerReached;
 
         public PlanetTypeId Id => def != null ? def.id : PlanetTypeId.Rock;
         public Vector2 WorldPosition => PolarMath.Polar(radius, angle);

@@ -9,7 +9,9 @@ namespace BouncingPlanet
         Bomb = 1,
         Cloud = 2,
         Ice = 3,
-        Shiny = 4
+        Shiny = 4,
+        GoalMarker = 5,
+        MilestoneMarker = 6
     }
 
     public enum PlanetBehavior
@@ -18,7 +20,8 @@ namespace BouncingPlanet
         Bomb = 1,
         Cloud = 2,
         Ice = 3,
-        Shiny = 4
+        Shiny = 4,
+        Marker = 5
     }
 
     /// <summary>
@@ -214,6 +217,14 @@ namespace BouncingPlanet
         [LabelText("穿过速度上限")]
         [Tooltip("最终径向速度不超过 max(进入速度, 该值)，只限制云朵的加值结果。")]
         public float cloudSpeedCap = 3.2f;
+
+        [Header("Marker")]
+        [Tooltip("标记星球：没有碰撞，玩家首次越过后切换为点亮状态。")]
+        public bool isMarker;
+        [Tooltip("点亮后的贴图；留空时只改用 markerReachedColor。")]
+        public Sprite markerReachedSprite;
+        [Tooltip("点亮后的颜色。")]
+        public Color markerReachedColor = new Color(1f, 0.98f, 0.7f, 1f);
 
         [Header("炸弹 Bomb")]
         [Tunable("Bomb", 0.1f, 5f, 0.05f, "爆炸特效半径")]

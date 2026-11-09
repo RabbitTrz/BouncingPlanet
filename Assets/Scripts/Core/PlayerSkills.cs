@@ -218,8 +218,11 @@ namespace BouncingPlanet
                 PlanetRuntime planet = planets[i];
                 if (!planet.alive || planet == hookTarget || planet.def == null)
                     continue;
-                if (planet.def.behavior == PlanetBehavior.Cloud)
+                if (planet.def.isMarker ||
+                    planet.def.behavior == PlanetBehavior.Cloud)
+                {
                     continue;
+                }
 
                 float contact = playerRadius + planet.worldRadius;
                 if ((planet.WorldPosition - playerPosition).sqrMagnitude <=
@@ -293,8 +296,11 @@ namespace BouncingPlanet
                 for (int i = 0; i < planets.Count; i++)
                 {
                     PlanetRuntime planet = planets[i];
-                    if (!planet.alive)
+                    if (!planet.alive || planet.def == null ||
+                        planet.def.isMarker)
+                    {
                         continue;
+                    }
 
                     Vector2 world = planet.WorldPosition;
                     Vector3 screen = camera.WorldToScreenPoint(
@@ -326,8 +332,11 @@ namespace BouncingPlanet
             for (int i = 0; i < planets.Count; i++)
             {
                 PlanetRuntime planet = planets[i];
-                if (!planet.alive)
+                if (!planet.alive || planet.def == null ||
+                    planet.def.isMarker)
+                {
                     continue;
+                }
 
                 float distance = Vector2.Distance(playerPosition, planet.WorldPosition);
                 if (distance < nearestDistance)

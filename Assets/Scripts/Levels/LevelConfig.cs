@@ -72,7 +72,10 @@ namespace BouncingPlanet
                 generation.minPlanetsPerRing, generation.maxPlanetsPerRing);
             generation.laneSpacing = Mathf.Max(0.01f, generation.laneSpacing);
             generation.angularJitter = Mathf.Clamp01(generation.angularJitter);
+            generation.markerArcSpacing = Mathf.Max(0.1f, generation.markerArcSpacing);
             generation.minGenerationRadius = Mathf.Max(0.01f, generation.minGenerationRadius);
+            endless.milestoneFirstRadius = Mathf.Max(0f, endless.milestoneFirstRadius);
+            endless.milestoneInterval = Mathf.Max(0.1f, endless.milestoneInterval);
             if (generation.swaySpeedMax < generation.swaySpeedMin)
                 generation.swaySpeedMax = generation.swaySpeedMin;
         }

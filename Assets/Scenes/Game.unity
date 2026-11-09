@@ -241,6 +241,7 @@ MonoBehaviour:
   audioService: {fileID: 0}
   bgmPlayer: {fileID: 0}
   wardrobe: {fileID: 0}
+  progress: {fileID: 0}
   feedbackDirector: {fileID: 0}
   planetWorld: {fileID: 0}
   skills: {fileID: 0}

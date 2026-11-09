@@ -47,6 +47,7 @@ MonoBehaviour:
     recycleAbove: 40
     targetArcSpacing: 1.4
     angularJitter: 0.5
+    markerArcSpacing: 0.5
     arcWindowMargin: 2
   typeWeights:
   - type: {fileID: 11400000, guid: 008e9d2b4234bec44bdd61bd4c235f88, type: 2}
@@ -89,6 +90,8 @@ MonoBehaviour:
     musouUnlockRadius: 0
     bombUnlockRadius: 0
     hookUnlockRadius: 0
+    milestoneFirstRadius: 20
+    milestoneInterval: 20
     pressureEnabled: 1
     pressureStartDelay: 5
     pressureGrowthPerSecond: 0.12

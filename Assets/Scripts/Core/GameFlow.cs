@@ -233,6 +233,10 @@ namespace BouncingPlanet
                 return;
 
             bootstrap?.progress?.CompleteLevel(currentLevel);
+            float reachedHeight = player != null
+                ? player.State.maxRadius
+                : (currentLevel != null ? currentLevel.goalRadius : 0f);
+            bootstrap?.planetWorld?.MarkMarkersReached(reachedHeight);
 
             if (OutcomeSequenceController.Instance != null)
             {

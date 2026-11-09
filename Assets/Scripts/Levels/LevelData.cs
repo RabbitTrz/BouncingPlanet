@@ -44,6 +44,10 @@ namespace BouncingPlanet
         [Tooltip("主环星球偏离等角槽位的比例：±该值 × 槽位角，用来打散径向连线。")]
         [Range(0f, 0.5f)] public float angularJitter = 0.25f;
 
+        [LabelText("标记星球弧长间距")]
+        [Tooltip("终点/里程碑标记星球沿圆弧的间距；半径越大自动增加数量。")]
+        [Min(0.1f)] public float markerArcSpacing = 0.9f;
+
         [LabelText("弧窗口额外边距（无尽）")]
         [Tooltip("只实例化玩家附近角度窗口；边距越大越不容易在屏幕边缘看到生成/回收。")]
         [Min(0f)] public float arcWindowMargin = 2.00f;
@@ -135,6 +139,13 @@ namespace BouncingPlanet
         [Min(0f)] public float musouUnlockRadius;
         [Min(0f)] public float bombUnlockRadius;
         [Min(0f)] public float hookUnlockRadius;
+
+        [Header("里程碑 Milestones")]
+        [LabelText("首个里程碑高度")]
+        [Min(0f)] public float milestoneFirstRadius = 20f;
+
+        [LabelText("里程碑间隔")]
+        [Min(0.1f)] public float milestoneInterval = 20f;
 
         [Header("黑洞压力 Black Hole Pressure")]
         [LabelText("启用无尽黑洞压力")]

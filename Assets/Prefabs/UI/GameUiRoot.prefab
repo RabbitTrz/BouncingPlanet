@@ -1480,6 +1480,7 @@ MonoBehaviour:
   levelSelect: {fileID: 4609946480451003707}
   levelIndex: 0
   acceptActions: 1
+  locked: 0
 --- !u!114 &7578872056889585892
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4998,6 +4999,7 @@ MonoBehaviour:
   levelSelect: {fileID: 4609946480451003707}
   levelIndex: 1
   acceptActions: 1
+  locked: 0
 --- !u!114 &915282826475381360
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5687,7 +5689,7 @@ MonoBehaviour:
   - {fileID: 5265248347083171005}
   - {fileID: 5100872347669233752}
   - {fileID: 7178296128857522009}
-  guideLineFadeDuration: 0.22
+  lockedLevelBrightness: 0.42
 --- !u!114 &588338619667624536
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6495,6 +6497,7 @@ MonoBehaviour:
   levelSelect: {fileID: 0}
   levelIndex: -1
   acceptActions: 0
+  locked: 0
 --- !u!1 &6256347519025199286
 GameObject:
   m_ObjectHideFlags: 0
@@ -7609,6 +7612,7 @@ MonoBehaviour:
   levelSelect: {fileID: 4609946480451003707}
   levelIndex: 2
   acceptActions: 1
+  locked: 0
 --- !u!114 &2694993116379287567
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7837,6 +7841,7 @@ MonoBehaviour:
   levelSelect: {fileID: 0}
   levelIndex: -1
   acceptActions: 1
+  locked: 0
 --- !u!1 &7642923969563551417
 GameObject:
   m_ObjectHideFlags: 0
@@ -8661,6 +8666,7 @@ MonoBehaviour:
   levelSelect: {fileID: 4609946480451003707}
   levelIndex: 3
   acceptActions: 1
+  locked: 0
 --- !u!1 &8886749008756774124
 GameObject:
   m_ObjectHideFlags: 0

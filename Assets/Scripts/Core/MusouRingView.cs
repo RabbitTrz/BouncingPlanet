@@ -21,6 +21,13 @@ namespace BouncingPlanet
         private LineRenderer baseRing;
         private LineRenderer progressRing;
         private Material ringMaterial;
+        private SpriteRenderer borderRenderer;
+        private Transform borderTransform;
+        private Sprite borderSprite;
+        private SpriteRenderer borderFillRenderer;
+        private Transform borderFillTransform;
+        private Material borderFillMaterial;
+        private Sprite borderFillSprite;
         private bool initialized;
 
         public void Initialize(GameBootstrap gameBootstrap)
@@ -52,6 +59,53 @@ namespace BouncingPlanet
 
             baseRing = CreateLine("MusouRingBase", true, Segments);
             progressRing = CreateLine("MusouRingProgress", false, Segments + 1);
+
+            borderSprite = Resources.Load<Sprite>(
+                "Raw/overdirve/overdrive_border");
+            if (borderSprite != null)
+            {
+                GameObject borderObject = new GameObject("MusouRingBorder");
+                borderObject.transform.SetParent(transform, false);
+                borderRenderer = borderObject.AddComponent<SpriteRenderer>();
+                borderRenderer.sprite = borderSprite;
+                borderRenderer.sortingOrder = 29;
+                borderRenderer.enabled = false;
+                borderTransform = borderObject.transform;
+            }
+
+            borderFillSprite = Resources.Load<Sprite>(
+                "Raw/overdirve/overdrive_border2");
+            Shader fillShader = Resources.Load<Shader>(
+                "Shaders/MusouRingFill");
+            if (borderFillSprite != null && fillShader != null)
+            {
+                borderFillMaterial = new Material(fillShader)
+                {
+                    name = "MusouRingFillMaterial"
+                };
+                borderFillMaterial.SetFloat(
+                    "_StartAngle", config.musouRingFillStartAngle);
+                borderFillMaterial.SetFloat(
+                    "_SpanAngle", config.musouRingFillSpanAngle);
+                borderFillMaterial.SetFloat("_Clockwise", 1f);
+                borderFillMaterial.SetFloat("_CenterX", 0.5f);
+                borderFillMaterial.SetFloat("_CenterY", 0.5f);
+                borderFillMaterial.SetFloat(
+                    "_Aspect",
+                    borderFillSprite.rect.width /
+                    Mathf.Max(1f, borderFillSprite.rect.height));
+                borderFillMaterial.SetColor("_Color", Color.white);
+
+                GameObject fillObject = new GameObject("MusouRingFill");
+                fillObject.transform.SetParent(transform, false);
+                borderFillRenderer = fillObject.AddComponent<SpriteRenderer>();
+                borderFillRenderer.sprite = borderFillSprite;
+                borderFillRenderer.material = borderFillMaterial;
+                borderFillRenderer.sortingOrder = 30;
+                borderFillRenderer.enabled = false;
+                borderFillTransform = fillObject.transform;
+            }
+
             initialized = true;
             SetVisible(false);
         }
@@ -113,25 +167,94 @@ namespace BouncingPlanet
             float width = Mathf.Max(0.0001f, config.musouRingWidth) * pulse;
 
             Color color = active ? config.musouRingActiveColor : config.musouRingChargeColor;
+            bool hasBorder = borderRenderer != null && borderTransform != null;
+            bool hasFillRing = hasBorder && borderFillRenderer != null &&
+                               borderFillTransform != null &&
+                               borderFillSprite != null;
+            if (hasBorder)
+            {
+                UpdateBorder(center, worldAngle, radius, active,
+                    progress, hasFillRing);
+            }
 
-            baseRing.enabled = true;
-            baseRing.startWidth = width;
-            baseRing.endWidth = width;
-            Color baseColor = color;
-            baseColor.a *= config.musouRingBaseAlpha;
-            baseRing.startColor = baseColor;
-            baseRing.endColor = baseColor;
-            SetArc(baseRing, center, up, right, radius, 1f, true);
+            // 有美术边框时，用边框作为无双环本体；
+            // 有填充图时用美术填充层，不再使用程序化进度弧。
+            baseRing.enabled = !hasBorder;
+            if (!hasBorder)
+            {
+                baseRing.startWidth = width;
+                baseRing.endWidth = width;
+                Color baseColor = color;
+                baseColor.a *= config.musouRingBaseAlpha;
+                baseRing.startColor = baseColor;
+                baseRing.endColor = baseColor;
+                SetArc(baseRing, center, up, right, radius, 1f, true);
+            }
 
-            bool showProgress = progress > 0.001f;
-            progressRing.enabled = showProgress;
-            if (showProgress)
+            bool showProgressLine = !hasFillRing && progress > 0.001f;
+            progressRing.enabled = showProgressLine;
+            if (showProgressLine)
             {
                 progressRing.startWidth = width;
                 progressRing.endWidth = width;
                 progressRing.startColor = color;
                 progressRing.endColor = color;
                 SetArc(progressRing, center, up, right, radius, progress, false);
+            }
+        }
+
+        private void UpdateBorder(
+            Vector2 center, float worldAngle, float radius, bool active,
+            float progress, bool hasFillRing)
+        {
+            if (borderRenderer == null || borderTransform == null ||
+                borderSprite == null)
+            {
+                return;
+            }
+
+            borderRenderer.enabled = true;
+            float imageWidth = Mathf.Max(
+                0.0001f, borderSprite.bounds.size.x);
+            // 边框图里圆环大约占图宽的 95%，按这个比例对齐原无双环大小。
+            const float ringWidthRatio = 0.95f;
+            float scale = radius * 2f *
+                          Mathf.Max(0.5f, config.musouRingBorderScale) /
+                          (imageWidth * ringWidthRatio);
+            if (active)
+                scale *= 1f + Mathf.Sin(Time.unscaledTime * 9f) * 0.02f;
+
+            borderTransform.position = new Vector3(center.x, center.y, 0f);
+            // 贴图火焰在正上方，让它对齐玩家的“径向外”。
+            borderTransform.rotation = Quaternion.Euler(
+                0f, 0f, worldAngle * Mathf.Rad2Deg - 90f);
+            borderTransform.localScale = new Vector3(scale, scale, 1f);
+            borderRenderer.color = new Color(
+                1f, 1f, 1f, active ? 1f : 0.8f);
+
+            if (borderFillRenderer != null && borderFillTransform != null &&
+                borderFillSprite != null)
+            {
+                borderFillRenderer.enabled = hasFillRing;
+                if (hasFillRing)
+                {
+                    // 填充图和底图同尺寸、同 Transform，进度裁剪直接用
+                    // 美术像素，保证与底图严丝合缝。
+                    borderFillTransform.position = borderTransform.position;
+                    borderFillTransform.rotation = borderTransform.rotation;
+                    borderFillTransform.localScale = borderTransform.localScale;
+                    if (borderFillMaterial != null)
+                    {
+                        borderFillMaterial.SetFloat(
+                            "_Progress", Mathf.Clamp01(progress));
+                        borderFillMaterial.SetFloat(
+                            "_StartAngle", config.musouRingFillStartAngle);
+                        borderFillMaterial.SetFloat(
+                            "_SpanAngle", config.musouRingFillSpanAngle);
+                    }
+                    borderFillRenderer.color = new Color(
+                        1f, 1f, 1f, active ? 1f : 0.9f);
+                }
             }
         }
 
@@ -184,12 +307,18 @@ namespace BouncingPlanet
                 baseRing.enabled = visible;
             if (progressRing != null)
                 progressRing.enabled = visible;
+            if (borderRenderer != null)
+                borderRenderer.enabled = visible;
+            if (borderFillRenderer != null)
+                borderFillRenderer.enabled = visible;
         }
 
         private void OnDestroy()
         {
             if (ringMaterial != null)
                 Destroy(ringMaterial);
+            if (borderFillMaterial != null)
+                Destroy(borderFillMaterial);
         }
     }
 }

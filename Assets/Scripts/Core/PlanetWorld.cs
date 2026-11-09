@@ -26,6 +26,8 @@ namespace BouncingPlanet
             public float gapRadius;
             public int gapSlotCount;
             public float gapPhase;
+            public PlanetTypeDef markerType;
+            public bool markerBand;
             public readonly Dictionary<int, PlanetRuntime> slots =
                 new Dictionary<int, PlanetRuntime>();
             public readonly Dictionary<int, PlanetRuntime> gapSlots =
@@ -47,6 +49,8 @@ namespace BouncingPlanet
         private PlayerController player;
         private LevelConfig currentLevel;
         private LevelGenerationSettings generation;
+        private PlanetTypeDef goalMarkerType;
+        private PlanetTypeDef milestoneMarkerType;
         private Transform viewRoot;
         private Transform poolRoot;
         private Transform bandRoot;
@@ -201,6 +205,7 @@ namespace BouncingPlanet
                 return;
 
             ClearWorld();
+            EnsureMarkerTypes();
             startRadius = currentLevel != null
                 ? currentLevel.startRadius
                 : config.startRadius;
@@ -241,6 +246,7 @@ namespace BouncingPlanet
                 AddBand(radius);
             }
 
+            EnsureMilestoneBands(spawnTop);
             AddSafeCatchPlanet();
             SyncViews();
         }
@@ -288,6 +294,8 @@ namespace BouncingPlanet
                 startRadius - generation.initialBelow);
             for (float radius = low; radius <= maxRadius; radius += lane)
                 AddBandView(radius);
+
+            AddGoalMarkerRing(currentLevel.goalRadius);
         }
 
         /// <summary>由 CollisionSystem 每个仿真步调用。</summary>
@@ -316,6 +324,15 @@ namespace BouncingPlanet
                     planet.flash = Mathf.Max(0f, planet.flash - dt * 2.5f);
                 if (planet.deathViewTimer > 0f)
                     planet.deathViewTimer = Mathf.Max(0f, planet.deathViewTimer - dt);
+
+                if (planet.def != null && planet.def.isMarker &&
+                    !planet.markerReached &&
+                    player.State.maxRadius + 0.0001f >= planet.radius)
+                {
+                    planet.markerReached = true;
+                    planet.viewComponent?.SetMarkerReached(true);
+                }
+
                 if (!planet.alive || planet.swayAmplitude <= 0f)
                     continue;
                 planet.swayPhase += planet.swaySpeed * dt;
@@ -334,6 +351,8 @@ namespace BouncingPlanet
                 AddBand(spawnTop);
                 spawnTop += lane;
             }
+
+            EnsureMilestoneBands(spawnTop);
 
             float lowerLimit = Mathf.Max(EffectiveFloor,
                 playerRadius - generation.backfillBehind);
@@ -381,8 +400,11 @@ namespace BouncingPlanet
 
             for (int i = 0; i < bands.Count; i++)
             {
-                if (Mathf.Abs(bands[i].radius - radius) < 0.001f)
+                if (!bands[i].markerBand &&
+                    Mathf.Abs(bands[i].radius - radius) < 0.001f)
+                {
                     return;
+                }
             }
 
             if (useLocalArcs)
@@ -579,13 +601,26 @@ namespace BouncingPlanet
                 gap ? -slot - 1 : slot);
             var slotRng = new System.Random(seed);
 
-            PlanetTypeId typeId = PickType(slotRng);
-            PlanetTypeDef def = bootstrap.GetPlanetType(typeId);
+            bool isMarker = band.markerType != null;
+            PlanetTypeDef def;
+            if (isMarker)
+            {
+                def = band.markerType;
+            }
+            else
+            {
+                PlanetTypeId typeId = PickType(slotRng);
+                def = bootstrap.GetPlanetType(typeId);
+            }
             if (def == null)
                 return null;
 
             float angleOffset;
-            if (gap)
+            if (isMarker)
+            {
+                angleOffset = 0f;
+            }
+            else if (gap)
             {
                 angleOffset = ((float)slotRng.NextDouble() - 0.5f) *
                               slotAngle * 0.4f;
@@ -604,16 +639,21 @@ namespace BouncingPlanet
             float baseAngle = phase + slot * slotAngle + angleOffset;
             if (InSpawnClearZone(radius, baseAngle))
                 return null;
-            float swayAmplitude = gap
-                ? Mathf.Min(generation.swayMax, 0.08f)
-                : band.swayAmplitude;
-            float swaySpeed = swayAmplitude > 0f
+            float swayAmplitude = isMarker
+                ? 0f
+                : (gap ? Mathf.Min(generation.swayMax, 0.08f)
+                       : band.swayAmplitude);
+            float swaySpeed = !isMarker && swayAmplitude > 0f
                 ? Mathf.Lerp(generation.swaySpeedMin, generation.swaySpeedMax,
                     (float)slotRng.NextDouble())
                 : 0f;
-            float swayPhase = (float)slotRng.NextDouble() * Mathf.PI * 2f;
-            float sizeRoll = 1f +
-                ((float)slotRng.NextDouble() * 2f - 1f) * generation.sizeJitter;
+            float swayPhase = isMarker
+                ? 0f
+                : (float)slotRng.NextDouble() * Mathf.PI * 2f;
+            float sizeRoll = isMarker
+                ? 1f
+                : 1f + ((float)slotRng.NextDouble() * 2f - 1f) *
+                       generation.sizeJitter;
             float worldRadius = Mathf.Max(0.005f,
                 def.baseSize * config.sizeScale * Mathf.Max(0.05f, sizeRoll));
 
@@ -622,11 +662,13 @@ namespace BouncingPlanet
                 def = def,
                 radius = radius,
                 baseAngle = baseAngle,
-                angle = baseAngle + Mathf.Sin(swayPhase) * swayAmplitude,
+                angle = baseAngle,
                 worldRadius = worldRadius,
                 swayPhase = swayPhase,
                 swaySpeed = swaySpeed,
-                swayAmplitude = swayAmplitude
+                swayAmplitude = swayAmplitude,
+                markerReached = isMarker && player != null &&
+                                player.State.maxRadius + 0.0001f >= radius
             };
             planets.Add(planet);
             return planet;
@@ -817,6 +859,23 @@ namespace BouncingPlanet
         }
 
         /// <summary>炸弹技能清场：除云朵/果冻外，范围内行星标记死亡；不连锁、不计分。</summary>
+        /// <summary>把当前高度及以下的标记星球立即点亮（覆盖胜利瞬间时钟暂停的情况）。</summary>
+        public void MarkMarkersReached(float height)
+        {
+            for (int i = 0; i < planets.Count; i++)
+            {
+                PlanetRuntime planet = planets[i];
+                if (planet.def == null || !planet.def.isMarker ||
+                    planet.markerReached ||
+                    height + 0.0001f < planet.radius)
+                {
+                    continue;
+                }
+                planet.markerReached = true;
+                planet.viewComponent?.SetMarkerReached(true);
+            }
+        }
+
         public void ExplodeArea(Vector2 center, float radius, PlanetRuntime ignore = null)
         {
             for (int i = 0; i < planets.Count; i++)
@@ -824,8 +883,11 @@ namespace BouncingPlanet
                 PlanetRuntime planet = planets[i];
                 if (!planet.alive || planet == ignore || planet.def == null)
                     continue;
-                if (planet.def.behavior == PlanetBehavior.Cloud)
+                if (planet.def.isMarker ||
+                    planet.def.behavior == PlanetBehavior.Cloud)
+                {
                     continue;
+                }
                 float distance = Vector2.Distance(center, planet.WorldPosition);
                 if (distance > radius + planet.worldRadius)
                     continue;
@@ -835,6 +897,162 @@ namespace BouncingPlanet
                 if (planet.viewComponent != null)
                     planet.viewComponent.PlayShatter();
             }
+        }
+
+        private void EnsureMarkerTypes()
+        {
+            if (goalMarkerType == null)
+            {
+                goalMarkerType = CreateMarkerType(
+                    "GoalMarker", PlanetTypeId.GoalMarker,
+                    config.goalMarkerSprite, config.goalMarkerColor,
+                    config.goalMarkerReachedSprite,
+                    config.goalMarkerReachedColor);
+            }
+            if (milestoneMarkerType == null)
+            {
+                milestoneMarkerType = CreateMarkerType(
+                    "MilestoneMarker", PlanetTypeId.MilestoneMarker,
+                    config.milestoneMarkerSprite, config.milestoneMarkerColor,
+                    config.milestoneMarkerReachedSprite,
+                    config.milestoneMarkerReachedColor);
+            }
+        }
+
+        private PlanetTypeDef CreateMarkerType(
+            string name, PlanetTypeId id, Sprite sprite, Color color,
+            Sprite reachedSprite, Color reachedColor)
+        {
+            PlanetTypeDef def = ScriptableObject.CreateInstance<PlanetTypeDef>();
+            def.name = name;
+            def.hideFlags = HideFlags.DontSave;
+            def.id = id;
+            def.displayName = name;
+            def.behavior = PlanetBehavior.Marker;
+            def.isMarker = true;
+            def.bodySprite = sprite;
+            def.color = color;
+            def.markerReachedSprite = reachedSprite;
+            def.markerReachedColor = reachedColor;
+            def.baseSize = Mathf.Max(0.01f, config.markerBaseSize);
+            def.spawnWeight = 0f;
+            def.normalSmashImmune = true;
+            def.idleSwayEnabled = true;
+            def.idleSwayAngle = 0f;
+            def.idleSwayFrequency = 0.01f;
+            def.animationStates = new PlanetAnimationSet();
+            return def;
+        }
+
+        private void AddGoalMarkerRing(float radius)
+        {
+            if (goalMarkerType == null || radius <= 0f)
+                return;
+
+            float spacing = Mathf.Max(0.1f,
+                generation != null ? generation.markerArcSpacing : 0.9f);
+            int count = Mathf.Clamp(
+                Mathf.RoundToInt(Mathf.PI * 2f * radius / spacing),
+                8, 512);
+            for (int i = 0; i < count; i++)
+            {
+                float angle = i * Mathf.PI * 2f / count;
+                if (InSpawnClearZone(radius, angle))
+                    continue;
+                AddMarkerPlanet(radius, angle, goalMarkerType);
+            }
+        }
+
+        private void AddMarkerPlanet(
+            float radius, float angle, PlanetTypeDef def)
+        {
+            if (def == null)
+                return;
+
+            planets.Add(new PlanetRuntime
+            {
+                def = def,
+                radius = radius,
+                baseAngle = angle,
+                angle = angle,
+                worldRadius = Mathf.Max(
+                    0.005f, def.baseSize * config.sizeScale),
+                swayAmplitude = 0f,
+                swaySpeed = 0f,
+                swayPhase = 0f,
+                markerReached = player != null &&
+                                player.State.maxRadius + 0.0001f >= radius
+            });
+        }
+
+        private void EnsureMilestoneBands(float upTo)
+        {
+            if (!useLocalArcs || currentLevel == null ||
+                !currentLevel.IsEndless || milestoneMarkerType == null)
+            {
+                return;
+            }
+            LevelEndlessSettings endless = currentLevel.endless;
+            if (endless == null)
+                return;
+
+            float first = Mathf.Max(0f, endless.milestoneFirstRadius);
+            float interval = Mathf.Max(0.1f, endless.milestoneInterval);
+            float playerRadius = player.State.radius;
+            float low = Mathf.Max(EffectiveFloor, playerRadius - 12f);
+
+            for (int i = bands.Count - 1; i >= 0; i--)
+            {
+                BandView band = bands[i];
+                if (!band.markerBand)
+                    continue;
+                if (band.radius >= low && band.radius <= upTo + 0.001f)
+                    continue;
+                RemoveBandPlanets(band);
+                DestroyBand(band);
+                bands.RemoveAt(i);
+            }
+
+            int start = Mathf.Max(0,
+                Mathf.FloorToInt((low - first) / interval));
+            for (int k = start; ; k++)
+            {
+                float radius = first + k * interval;
+                if (radius > upTo + 0.001f)
+                    break;
+                if (radius >= low)
+                    AddMarkerBand(radius);
+            }
+        }
+
+        private void AddMarkerBand(float radius)
+        {
+            if (milestoneMarkerType == null || radius < EffectiveFloor)
+                return;
+
+            for (int i = 0; i < bands.Count; i++)
+            {
+                if (bands[i].markerBand &&
+                    Mathf.Abs(bands[i].radius - radius) < 0.001f)
+                {
+                    return;
+                }
+            }
+
+            BandView band = AddBandView(radius);
+            band.local = true;
+            band.markerBand = true;
+            band.markerType = milestoneMarkerType;
+            band.seedKey = Mathf.RoundToInt(radius * 1000f);
+
+            float spacing = Mathf.Max(0.1f, generation.markerArcSpacing);
+            band.slotCount = Mathf.Max(8, Mathf.RoundToInt(
+                Mathf.PI * 2f * radius / spacing));
+            band.phase = 0f;
+            band.swayAmplitude = 0f;
+            if (band.line != null)
+                band.line.enabled = false;
+            UpdateBandWindow(band, player.State.WorldAngle);
         }
 
         private bool InSpawnClearZone(float radius, float angle)
@@ -945,8 +1163,17 @@ namespace BouncingPlanet
                     ? Camera.main.transform.rotation
                     : Quaternion.identity;
                 planet.viewComponent.SetWorldDiameter(planet.worldRadius * 2f);
-                planet.viewComponent.SetTint(
-                    Color.Lerp(planet.def.color, Color.white, planet.flash * 0.7f));
+                if (planet.def != null && planet.def.isMarker)
+                {
+                    planet.viewComponent.SetMarkerReached(
+                        planet.markerReached);
+                }
+                else
+                {
+                    planet.viewComponent.SetTint(
+                        Color.Lerp(planet.def.color, Color.white,
+                            planet.flash * 0.7f));
+                }
             }
 
             if (!Mathf.Approximately(lastBandPixelsPerUnit, config.cameraPixelsPerUnit))
@@ -963,6 +1190,12 @@ namespace BouncingPlanet
             for (int i = 0; i < bands.Count; i++)
             {
                 BandView band = bands[i];
+                if (band.markerBand)
+                {
+                    if (band.line != null)
+                        band.line.enabled = false;
+                    continue;
+                }
                 band.line.enabled = config.showRingLines &&
                     Mathf.Abs(band.radius - playerRadius) <= RingVisibleRadius;
             }
@@ -1034,6 +1267,10 @@ namespace BouncingPlanet
         private void OnDestroy()
         {
             ClearWorld();
+            if (goalMarkerType != null)
+                Destroy(goalMarkerType);
+            if (milestoneMarkerType != null)
+                Destroy(milestoneMarkerType);
         }
     }
 }

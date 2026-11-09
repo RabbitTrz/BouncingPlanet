@@ -110,6 +110,12 @@ namespace BouncingPlanet.Editor
                     changed = true;
             }
 
+            if (root.transform.Find("UpArrowHint") == null)
+            {
+                if (CreateUpArrowHint(root.GetComponent<RectTransform>()))
+                    changed = true;
+            }
+
             if (changed)
             {
                 PrefabUtility.SaveAsPrefabAsset(root, path);
@@ -225,6 +231,7 @@ namespace BouncingPlanet.Editor
             AddKeyHint(hud.hookSkill.transform, "Key_Left",
                 LoadSprite(KeyFolder + "Left.PNG"));
             hud.pauseButton = CreateHudPauseButton(rootRect);
+            CreateUpArrowHint(rootRect);
 
             PrefabUtility.SaveAsPrefabAsset(root, PrefabPath);
             Object.DestroyImmediate(root);
@@ -468,6 +475,50 @@ namespace BouncingPlanet.Editor
             }
 
             return button;
+        }
+
+        /// <summary>关卡开始时在玩家附近上下移动的向上箭头。</summary>
+        private static bool CreateUpArrowHint(RectTransform root)
+        {
+            if (root == null)
+                return false;
+
+            Sprite sprite = LoadSprite(
+                "Assets/Resources/Raw/Arrow/up.PNG");
+            if (sprite == null)
+                return false;
+
+            GameObject go = new GameObject(
+                "UpArrowHint",
+                typeof(RectTransform),
+                typeof(CanvasRenderer),
+                typeof(Image),
+                typeof(CanvasGroup),
+                typeof(UpArrowHint));
+            go.transform.SetParent(root, false);
+
+            RectTransform rect = go.GetComponent<RectTransform>();
+            rect.anchorMin = rect.anchorMax = new Vector2(0.5f, 0.5f);
+            rect.pivot = new Vector2(0.5f, 0.5f);
+            rect.anchoredPosition = new Vector2(0f, -220f);
+            rect.sizeDelta = new Vector2(60f, 162f);
+
+            Image image = go.GetComponent<Image>();
+            image.sprite = sprite;
+            image.preserveAspect = true;
+            image.raycastTarget = false;
+
+            CanvasGroup group = go.GetComponent<CanvasGroup>();
+            group.alpha = 0f;
+            group.interactable = false;
+            group.blocksRaycasts = false;
+
+            UpArrowHint hint = go.GetComponent<UpArrowHint>();
+            hint.duration = 3f;
+            hint.bobDistance = 30f;
+            hint.bobSpeed = 1.6f;
+            hint.fadeDuration = 0.2f;
+            return true;
         }
 
         private static bool EnsureSkillKeyHint(

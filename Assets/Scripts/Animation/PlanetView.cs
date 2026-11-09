@@ -17,6 +17,7 @@ namespace BouncingPlanet
 
         private PlanetTypeDef definition;
         private float worldDiameter = 1f;
+        private bool markerReached;
 
         private void Awake()
         {
@@ -33,12 +34,17 @@ namespace BouncingPlanet
                 : ProceduralSprites.Circle;
             body.sprite = sprite;
             body.color = def != null ? def.color : Color.white;
-            body.sortingOrder = 5;
+            // 标记星球永远压在所有普通星球之下，不再遮挡其他星球。
+            bool marker = def != null && def.isMarker;
+            body.sortingOrder = marker ? 4 : 5;
 
             // 从对象池复用时，先把上一次状态的位移/缩放/旋转清掉。
             visualRoot.localPosition = Vector3.zero;
             visualRoot.localScale = Vector3.one;
             visualRoot.localRotation = Quaternion.identity;
+
+            markerReached = false;
+            stateMachine.applySprites = !marker;
 
             SpriteStateProfile profile = SpriteStateDefaults.GetPlanetProfile(def);
             stateMachine.Initialize(profile, body, visualRoot);
@@ -66,6 +72,25 @@ namespace BouncingPlanet
         {
             if (body != null)
                 body.color = color;
+        }
+
+        /// <summary>标记星球首次被越过后永久点亮。</summary>
+        public void SetMarkerReached(bool reached)
+        {
+            if (definition == null || !definition.isMarker || body == null)
+                return;
+            if (markerReached == reached)
+                return;
+
+            markerReached = reached;
+            Sprite sprite = reached && definition.markerReachedSprite != null
+                ? definition.markerReachedSprite
+                : definition.bodySprite;
+            body.sprite = sprite != null ? sprite : ProceduralSprites.Circle;
+            body.color = reached
+                ? definition.markerReachedColor
+                : definition.color;
+            ApplyDiameter();
         }
 
         public void PlayHit()

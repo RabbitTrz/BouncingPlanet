@@ -338,6 +338,18 @@ namespace BouncingPlanet
         [Tunable("Musou", 0.001f, 0.03f, 0.001f, "无双环线宽")]
         public float musouRingWidth = 0.007f;
 
+        [Tunable("Musou", 0.5f, 3f, 0.05f, "无双环边框大小")]
+        [Tooltip("1 表示边框圆环与无双环原大小对齐；用来微调适配美术图。")]
+        public float musouRingBorderScale = 1f;
+
+        [Tunable("Musou", 0f, 360f, 1f, "无双环填充起始角度")]
+        [Tooltip("美术环顶部有缺口。填充从这个角度开始，顺时针走到对称的另一端。")]
+        public float musouRingFillStartAngle = 80f;
+
+        [Tunable("Musou", 1f, 360f, 1f, "无双环填充跨度")]
+        [Tooltip("填充覆盖的角度跨度；360 减去顶部缺口角度。当前约 344 度。")]
+        public float musouRingFillSpanAngle = 344f;
+
         [Tunable("Musou", 0f, 1f, 0.01f, "无双环底色透明度")]
         public float musouRingBaseAlpha = 0.15f;
 
@@ -395,6 +407,20 @@ namespace BouncingPlanet
 
         [Range(0.05f, 5f)]
         public float bgmFadeDuration = 0.8f;
+
+        [Header("Marker Planets")]
+        [Tooltip("终点标记星球贴图；留空时使用程序化圆形占位。")]
+        public Sprite goalMarkerSprite;
+        public Sprite goalMarkerReachedSprite;
+        [Tooltip("无尽里程碑标记星球贴图；留空时使用程序化圆形占位。")]
+        public Sprite milestoneMarkerSprite;
+        public Sprite milestoneMarkerReachedSprite;
+        public Color goalMarkerColor = Color.white;
+        public Color goalMarkerReachedColor = Color.white;
+        public Color milestoneMarkerColor = new Color(0.55f, 0.75f, 1f, 1f);
+        public Color milestoneMarkerReachedColor =
+            new Color(0.85f, 0.95f, 1f, 1f);
+        [Min(0.01f)] public float markerBaseSize = 0.18f;
 
         // ------------------------------------------------------------------
         // Derived values
@@ -560,6 +586,9 @@ namespace BouncingPlanet
             showMusouRing = true;
             musouRingRadius = 0.085f;
             musouRingWidth = 0.007f;
+            musouRingBorderScale = 1f;
+            musouRingFillStartAngle = 80f;
+            musouRingFillSpanAngle = 344f;
             musouRingBaseAlpha = 0.15f;
             musouRingChargeColor = new Color(0.35f, 0.82f, 1f, 1f);
             musouRingActiveColor = new Color(1f, 0.82f, 0.32f, 1f);
@@ -579,6 +608,13 @@ namespace BouncingPlanet
 
             bgmVolume = 0.2f;
             bgmFadeDuration = 0.8f;
+
+            goalMarkerColor = Color.white;
+            goalMarkerReachedColor = Color.white;
+            milestoneMarkerColor = new Color(0.55f, 0.75f, 1f, 1f);
+            milestoneMarkerReachedColor =
+                new Color(0.85f, 0.95f, 1f, 1f);
+            markerBaseSize = 0.18f;
         }
 
         private void OnValidate()
@@ -641,10 +677,15 @@ namespace BouncingPlanet
 
             musouRingRadius = Mathf.Max(0.001f, musouRingRadius);
             musouRingWidth = Mathf.Max(0.0001f, musouRingWidth);
+            musouRingBorderScale = Mathf.Max(0.5f, musouRingBorderScale);
+            musouRingFillStartAngle = Mathf.Repeat(musouRingFillStartAngle, 360f);
+            musouRingFillSpanAngle = Mathf.Clamp(
+                musouRingFillSpanAngle, 1f, 360f);
             musouRingBaseAlpha = Mathf.Clamp01(musouRingBaseAlpha);
 
             bgmVolume = Mathf.Clamp01(bgmVolume);
             bgmFadeDuration = Mathf.Clamp(bgmFadeDuration, 0.05f, 5f);
+            markerBaseSize = Mathf.Max(0.01f, markerBaseSize);
         }
     }
 }

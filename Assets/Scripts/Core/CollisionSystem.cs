@@ -68,6 +68,8 @@ namespace BouncingPlanet
             {
                 PlanetRuntime planet = planets[i];
                 PlanetTypeDef def = planet.def;
+                if (def == null || def.isMarker)
+                    continue;
                 bool normalSmashCandidate = CanNormalSmash(def, state);
                 // 钩锁目标即使处于受击冷却也要检测，否则会被钩锁拉穿；
                 // 达到该星球普通撞碎阈值时同理，否则高速上升会从冷却中的星球穿过去。
