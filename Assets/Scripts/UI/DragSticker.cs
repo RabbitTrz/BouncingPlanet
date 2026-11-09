@@ -13,8 +13,13 @@ namespace BouncingPlanet
     [RequireComponent(typeof(RectTransform))]
     public sealed class DragSticker : MonoBehaviour,
         IBeginDragHandler, IDragHandler, IEndDragHandler,
-        IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler
+        IPointerDownHandler, IPointerUpHandler,
+        IPointerEnterHandler, IPointerExitHandler
     {
+        public event System.Action<bool> HoverChanged;
+        public event System.Action<bool> PressChanged;
+
+        public bool IsDragging => dragging;
         public StickerDropTarget dropTarget;
         public StickerDropTarget[] dropTargets;
         public StickerAction action;
@@ -97,6 +102,8 @@ namespace BouncingPlanet
             hovering = false;
             returning = false;
             inputLocked = false;
+            HoverChanged?.Invoke(false);
+            PressChanged?.Invoke(false);
             ApplyVisualState(VisualState.Idle);
             if (rect != null)
             {
@@ -174,6 +181,12 @@ namespace BouncingPlanet
             if (consumed || inputLocked)
                 return;
             PlayClick();
+            PressChanged?.Invoke(true);
+        }
+
+        public void OnPointerUp(PointerEventData eventData)
+        {
+            PressChanged?.Invoke(false);
         }
 
         public void OnPointerEnter(PointerEventData eventData)
@@ -181,6 +194,7 @@ namespace BouncingPlanet
             if (!dragging && !returning && !consumed && !inputLocked)
             {
                 hovering = true;
+                HoverChanged?.Invoke(true);
                 PlayHover();
             }
         }
@@ -188,6 +202,7 @@ namespace BouncingPlanet
         public void OnPointerExit(PointerEventData eventData)
         {
             hovering = false;
+            HoverChanged?.Invoke(false);
         }
 
         public void OnBeginDrag(PointerEventData eventData)
@@ -235,6 +250,7 @@ namespace BouncingPlanet
                 return;
 
             dragging = false;
+            PressChanged?.Invoke(false);
             StickerDropTarget acceptedTarget = FindDropTarget(
                 eventData.position, eventData.pressEventCamera);
             if (acceptedTarget != null)
@@ -295,6 +311,16 @@ namespace BouncingPlanet
             }
             if (image != null)
                 image.raycastTarget = true;
+        }
+
+        /// <summary>Esc 等场景下中断当前拖动，不触发掉落逻辑。</summary>
+        public void CancelDrag()
+        {
+            if (!dragging)
+                return;
+            dragging = false;
+            StartReturn();
+            PressChanged?.Invoke(false);
         }
 
         public void SetInputLocked(bool locked)

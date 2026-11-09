@@ -204,11 +204,15 @@ namespace BouncingPlanet
 
         [Header("云 Cloud")]
         [Tunable("Cloud", 0f, 10f, 0.1f, "穿过速度加值")]
-        [Tooltip("加算值：穿过云朵后径向速度 = 原速度 + 该值，不设上限。字段名沿用旧名。")]
+        [Tooltip("加算值：穿过云朵后径向速度 = 原速度 + 该值；是否封顶由下方开关控制。")]
         public float cloudSpeedMultiplier = 2.2f;
 
-        [LabelText("穿过速度上限（已停用）")]
-        [Tooltip("已停用：云朵星现在按加算处理，没有速度上限。")]
+        [LabelText("启用穿过速度上限")]
+        [Tooltip("开启后限制云朵加值后的最终速度；原速度已超过上限时不会被削减。")]
+        public bool cloudSpeedCapEnabled = true;
+
+        [LabelText("穿过速度上限")]
+        [Tooltip("最终径向速度不超过 max(进入速度, 该值)，只限制云朵的加值结果。")]
         public float cloudSpeedCap = 3.2f;
 
         [Header("炸弹 Bomb")]
@@ -262,6 +266,7 @@ namespace BouncingPlanet
                     bounceMultiplier = 1f;
                     scoreMultiplier = 1f;
                     cloudSpeedMultiplier = 2.2f;
+                    cloudSpeedCapEnabled = true;
                     cloudSpeedCap = 3.2f;
                     normalSmashImmune = true;
                     break;
@@ -309,6 +314,7 @@ namespace BouncingPlanet
             idleSwayFrequency = Mathf.Max(0.01f, idleSwayFrequency);
             idleSwaySteps = Mathf.Clamp(idleSwaySteps, 2, 16);
             smashSpeedThreshold = Mathf.Max(0f, smashSpeedThreshold);
+            cloudSpeedCap = Mathf.Max(0f, cloudSpeedCap);
         }
     }
 }

@@ -88,13 +88,13 @@ MonoBehaviour:
   normalSmashEnabled: 1
   normalSmashSpeedThreshold: 2.3
   smashSpeedLinesEnabled: 1
-  smashSpeedLineCount: 18
+  smashSpeedLineCount: 40
   smashSpeedLineSpeed: 0.9
   smashSpeedLineMinLength: 48
   smashSpeedLineMaxLength: 150
   smashSpeedLineWidth: 2
   smashSpeedLineAlpha: 0.55
-  smashSpeedLineSideBand: 0.32
+  smashSpeedLineSideBand: 0.35
   normalPlanetScore: 10
   musouScoreThreshold: 260
   smashScore: 15

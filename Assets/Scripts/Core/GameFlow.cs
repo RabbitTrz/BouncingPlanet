@@ -232,6 +232,8 @@ namespace BouncingPlanet
             if (State != FlowState.Playing)
                 return;
 
+            bootstrap?.progress?.CompleteLevel(currentLevel);
+
             if (OutcomeSequenceController.Instance != null)
             {
                 State = FlowState.Winning;

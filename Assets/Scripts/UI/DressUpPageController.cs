@@ -45,12 +45,29 @@ namespace BouncingPlanet
             Refresh();
         }
 
-        private void Close()
+        public void Close()
         {
             if (UiTransition.Instance != null)
                 UiTransition.Instance.Play(() => gameObject.SetActive(false));
             else
                 gameObject.SetActive(false);
+        }
+
+        /// <summary>Esc 时优先中断正在拖动的服装贴纸。</summary>
+        public bool TryCancelAnyDrag()
+        {
+            if (stickers == null)
+                return false;
+            for (int i = 0; i < stickers.Length; i++)
+            {
+                DragSticker sticker = stickers[i];
+                if (sticker != null && sticker.IsDragging)
+                {
+                    sticker.CancelDrag();
+                    return true;
+                }
+            }
+            return false;
         }
 
         private void EnsureWardrobe()

@@ -78,10 +78,18 @@ namespace BouncingPlanet
                     ? winSprite
                     : loseSprite;
             }
-            if (heightDisplay != null && bootstrap.player != null)
+            // 第 1/2/3 关结算不显示最高高度；无尽关保留。
+            LevelConfig level = flow.CurrentLevel;
+            bool showHeight = level == null || level.IsEndless;
+            if (heightDisplay != null)
             {
-                heightDisplay.SetValue(Mathf.RoundToInt(
-                    bootstrap.player.State.maxRadius));
+                if (heightDisplay.gameObject.activeSelf != showHeight)
+                    heightDisplay.gameObject.SetActive(showHeight);
+                if (showHeight && bootstrap.player != null)
+                {
+                    heightDisplay.SetValue(Mathf.RoundToInt(
+                        bootstrap.player.State.maxRadius));
+                }
             }
 
             if (Input.GetKeyDown(KeyCode.Escape))

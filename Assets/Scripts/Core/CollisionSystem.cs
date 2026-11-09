@@ -155,9 +155,17 @@ namespace BouncingPlanet
                 case PlanetBehavior.Cloud:
                     planet.cooldown = config.cloudHitCooldown;
                     float sign = state.radialVelocity < 0f ? -1f : 1f;
-                    // 加算：原速度 + 固定加值，不设上限。
-                    state.radialVelocity = sign *
-                        (impactSpeed + Mathf.Max(0f, def.cloudSpeedMultiplier));
+                    // 加算：原速度 + 固定加值；启用上限时只夹加值结果，
+                    // 原速度已经超过上限则不削减。
+                    float cloudSpeed =
+                        impactSpeed + Mathf.Max(0f, def.cloudSpeedMultiplier);
+                    if (def.cloudSpeedCapEnabled)
+                    {
+                        cloudSpeed = Mathf.Max(
+                            impactSpeed,
+                            Mathf.Min(cloudSpeed, def.cloudSpeedCap));
+                    }
+                    state.radialVelocity = sign * cloudSpeed;
                     AddScore(def);
                     events.Emit(new GameEvent(GameEventType.CloudPass, impactPoint,
                         impactSpeed, def.id, heavy: heavy));

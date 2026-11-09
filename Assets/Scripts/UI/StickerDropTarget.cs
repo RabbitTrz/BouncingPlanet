@@ -11,6 +11,8 @@ namespace BouncingPlanet
         public int levelIndex = -1;
         [Tooltip("关闭后只作为换装等自定义拖放的判定区，不再触发页面动作。")]
         public bool acceptActions = true;
+        [Tooltip("未解锁关卡不接收贴纸。")]
+        public bool locked;
 
         private void Awake()
         {
@@ -20,7 +22,7 @@ namespace BouncingPlanet
 
         public bool Contains(Vector2 screenPosition, Camera eventCamera)
         {
-            if (area == null)
+            if (locked || area == null)
                 return false;
             return RectTransformUtility.RectangleContainsScreenPoint(
                 area, screenPosition, eventCamera);
@@ -28,7 +30,7 @@ namespace BouncingPlanet
 
         public void Accept(StickerAction action)
         {
-            if (!acceptActions)
+            if (locked || !acceptActions)
                 return;
             if (levelSelect != null && levelIndex >= 0)
             {

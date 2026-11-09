@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -29,6 +30,9 @@ namespace BouncingPlanet
         private bool popupOpen;
         private bool wasOnStart;
         private bool levelSelectOpen;
+        private readonly List<StickerGuideLink> guideLinks =
+            new List<StickerGuideLink>();
+        private bool guidesInitialized;
 
         private void Awake()
         {
@@ -42,6 +46,7 @@ namespace BouncingPlanet
                 membersCloseButton.onClick.AddListener(CloseMembersPopup);
 
             ClosePopups();
+            SetupGuideLines();
             UpdateVisibility();
         }
 
@@ -51,6 +56,7 @@ namespace BouncingPlanet
                 settingsCloseButton.onClick.RemoveListener(CloseSettingsPopup);
             if (membersCloseButton != null)
                 membersCloseButton.onClick.RemoveListener(CloseMembersPopup);
+            HideGuideLines();
             if (Instance == this)
                 Instance = null;
         }
@@ -79,6 +85,7 @@ namespace BouncingPlanet
                     if (levelSelectPage != null)
                         levelSelectPage.SetActive(false);
                 }
+                HideGuideLines();
                 if (wasOnStart)
                     RestoreAllStickers();
                 wasOnStart = false;
@@ -128,6 +135,7 @@ namespace BouncingPlanet
 
         public void OpenLevelSelect(bool suppressStartPage = false)
         {
+            HideGuideLines();
             if (suppressStartPage)
             {
                 levelSelectOpen = true;
@@ -152,6 +160,7 @@ namespace BouncingPlanet
 
         private void ApplyOpenLevelSelect()
         {
+            HideGuideLines();
             ClosePopups();
             levelSelectOpen = true;
             if (levelSelectPage != null)
@@ -164,6 +173,7 @@ namespace BouncingPlanet
 
         public void ShowStartPage()
         {
+            HideGuideLines();
             levelSelectOpen = false;
             if (levelSelectPage != null)
                 levelSelectPage.SetActive(false);
@@ -178,6 +188,7 @@ namespace BouncingPlanet
 
         public void OpenSettings()
         {
+            HideGuideLines();
             ClosePopups();
             popupOpen = true;
             if (settingsPopup != null)
@@ -187,6 +198,7 @@ namespace BouncingPlanet
 
         public void OpenMembers()
         {
+            HideGuideLines();
             ClosePopups();
             popupOpen = true;
             if (membersPopup != null)
@@ -233,6 +245,56 @@ namespace BouncingPlanet
                 animation.Close();
             else
                 popup.SetActive(false);
+        }
+
+        private void SetupGuideLines()
+        {
+            if (guidesInitialized)
+                return;
+            guidesInitialized = true;
+
+            Transform root = startPageGroup != null
+                ? startPageGroup.transform
+                : transform;
+            BindGuideLine(root, "Line_SettingsToHole", settingsSticker);
+            BindGuideLine(root, "Line_PlayerToHole", playerSticker);
+            BindGuideLine(root, "Line_QuitToHole", quitSticker);
+            BindGuideLine(root, "Line_GroupToHole", membersSticker);
+        }
+
+        private void BindGuideLine(
+            Transform root, string lineName, DragSticker sticker)
+        {
+            if (root == null || sticker == null)
+                return;
+            Transform lineTransform = root.Find(lineName);
+            if (lineTransform == null)
+                return;
+
+            GuideLineAnimator animator =
+                lineTransform.GetComponent<GuideLineAnimator>();
+            if (animator == null)
+                animator = lineTransform.gameObject
+                    .AddComponent<GuideLineAnimator>();
+
+            RectTransform stickerRect = sticker.transform as RectTransform;
+            Vector2 direction = stickerRect != null
+                ? -stickerRect.anchoredPosition
+                : Vector2.zero;
+            animator.Configure(direction);
+
+            StickerGuideLink link =
+                lineTransform.GetComponent<StickerGuideLink>();
+            if (link == null)
+                link = lineTransform.gameObject.AddComponent<StickerGuideLink>();
+            link.Bind(sticker, animator);
+            guideLinks.Add(link);
+        }
+
+        private void HideGuideLines()
+        {
+            for (int i = 0; i < guideLinks.Count; i++)
+                guideLinks[i]?.Hide();
         }
 
         private void RestoreAllStickers()

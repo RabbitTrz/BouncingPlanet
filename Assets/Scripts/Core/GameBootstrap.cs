@@ -36,6 +36,7 @@ namespace BouncingPlanet
         public ProceduralAudioService audioService;
         public BgmPlayer bgmPlayer;
         public Wardrobe wardrobe;
+        public PlayerProgress progress;
         public FeedbackDirector feedbackDirector;
         public PlanetWorld planetWorld;
         public PlayerSkills skills;
@@ -58,6 +59,10 @@ namespace BouncingPlanet
 
         private void Awake()
         {
+            // 桌面版锁 60 帧；WebGL 的帧率最终仍由浏览器控制。
+            QualitySettings.vSyncCount = 0;
+            Application.targetFrameRate = 60;
+
             if (Instance != null && Instance != this)
             {
                 Destroy(gameObject);
@@ -99,6 +104,9 @@ namespace BouncingPlanet
 
             wardrobe = EnsureComponent(wardrobe);
             wardrobe.Initialize(this);
+
+            progress = EnsureComponent(progress);
+            progress.Initialize(this);
 
             feedbackDirector = EnsureComponent(feedbackDirector);
             feedbackDirector.Initialize(this);
