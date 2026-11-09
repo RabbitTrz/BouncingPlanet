@@ -492,7 +492,7 @@ MonoBehaviour:
   iceBreaksOnFirstHit: 1
   cloudSpeedMultiplier: 1.5
   cloudSpeedCapEnabled: 1
-  cloudSpeedCap: 3.2
+  cloudSpeedCap: 4
   bombFxRadius: 0.9
   bombPushSpeed: 2.9
   bombPushRadius: 2.16
