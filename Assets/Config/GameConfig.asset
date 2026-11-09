@@ -126,8 +126,8 @@ MonoBehaviour:
   bgmFadeDuration: 0.8
   goalMarkerSprite: {fileID: 21300000, guid: 45f9cf737bc89224d9fa24229ac16ebb, type: 3}
   goalMarkerReachedSprite: {fileID: 21300000, guid: a4ee4c5e53241af4b96963c24e904e3c, type: 3}
-  milestoneMarkerSprite: {fileID: 21300000, guid: 45f9cf737bc89224d9fa24229ac16ebb, type: 3}
-  milestoneMarkerReachedSprite: {fileID: 21300000, guid: a4ee4c5e53241af4b96963c24e904e3c, type: 3}
+  milestoneMarkerSprite: {fileID: 21300000, guid: 14e7c481041b2ec428fad1cdd301b182, type: 3}
+  milestoneMarkerReachedSprite: {fileID: 21300000, guid: 14e7c481041b2ec428fad1cdd301b182, type: 3}
   goalMarkerColor: {r: 1, g: 1, b: 1, a: 1}
   goalMarkerReachedColor: {r: 1, g: 1, b: 1, a: 1}
   milestoneMarkerColor: {r: 1, g: 1, b: 1, a: 1}
