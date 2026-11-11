@@ -143,6 +143,8 @@ namespace BouncingPlanet.Editor
                 "Assets/Resources/Raw/line/player to 3.png");
             Sprite linePlayerToChoose = LoadSprite(
                 "Assets/Resources/Raw/line/player to hole_choose.png");
+            Sprite hintSentence = LoadSprite(
+                "Assets/Resources/Raw/line/sentence.png");
             Sprite uiSprite = AssetDatabase.GetBuiltinExtraResource<Sprite>(
                 "UI/Skin/UISprite.psd");
             Sprite fullSprite = AssetDatabase.GetBuiltinExtraResource<Sprite>(
@@ -232,6 +234,23 @@ namespace BouncingPlanet.Editor
             controller.playerSticker = playerSticker;
             controller.quitSticker = quitSticker;
             controller.membersSticker = membersSticker;
+
+            Image hintImage = CreateImage(start, "HintSentence",
+                hintSentence, new Vector2(0f, 140f), new Vector2(680f, 94f));
+            hintImage.raycastTarget = false;
+            CanvasGroup hintGroup =
+                hintImage.gameObject.AddComponent<CanvasGroup>();
+            hintGroup.alpha = 0f;
+            hintGroup.interactable = false;
+            hintGroup.blocksRaycasts = false;
+            StartDragHintView hint =
+                hintImage.gameObject.AddComponent<StartDragHintView>();
+            hint.hintGroup = hintGroup;
+            hint.stickers = new[]
+            {
+                settingsSticker, playerSticker, quitSticker, membersSticker
+            };
+            controller.dragHint = hint;
 
             GameObject settingsPopup = CreatePopup(
                 rootRect, "SettingsPopup", fullSprite, paper);

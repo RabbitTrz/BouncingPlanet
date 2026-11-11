@@ -25,6 +25,7 @@ namespace BouncingPlanet
         public DragSticker membersSticker;
         public GameObject levelSelectPage;
         public LevelSelectController levelSelect;
+        public StartDragHintView dragHint;
 
         private GameFlow flow;
         private bool popupOpen;
@@ -116,6 +117,7 @@ namespace BouncingPlanet
 
         public void HandleStickerDrop(StickerAction action)
         {
+            dragHint?.MarkCompleted();
             switch (action)
             {
                 case StickerAction.Settings:
@@ -136,6 +138,7 @@ namespace BouncingPlanet
         public void OpenLevelSelect(bool suppressStartPage = false)
         {
             HideGuideLines();
+            dragHint?.Suppress();
             if (suppressStartPage)
             {
                 levelSelectOpen = true;
@@ -161,6 +164,7 @@ namespace BouncingPlanet
         private void ApplyOpenLevelSelect()
         {
             HideGuideLines();
+            dragHint?.Suppress();
             ClosePopups();
             levelSelectOpen = true;
             if (levelSelectPage != null)
@@ -174,6 +178,7 @@ namespace BouncingPlanet
         public void ShowStartPage()
         {
             HideGuideLines();
+            dragHint?.Suppress();
             levelSelectOpen = false;
             if (levelSelectPage != null)
                 levelSelectPage.SetActive(false);
@@ -189,6 +194,7 @@ namespace BouncingPlanet
         public void OpenSettings()
         {
             HideGuideLines();
+            dragHint?.Suppress();
             ClosePopups();
             popupOpen = true;
             if (settingsPopup != null)
@@ -199,6 +205,7 @@ namespace BouncingPlanet
         public void OpenMembers()
         {
             HideGuideLines();
+            dragHint?.Suppress();
             ClosePopups();
             popupOpen = true;
             if (membersPopup != null)
